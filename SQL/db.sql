@@ -55,7 +55,8 @@ CREATE TABLE Templates (
     question VARCHAR NOT NULL,
     answer VARCHAR NOT NULL,
     author VARCHAR NOT NULL,
-    last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (author) REFERENCES Users(username) ON DELETE CASCADE
 );
 
 -- Creazione della tabella Products
