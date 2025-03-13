@@ -3,29 +3,36 @@ import pytest
 from app.main import app
 
 
-# # Test the /api/get_messages route (POST)
-# def test_get_messages():
-#     client = app.test_client()
+@pytest.fixture
+def client():
+    with app.test_client() as client:
+        yield client
 
-#     # Valid request
-#     response = client.post(
-#         "/api/get_messages",
-#         json={"quantity": 3}
-#     )
-#     data = json.loads(response.data)
+def test_chat_valid_input(client):
+    response = client.post("/chat", data=json.dumps({
+        "user": "123",
+        "question": "What is the weather today?"
+    }), content_type='application/json')
+    assert response.status_code == 200
+    assert "answer" in response.get_json()
 
-#     assert response.status_code == 200
-#     assert len(data) == 3
-#     assert data[0]["id"] == 0
-#     assert data[1]["text"] == "Message 1"
+def test_chat_invalid_input_missing_user(client):
+    response = client.post("/chat", data=json.dumps({
+        "question": "What is the weather today?"
+    }), content_type='application/json')
+    assert response.status_code == 400
+    assert response.get_json() == {"error": "Invalid input"}
 
-#     # Invalid request (missing 'quantity')
-#     response = client.post(
-#         "/api/get_messages",
-#         json={}
-#     )
-#     data = json.loads(response.data)
+def test_chat_invalid_input_missing_question(client):
+    response = client.post("/chat", data=json.dumps({
+        "user": "123"
+    }), content_type='application/json')
+    assert response.status_code == 400
+    assert response.get_json() == {"error": "Invalid input"}
 
-#     assert response.status_code == 400
-#     assert data["status"] == "error"
-#     assert data["message"] == "Invalid request body"
+def test_chat_invalid_json(client):
+    response = client.post("/chat", data="Invalid JSON", content_type='application/json')
+    assert response.status_code == 400
+    assert response.get_json() == {"error": "Invalid input"}
+    
+
