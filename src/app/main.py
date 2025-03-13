@@ -3,11 +3,24 @@ from flask import Flask, request, jsonify
 from app.dto.AnswerDTO import AnswerDTO
 from app.dto.QuestionDTO import QuestionDTO
 from app.controllers.chat_controller import ChatController
+from app.services.chat_service import ChatService
+from app.services.similarity_search_service import SimilaritySearchService
+from app.services.generate_answer_service import GenerateAnswerService
+from app.adapters.faiss_adapter import FaissAdapter
+# from app.adapters.langChain_adapter import LangChainAdapter
+from app.repositories.faiss_repository import FaissRepository
 
 app = Flask(__name__)
 
-# Initialize the controller
-chat_controller = ChatController()
+# Initialize 
+faiss_repository = FaissRepository()
+faiss_adapter = FaissAdapter(faiss_repository)
+
+generate_answer_service = GenerateAnswerService()
+
+similarity_search_service = SimilaritySearchService(faiss_adapter)
+chat_service = ChatService(similarity_search_service, generate_answer_service)
+chat_controller = ChatController(chat_service)
 
 @app.route("/chat", methods=["POST"])
 def chat():

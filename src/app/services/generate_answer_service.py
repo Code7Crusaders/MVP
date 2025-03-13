@@ -7,5 +7,5 @@ class GenerateAnswerService:
     Service class to generate answer basing on a query and a list of contexts."
     """
     def generate_answer(self, question_model: QuestionModel, context: list[ContextModel]) -> AnswerModel:
-        
+        pass
         

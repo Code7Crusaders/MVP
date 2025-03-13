@@ -10,5 +10,7 @@ class FaissAdapter(SimilaritySearchPort):
     def __init__(self, faiss_repository: FaissRepository):
         self.faiss_repository = faiss_repository
         
-    def similarity_search(question_model: QuestionModel) -> list[ContextModel]:
-        
+    def similarity_search(self, question_model: QuestionModel) -> list[ContextModel]:
+
+        return self.faiss_repository.similarity_search(question_model.get_user_id, question_model.get_question())
+

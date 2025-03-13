@@ -1,7 +1,7 @@
-from src.app.usecases.chat_useCase import ChatUseCase
+from app.usecases.chat_useCase import ChatUseCase
 
-from src.app.services.similarity_search_service import SimilaritySearchService
-from src.app.services.generate_answer_service import GenerateAnswerService
+from app.services.similarity_search_service import SimilaritySearchService
+from app.services.generate_answer_service import GenerateAnswerService
 
 class ChatService(ChatUseCase):
     """

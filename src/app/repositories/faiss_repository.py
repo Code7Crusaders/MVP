@@ -3,6 +3,8 @@ from app.entities.query_entity import QueryEntity
 
 class FaissRepository: 
     def __init__(self):
+        pass
         
-    def similarity_search(query: QueryEntity ) -> list[DocumentContextEntity]:
-        
+    def similarity_search(self, query: QueryEntity ) -> list[DocumentContextEntity]:
+
+        pass
