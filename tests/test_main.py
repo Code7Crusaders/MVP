@@ -1,5 +1,5 @@
 import json
-import pytest
+import pytest # type: ignore
 from app.main import app
 
 
@@ -11,14 +11,14 @@ def client():
 def test_chat_valid_input(client):
     response = client.post("/chat", data=json.dumps({
         "user": "123",
-        "question": "What is the weather today?"
+        "question": "Which beers are available?"
     }), content_type='application/json')
     assert response.status_code == 200
     assert "answer" in response.get_json()
 
 def test_chat_invalid_input_missing_user(client):
     response = client.post("/chat", data=json.dumps({
-        "question": "What is the weather today?"
+        "question": "Which beers are available?"
     }), content_type='application/json')
     assert response.status_code == 400
     assert response.get_json() == {"error": "Invalid input"}
