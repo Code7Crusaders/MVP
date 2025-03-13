@@ -1,4 +1,7 @@
 from flask import Flask, request, jsonify
+
+from app.dto.AnswerDTO import AnswerDTO
+from app.dto.QuestionDTO import QuestionDTO
 from app.controllers.chat_controller import ChatController
 
 app = Flask(__name__)
@@ -6,29 +9,18 @@ app = Flask(__name__)
 # Initialize the controller
 chat_controller = ChatController()
 
-@app.route("/", methods=["GET"])
-def home():
-    """
-    Root route that returns a simple welcome message.
-    """
-    return jsonify({"message": "Welcome to the Flask API!"}), 200
-
-@app.route("/api/get_messages", methods=["POST"])
-def get_messages():
-    """
-    Route to get messages from the ChatController.
-    """
+@app.route("/chat", methods=["POST"])
+def chat():
     data = request.get_json()
 
-    if not data or "quantity" not in data:
-        return jsonify({"status": "error", "message": "Invalid request body"}), 400
+    question = QuestionDTO(data["user"], data["question"])
 
-    quantity = data["quantity"]
-    
-    # Call the controller's method to get messages
-    messages = chat_controller.get_messages(quantity)
+    try:
+        return jsonify(chat_controller.get_answer(question)), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
-    return jsonify(messages), 200
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

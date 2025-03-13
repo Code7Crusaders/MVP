@@ -1,3 +1,6 @@
+from app.dto.AnswerDTO import AnswerDTO
+from app.dto.QuestionDTO import QuestionDTO
+
 class ChatController:
     """
     Controller class to manage chat interactions.
@@ -5,13 +8,15 @@ class ChatController:
     def __init__(self):
         pass  # Initialize if needed, for example, with services or use cases
 
-    def get_messages(self, quantity: int):
+    def get_answer(self, user_input: QuestionDTO) -> AnswerDTO:
         """
-        Dummy function to simulate message retrieval based on the quantity.
-        Args:
-            quantity (int): The number of messages to retrieve.
-        Returns:
-            list: A list of dummy messages.
+        Get the answer to a user's question.
         """
-        # Generate dummy messages
-        return [{"id": i, "text": f"Message {i}"} for i in range(quantity)]
+        # Access the user's question
+        question = user_input.question
+
+        # Process the question and get an answer
+
+        # Create an answer
+        answer = AnswerDTO("This is an answer")
+        return answer
