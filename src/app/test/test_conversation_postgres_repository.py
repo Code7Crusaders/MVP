@@ -7,7 +7,7 @@ from app.config.db_config import db_config
 
 def test_get_conversation():
     repo = ConversationPostgresRepository(db_config)
-    conversation = repo.get_conversation(1)
+    conversation = repo.get_conversation(4)
     if conversation:
         print(f"Conversation ID: {conversation.id}, Title: {conversation.title}")
     else:
@@ -15,12 +15,10 @@ def test_get_conversation():
 
 def test_save_conversation_title():
     repo = ConversationPostgresRepository(db_config)
-    repo.save_conversation_title(1, "New Title")
-    print("Conversation title updated.")
+    # Assuming the modified save_conversation_title method now creates a new conversation if it does not exist
+    repo.save_conversation_title(4, "Oi")
+    print("Conversation title updated or created.")
 
 if __name__ == "__main__":
     test_save_conversation_title()
     test_get_conversation()
-
-
-# funziona
