@@ -41,6 +41,8 @@ def langChain_repository():
 
 def test_generate_answer(langChain_repository):
      
+    
+    prompt_template = "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly."        
     query = QueryEntity(1, "Hello, What can you tell me about colors?")
     contexts = [
         DocumentContextEntity("Colors are visual perceptual properties corresponding in humans to the categories called red, blue, yellow, green, and others. They are derived from the spectrum of light interacting in the eye with the spectral sensitivities of the light receptors."),
@@ -48,7 +50,7 @@ def test_generate_answer(langChain_repository):
         DocumentContextEntity("The perception of color is a subjective process where the brain responds to the stimuli produced when incoming light reacts with the several types of cone cells in the eye.")
     ]
 
-    result = langChain_repository.generate_answer(query, contexts)
+    result = langChain_repository.generate_answer(query, contexts, prompt_template)
 
     assert result is not None
     assert result.get_answer() is not None
@@ -56,11 +58,14 @@ def test_generate_answer(langChain_repository):
     assert isinstance(result, AnswerEntity)
 
 def test_generate_answer_empty_query(langChain_repository):
+
+    prompt_template = "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly."  
+
     query = QueryEntity(1, "")
     contexts = [
         DocumentContextEntity("Colors are visual perceptual properties corresponding in humans to the categories called red, blue, yellow, green, and others. They are derived from the spectrum of light interacting in the eye with the spectral sensitivities of the light receptors.")
     ]
-    
+
     with pytest.raises(ValueError, match="Query cannot be empty"):
-        langChain_repository.generate_answer(query, contexts)
+        langChain_repository.generate_answer(query, contexts, prompt_template)
 

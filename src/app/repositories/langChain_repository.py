@@ -15,7 +15,7 @@ class LangChainRepository ():
     def __init__(self, model: ChatOpenAI):
         self.model = model
 
-    def generate_answer(self, query: QueryEntity, contexts : list[DocumentContextEntity]) -> AnswerEntity:
+    def generate_answer(self, query: QueryEntity, contexts : list[DocumentContextEntity], prompt_template: str) -> AnswerEntity:
         """
         Given a Query and a list of document contexts it perform a call to OpenAi LLM model and get a detailed answer
 
@@ -35,12 +35,11 @@ class LangChainRepository ():
 
         try: 
             user_question = query.get_query()
-            default_prompt = "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly."
             documents = [Document(page_content=context.get_content()) for context in contexts]
 
             prompt_template = ChatPromptTemplate.from_messages(
                 [
-                    ("system", "{default_prompt}"),
+                    ("system", "{prompt_template}"),
                     ("user", "{user_question}"),
                     ("system", "{context}")  
                 ]
@@ -52,7 +51,7 @@ class LangChainRepository ():
             )
 
             answer = chain.invoke({
-                "default_prompt": default_prompt,  
+                "prompt_template": prompt_template,  
                 "user_question": user_question,  
                 "context": documents  
             })
