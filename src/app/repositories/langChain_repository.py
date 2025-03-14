@@ -1,5 +1,7 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core.documents import Document
 
 from app.entities.query_entity import QueryEntity
 from app.entities.document_context_entity import DocumentContextEntity
@@ -28,13 +30,37 @@ class LangChainRepository ():
             Exception: If an error occurs during the answer generation.
         """
 
-        try: 
-            user_question = query.get_question()
-            
+        if not query.get_query().strip():
+            raise ValueError("Query cannot be empty")
 
-            prompt = ChatPromptTemplate(
-                [("user", "{user_question}\n\n{}\n\n{}")] +
+        try: 
+            user_question = query.get_query()
+            default_prompt = "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly."
+            documents = [Document(page_content=context.get_content()) for context in contexts]
+
+            prompt_template = ChatPromptTemplate.from_messages(
+                [
+                    ("system", "{default_prompt}"),
+                    ("user", "{user_question}"),
+                    ("system", "{context}")  
+                ]
             )
+
+            chain = create_stuff_documents_chain(
+                llm=self.model,
+                prompt=prompt_template
+            )
+
+            answer = chain.invoke({
+                "default_prompt": default_prompt,  
+                "user_question": user_question,  
+                "context": documents  
+            })
+
+            return AnswerEntity(answer)
+
+        except Exception as e:
+            raise Exception("Error while generating the answer from LangChain model: " + str(e))
 
 
 
