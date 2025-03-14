@@ -41,28 +41,28 @@ class FaissRepository:
     def load_chunks(self, chunks: list[FileChunkEntity]) -> str: 
         """
         Perform a load of the chunks into the vectorstore.
-    
+
         Args:
             chunks (list[FileChunkEntity]): The list of file chunk entities to load.
-    
+
         Returns:
             str: The number of chunks loaded.
-    
+
         Raises:
             Exception: If an error occurs during the load.
         """
         if not chunks:
             return "No chunks to load."
-        
+
         try:
             result = []
-            
+
             for chunk in chunks:
                 doc = Document(page_content=chunk.get_chunk_content(), metadata={"metadata": chunk.get_metadata()})
                 result.append(self.vectorstore.add_documents([doc]))
-            
+
             return f"{len(result)} chunks loaded."
-            
+
         except Exception as e:
             return f"Error occurred during chunk loading: {str(e)}"
 
