@@ -1,26 +1,17 @@
 from flask import Flask, request, jsonify
 
+from app.dependencies.dependency_inj import dependency_injection
+
 from app.dto.AnswerDTO import AnswerDTO
 from app.dto.QuestionDTO import QuestionDTO
-from app.controllers.chat_controller import ChatController
-from app.services.chat_service import ChatService
-from app.services.similarity_search_service import SimilaritySearchService
-from app.services.generate_answer_service import GenerateAnswerService
-from app.adapters.faiss_adapter import FaissAdapter
-# from app.adapters.langChain_adapter import LangChainAdapter
-from app.repositories.faiss_repository import FaissRepository
+
 
 app = Flask(__name__)
 
-# Initialize 
-faiss_repository = FaissRepository()
-faiss_adapter = FaissAdapter(faiss_repository)
+# Initialize dependencies
+dependencies = dependency_injection()
+chat_controller = dependencies["chat_controller"]
 
-generate_answer_service = GenerateAnswerService()
-
-similarity_search_service = SimilaritySearchService(faiss_adapter)
-chat_service = ChatService(similarity_search_service, generate_answer_service)
-chat_controller = ChatController(chat_service)
 
 @app.route("/chat", methods=["POST"])
 def chat():
