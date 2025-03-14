@@ -13,7 +13,10 @@ from app.entities.file_chunk_entity import FileChunkEntity
 class LangChainRepository ():
 
     def __init__(self, model: ChatOpenAI):
-        self.model = model
+        try:
+            self.model = model
+        except Exception as e:
+            raise Exception("Error while initializing LangChain model: " + str(e))
 
     def generate_answer(self, query: QueryEntity, contexts : list[DocumentContextEntity], prompt_template: str) -> AnswerEntity:
         """
