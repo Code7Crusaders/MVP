@@ -25,7 +25,7 @@ def langChain_repository():
     
     model = ChatOpenAI(
         model="gpt-4o-mini", 
-        max_tokens=2000, 
+        max_tokens=200, 
         temperature=0.5, 
         request_timeout=10
         )
@@ -106,7 +106,7 @@ def test_generate_answer_remember_messages(langChain_repository):
     assert result3.get_answer() != ""
     assert isinstance(result3, AnswerEntity)
 
-    query4 = QueryEntity(1, "What is the speed of light?")
+    query4 = QueryEntity(2, "What is the speed of light?")
     contexts4 = [
         DocumentContextEntity("The speed of light in vacuum, commonly denoted c, is a universal physical constant important in many areas of physics. Its exact value is defined as 299,792,458 metres per second (approximately 300,000 km/s or 186,000 mi/s).")
     ]
