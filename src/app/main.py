@@ -39,11 +39,11 @@ def chat():
     answer = chat_controller.get_answer(user_input)
 
     try:
-        return jsonify({"answer": answer.get_answer()})
+        return jsonify({"answer": answer.get_answer()}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.errorhandler(400)
+@app.errorhandler(400) 
 def bad_request(error):
     response = jsonify({"error": "Invalid input"})
     response.status_code = 400
