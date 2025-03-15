@@ -1,10 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './css/style.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from './App.jsx'
 
-import store from "react-redux"
+import store from "./store.js"
 import { Provider} from "react-redux"
 
 const router = createBrowserRouter([
