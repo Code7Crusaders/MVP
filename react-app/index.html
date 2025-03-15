@@ -1,31 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Giorgione</title>
-    <link rel="stylesheet" href="src/css/style.css" />
+    <!-- Link al file CSS principale (opzionale, se ne hai uno) -->
+    <link rel="stylesheet" href="/src/css/style.css" />
   </head>
-  <header>
-    <div class="titolo">    
-        <h1>Giorgione Consiglia</h1>
-    </div>
-    <nav id="breadcrump">
-        <p>Ti trovi in: </p>
-    </nav>
-</header>
   <body>
-    <main>
-      <div class="slide-1">
-        <p>Benvenuti su Giorgione Consiglia!</p>
-      </div>
-      <div class="slide-1">
-      <p>Questo sito offre una chatbot intelligente che ti aiuta a scegliere i migliori prodotti in base alle tue esigenze. Interagisci con la nostra chatbot per ricevere consigli personalizzati e scoprire le ultime novità.</p>
-        <div class="center">
-          <a href="src/html/login.html" class="bottone">Login</a>
-          <a href="src/html/signup.html" class="bottone">Registrati</a>
-        </div>
-      </div>
-    </main>
+    <!-- Il div con id="root" è il punto di montaggio per l'app React -->
+    <div id="root"></div>
+
+    <!-- Inclusione del JavaScript bundle (gestito automaticamente da Vite o Webpack) -->
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
