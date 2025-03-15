@@ -1,6 +1,6 @@
 from datetime import datetime
 
-class SupportMessageModel:
+class SupportMessageEntity():
     def __init__(self, id: int, user_id: int, description: str, status: bool, subject: str, created_at: datetime = None):
         self.id = id
         self.user_id = user_id
@@ -10,7 +10,7 @@ class SupportMessageModel:
         self.created_at = created_at or datetime.now()
 
     def __repr__(self):
-        return f"<SupportMessageModel(id={self.id}, user_id={self.user_id}, description='{self.description}', status={self.status}, subject='{self.subject}', created_at='{self.created_at}')>"
+        return f"<SupportMessageEntity(id={self.id}, user_id={self.user_id}, description='{self.description}', status={self.status}, subject='{self.subject}', created_at='{self.created_at}')>"
 
     def mark_as_resolved(self):
         self.status = True

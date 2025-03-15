@@ -8,7 +8,8 @@ class SimilaritySearchService:
         self.similarity_search_port = similarity_search_port
 
     def similarity_search(self, question_model: QuestionModel) -> list[ContextModel]:
-
-        self.similarity_search_port
-
+        """
+        This function manages the logic for getting the most similar documents stored in the vector DB
+        for the given query.
+        """
         return self.similarity_search_port.similarity_search(question_model)

@@ -1,4 +1,4 @@
-class ConversationModel:
+class ConversationEntity:
     def __init__(self, id: int, title: str):
         self.id = id
         self.title = title

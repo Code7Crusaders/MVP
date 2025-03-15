@@ -31,11 +31,6 @@ if __name__ == "__main__":
     connection = create_connection()
     if connection:
         create_table_query = """
-        CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            age INT,
-            email VARCHAR(100) UNIQUE NOT NULL
-        );
+        drop table users;
         """
         execute_query(connection, create_table_query)

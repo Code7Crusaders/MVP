@@ -1,7 +1,17 @@
 import psycopg2
 import os
+
 from app.adapters.postgres_adapter import PostgresAdapter
 from app.repositories.postgres_repository import PostgresRepository
+from app.controllers.chat_controller import ChatController
+from app.services.chat_service import ChatService
+from app.services.similarity_search_service import SimilaritySearchService
+from app.services.generate_answer_service import GenerateAnswerService
+from app.adapters.faiss_adapter import FaissAdapter
+from app.adapters.langChain_adapter import LangChainAdapter
+from app.repositories.faiss_repository import FaissRepository
+from app.repositories.langChain_repository import LangChainRepository
+
 
 def initialize_postgres() -> PostgresAdapter:
     """
@@ -14,11 +24,11 @@ def initialize_postgres() -> PostgresAdapter:
     """
     try:
         db_config = {
-            "host": "localhost",
-            "port": "5432",
-            "user": "postgres",
-            "password": "eddy1234",
-            "dbname": "postgres"
+            "host": os.getenv("DB_HOST", "localhost"),
+            "port": os.getenv("DB_PORT", "5432"),
+            "user": os.getenv("DB_USER", "postgres"),
+            "password": os.getenv("DB_PASSWORD", "eddy1234"),
+            "dbname": os.getenv("DB_NAME", "postgres")
         }
         conn = psycopg2.connect(
             host=db_config["host"],
@@ -153,3 +163,60 @@ def initialize_postgres() -> PostgresAdapter:
         return postgres_adapter
     except psycopg2.Error as e:
         raise Exception(f"Error connecting to Postgres: {e}")
+    
+def initialize_langchain() -> LangChainAdapter:
+
+    langchain_repository = LangChainRepository()
+    langchain_adapter = LangChainAdapter(langchain_repository)
+
+    return langchain_adapter
+
+    
+
+def initialize_faiss() -> FaissAdapter:
+
+    faiss_repository = FaissRepository()
+    faiss_adapter = FaissAdapter(faiss_repository)
+
+    return faiss_adapter
+
+
+def dependency_injection() -> dict[str, object]:
+    """
+    Initializes and returns a dictionary of controllers dependencies.
+    Returns:
+      - dict[str, object]: A dictionary of controllers dependencies.
+    """
+
+    # Postgres
+
+    # Langchain
+
+    # Initialize 
+    langchain_adapter = initialize_langchain()
+    generate_answer_service = GenerateAnswerService(langchain_adapter)
+
+    # Faiss
+    faiss_adapter = initialize_faiss()    
+    similarity_search_service = SimilaritySearchService(faiss_adapter)
+
+    # Chat Service
+    chat_service = ChatService(similarity_search_service, generate_answer_service)
+
+
+    # Controllers
+
+    chat_controller = ChatController(chat_service)
+
+    dependencies = {
+        "chat_controller": chat_controller
+    }
+
+    return dependencies
+
+if __name__ == "__main__":
+    try:
+        postgres_adapter = initialize_postgres()
+        print("Postgres initialized successfully.")
+    except Exception as e:
+        print(f"Failed to initialize Postgres: {e}")

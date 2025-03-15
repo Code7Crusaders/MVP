@@ -8,4 +8,4 @@ class SimilaritySearchPort(ABC):
     """
     @abstractmethod
     def similarity_search(self, question_model: QuestionModel) -> list[ContextModel]:
-        pass
+        pass 
