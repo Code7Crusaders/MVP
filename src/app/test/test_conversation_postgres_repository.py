@@ -15,7 +15,6 @@ def test_get_conversation():
 
 def test_save_conversation_title():
     repo = ConversationPostgresRepository(db_config)
-    # Assuming the modified save_conversation_title method now creates a new conversation if it does not exist
     repo.save_conversation_title(4, "Oi")
     print("Conversation title updated or created.")
 

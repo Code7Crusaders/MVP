@@ -1,5 +1,5 @@
 import psycopg2
-from app.models.conversation_model import ConversationModel
+from app.entities.conversation_entity import ConversationEntity
 
 class ConversationPostgresRepository:
     def __init__(self, db_config: dict):
@@ -18,13 +18,13 @@ class ConversationPostgresRepository:
         '''
         return psycopg2.connect(**self.__db_config)
 
-    def get_conversation(self, conversation_id: int) -> ConversationModel:
+    def get_conversation(self, conversation_id: int) -> ConversationEntity:
         '''
         Retrieves a conversation from the PostgreSQL database by its ID.
         Args:
             conversation_id (int): The ID of the conversation to retrieve.
         Returns:
-            ConversationModel: The retrieved conversation.
+            ConversationEntity: The retrieved conversation.
         Raises:
             psycopg2.Error: If an error occurs while retrieving the conversation from the PostgreSQL database.
         '''
@@ -35,7 +35,7 @@ class ConversationPostgresRepository:
                     cursor.execute(query, (conversation_id,))
                     result = cursor.fetchone()
                     if result:
-                        return ConversationModel(id=result[0], title=result[1])
+                        return ConversationEntity(id=result[0], title=result[1])
                     else:
                         return None
         except psycopg2.Error as e:

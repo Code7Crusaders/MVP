@@ -1,5 +1,5 @@
 import psycopg2
-from app.models.support_message_model import SupportMessageModel
+from app.entities.support_message_entity import SupportMessageEntity
 
 class SupportMessagePostgresRepository:
     def __init__(self, db_config: dict):
@@ -18,13 +18,13 @@ class SupportMessagePostgresRepository:
         '''
         return psycopg2.connect(**self.__db_config)
 
-    def get_support_message(self, message_id: int) -> SupportMessageModel:
+    def get_support_message(self, message_id: int) -> SupportMessageEntity:
         '''
         Retrieves a support message from the PostgreSQL database by its ID.
         Args:
             message_id (int): The ID of the support message to retrieve.
         Returns:
-            SupportMessageModel: The retrieved support message.
+            SupportMessageEntity: The retrieved support message.
         Raises:
             psycopg2.Error: If an error occurs while retrieving the support message from the PostgreSQL database.
         '''
@@ -35,7 +35,7 @@ class SupportMessagePostgresRepository:
                     cursor.execute(query, (message_id,))
                     result = cursor.fetchone()
                     if result:
-                        return SupportMessageModel(
+                        return SupportMessageEntity(
                             id=result[0],
                             user_id=result[1],
                             description=result[2],

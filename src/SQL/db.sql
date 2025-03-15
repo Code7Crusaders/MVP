@@ -1,4 +1,3 @@
-
 -- Creazione della tabella Users
 CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
@@ -17,26 +16,19 @@ CREATE TABLE Conversations (
     title VARCHAR NOT NULL
 );
 
--- Creazione della tabella User_Messages
-CREATE TABLE User_Messages (
+-- Creazione della tabella Messages
+CREATE TABLE Messages (
     id SERIAL PRIMARY KEY,
     text VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    user_id INTEGER NOT NULL,
+    user_id INTEGER,
     conversation_id INTEGER NOT NULL,
+    rating BOOLEAN,
+    is_bot BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
     FOREIGN KEY (conversation_id) REFERENCES Conversations(id) ON DELETE CASCADE
 );
 
--- Creazione della tabella Bot_Messages
-CREATE TABLE Bot_Messages (
-    id SERIAL PRIMARY KEY,
-    text VARCHAR NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    rating BOOLEAN,
-    conversation_id INTEGER NOT NULL,
-    FOREIGN KEY (conversation_id) REFERENCES Conversations(id) ON DELETE CASCADE
-);
 
 -- Creazione della tabella Support
 CREATE TABLE Support (
@@ -59,23 +51,3 @@ CREATE TABLE Templates (
     FOREIGN KEY (author) REFERENCES Users(username) ON DELETE CASCADE
 );
 
--- Creazione della tabella Products
-CREATE TABLE Products (
-    id SERIAL PRIMARY KEY,
-    country_of_origin VARCHAR NOT NULL,
-    weight INTEGER,
-    milk_type VARCHAR,
-    description VARCHAR,
-    manufacturer VARCHAR,
-    product_name VARCHAR NOT NULL,
-    image BYTEA
-);
-
--- Creazione della tabella Message_Products (relazione molti-a-molti tra messaggi e prodotti)
-CREATE TABLE Message_Products (
-    message_id INTEGER NOT NULL,
-    product_id INTEGER NOT NULL,
-    PRIMARY KEY (message_id, product_id),
-    FOREIGN KEY (message_id) REFERENCES User_Messages(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES Products(id) ON DELETE CASCADE
-);
