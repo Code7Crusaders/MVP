@@ -24,11 +24,11 @@ def initialize_postgres() -> PostgresAdapter:
     """
     try:
         db_config = {
-            "host": "localhost",
-            "port": "5432",
-            "user": "postgres",
-            "password": "eddy1234",
-            "dbname": "postgres"
+            "host": os.getenv("DB_HOST", "localhost"),
+            "port": os.getenv("DB_PORT", "5432"),
+            "user": os.getenv("DB_USER", "postgres"),
+            "password": os.getenv("DB_PASSWORD", "eddy1234"),
+            "dbname": os.getenv("DB_NAME", "postgres")
         }
         conn = psycopg2.connect(
             host=db_config["host"],
@@ -213,3 +213,10 @@ def dependency_injection() -> dict[str, object]:
     }
 
     return dependencies
+
+if __name__ == "__main__":
+    try:
+        postgres_adapter = initialize_postgres()
+        print("Postgres initialized successfully.")
+    except Exception as e:
+        print(f"Failed to initialize Postgres: {e}")

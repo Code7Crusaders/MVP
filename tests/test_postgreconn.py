@@ -1,3 +1,5 @@
+import unittest
+from unittest.mock import patch, MagicMock
 import psycopg2
 from psycopg2 import OperationalError
 
@@ -25,18 +27,10 @@ def execute_query(connection, query):
     except OperationalError as e:
         print(f"The error '{e}' occurred")
 
-def fetch_data(connection, query):
-    cursor = connection.cursor()
-    try:
-        cursor.execute(query)
-        result = cursor.fetchall()
-        for row in result:
-            print(row)
-    except OperationalError as e:
-        print(f"The error '{e}' occurred")
-
 if __name__ == "__main__":
     connection = create_connection()
     if connection:
-        #execute_query(connection, "SELECT version();")
-        fetch_data(connection, "SELECT * FROM your_table_name;")
+        create_table_query = """
+        drop table users;
+        """
+        execute_query(connection, create_table_query)
