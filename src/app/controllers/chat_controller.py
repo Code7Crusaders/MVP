@@ -22,12 +22,10 @@ class ChatController:
         """
         Get the answer to a user's question.
         """
-        # Access the user's question
-        # question_model = QuestionModel( user_input.get_user(), user_input.get_question())
+        # Convert DTO to model
+        question_model = QuestionModel( user_input.get_user(), user_input.get_question())
 
-        answer_model = self.chat_usecase.get_answer(user_input.get_user, user_input.get_question)
+        answer_dto = AnswerDTO( self.chat_usecase.get_answer(question_model) )
 
-        answer_dto = AnswerDTO(answer_model.get_answer())
-
-        # Create an answer
+        # Return DTO answer
         return answer_dto
