@@ -87,3 +87,58 @@ a.bottone{
 a.bottone:hover{
     background-color: var(--colore5);
 }
+
+.box{
+    text-align: center;
+    margin: 1em;
+    padding: 1em;
+    background-color: var(--colore4);
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.5em var(--colore5);
+}
+
+input#button{
+    display: inline-block;
+    padding: 0.5em 1em;
+    background-color: var(--colore4);
+    color: var(--colore3);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.5em var(--colore5);
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    padding: 0.5em;
+}
+
+input#button:hover{
+    background-color: var(--colore5);
+}
+
+#loginForm{
+    margin:0.5em;
+    background-color: var(--colore4);
+    padding: 0.5em;
+}
+
+.loginTitle{
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.signupTitle{
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+fieldset{
+    margin: 1em;
+    padding: 1em;
+}
+
+label{
+    display: block;
+    margin: 0.5em;
+    font-weight: bold;
+}
