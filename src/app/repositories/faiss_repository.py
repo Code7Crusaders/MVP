@@ -6,7 +6,7 @@ from app.entities.query_entity import QueryEntity
 from app.entities.file_chunk_entity import FileChunkEntity
 
 class FaissRepository: 
-    def __init__(self, vectorstore: FAISS):
+    def __init__(self, vectorstore: FAISS): 
         self.vectorstore = vectorstore
         
         
@@ -21,13 +21,15 @@ class FaissRepository:
             list[DocumentContextEntity]: A list of the most relevant document context entities.
         """
         
+
+
+        if not query.get_query().strip():
+            raise ValueError("Query cannot be empty")
+
         try:
             result = self.vectorstore.similarity_search(query.get_query(), k=4)
 
             context_list = []
-
-            if not query.get_query():
-                return []
 
             for context in result:
                 context_list.append(DocumentContextEntity(context.page_content))
@@ -52,7 +54,7 @@ class FaissRepository:
             Exception: If an error occurs during the load.
         """
         if not chunks:
-            return "No chunks to load."
+            raise ValueError("No chunks to load.")
 
         try:
             result = []

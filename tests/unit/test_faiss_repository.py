@@ -39,9 +39,8 @@ def test_similarity_search(faiss_repository):
 def test_similarity_search_empty_result(faiss_repository):
     query = QueryEntity(1, "")
 
-    result = faiss_repository.similarity_search(query)
-
-    assert len(result) == 0  
+    with pytest.raises(ValueError, match="Query cannot be empty"):
+        faiss_repository.similarity_search(query)
 
 def test_similarity_search_error(faiss_repository):
     query = QueryEntity(1, "Hello")
@@ -66,9 +65,8 @@ def test_load_chunks(faiss_repository):
 
 def test_load_chunks_empty(faiss_repository):
     chunks = []
-    result = faiss_repository.load_chunks(chunks)
-    
-    assert result == "No chunks to load."  
+    with pytest.raises(ValueError, match="No chunks to load."):
+        faiss_repository.load_chunks(chunks)
 
 def test_load_chunks_error(faiss_repository):
     chunks = [

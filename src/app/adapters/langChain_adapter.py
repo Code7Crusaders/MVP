@@ -19,28 +19,44 @@ class LangChainAdapter(GenerateAnswerPort, SplitFilePort):
         self.lang_chain_repository = lang_chain_repository
 
     def generate_answer(self, question: QuestionModel, context: list[ContextModel], prompt_template: PromptTemplateModel) -> AnswerModel:
-        # Implement the logic to generate an answer using the lang_chain_repository
+        """
+        Generates an answer based on the given question, context, and prompt template.
 
+        Args:
+            question (QuestionModel): The question model containing the user ID and question text.
+            context (list[ContextModel]): A list of context models containing the context content.
+            prompt_template (PromptTemplateModel): The prompt template model containing the prompt template content.
+
+        Returns:
+            AnswerModel: The generated answer model containing the answer text.
+        """
         question_entity = QueryEntity(question.get_user_id(), question.get_question())
 
         context_entities = []
         for context_model in context:
-            context_entities.append( DocumentContextEntity(context_model.get_content()) )
+            context_entities.append(DocumentContextEntity(context_model.get_content()))
 
         answer = self.lang_chain_repository.generate_answer(question_entity, context_entities, prompt_template.get_prompt_template_content())
 
         return AnswerModel(answer.get_answer())
 
     def split_file(self, file: FileModel) -> list[FileChunkModel]:
-        # Implement the logic to split the file into chunks using the lang_chain_repository
+        """
+        Splits the given file into chunks.
 
+        Args:
+            file (FileModel): The file model containing the filename and file content.
+
+        Returns:
+            list[FileChunkModel]: A list of file chunk models containing the chunk content and metadata.
+        """
         file_entity = FileEntity(file.get_filename(), file.get_file_content())
 
         file_chunks = self.lang_chain_repository.split_file(file_entity)
 
         file_chunk_models = []
         for file_chunk in file_chunks:
-            file_chunk_models.append( FileChunkModel( file_chunk.get_chunk_content(), file_chunk.get_metadata()) )
+            file_chunk_models.append(FileChunkModel(file_chunk.get_chunk_content(), file_chunk.get_metadata()))
 
         return file_chunk_models
 
