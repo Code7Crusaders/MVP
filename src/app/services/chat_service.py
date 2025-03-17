@@ -27,15 +27,6 @@ class ChatService(ChatUseCase):
 
         Raises:
             Exception: If an error occurs during the similarity search or answer generation.
-
-        Preconditions:
-            - question_model must be a valid instance of QuestionModel.
-            - question_model should contain a non-empty question string.
-
-        Postconditions:
-            - Retrieves a list of relevant contexts from the similarity search service.
-            - Generates an answer using the retrieved contexts.
-            - Returns a valid AnswerModel instance containing the response.
         """
         try:
             context_list = self.similarity_search_service.similarity_search(question_model)
