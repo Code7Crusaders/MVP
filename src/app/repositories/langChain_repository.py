@@ -34,9 +34,9 @@ class LangChainRepository:
         Given a Query and a list of document contexts, perform a call to the OpenAI LLM model and get a detailed answer.
 
         Args:
-            user_id (int): The unique identifier of the user.
-            query (QueryEntity): The query entity containing the question.
+            query (QueryEntity): The query entity.
             contexts (list[DocumentContextEntity]): A list of document context entities.
+            prompt_template str: the system message to llm on how should it beave
 
         Returns:
             AnswerEntity: A detailed answer entity containing the answer given by LLM.
@@ -58,7 +58,7 @@ class LangChainRepository:
             # Trim history if needed
             trimmed_history = trim_messages(
                 history,
-                max_tokens=200,
+                max_tokens=1000,
                 strategy="last",
                 include_system=True,
                 token_counter=self.model
