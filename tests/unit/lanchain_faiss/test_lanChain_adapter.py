@@ -31,8 +31,8 @@ def test_generate_answer_valid():
     assert result.get_answer() == "AI is a field of study focused on creating intelligent machines."
 
     lang_chain_repository_mock.generate_answer.assert_called_once_with(
-        ANY,  # Ignora il controllo dell'istanza dell'oggetto QueryEntity 
-        ANY,  # Ignora il controllo dell'istanza dell'oggetto DocumentContextEntity
+        ANY,  
+        ANY,  
         "Answer the question using the given context:"
     )
 
