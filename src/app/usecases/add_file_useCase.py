@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from app.models.file_chunk_model import FileModel
+from app.models.file_model import FileModel
 
 class AddFileUseCase(ABC):
 

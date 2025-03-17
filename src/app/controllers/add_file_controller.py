@@ -17,9 +17,14 @@ class AddFileController:
     def load_file(self, file: FileDTO):
         """
         Add a file to the database.
+        Args:
+            file (FileDTO): The file data transfer object containing file details.
+
+        Returns:
+            None
         """
         try:
-            file_model = FileModel(file.get_name(), file.get_path())
-            self.add_file_usecase.add_file(file_model)
+            file_model = FileModel(file.get_file_name(), file.get_file_content())
+            self.add_file_usecase.load_file(file_model)
         except Exception as e:
             raise e
