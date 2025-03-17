@@ -18,6 +18,8 @@ class LangChainRepository:
         try:
             self.model = model
             self.user_memories = {}  
+            self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=2500, chunk_overlap=0)
+
         except Exception as e:
             raise Exception("Error while initializing LangChain model: " + str(e))
 
@@ -96,7 +98,7 @@ class LangChainRepository:
 
     def split_file(self, file: FileEntity) -> list[FileChunkEntity]:
         """
-        Given a file entity it split the file in chunks of 10k characters.
+        Given a file entity it split the file in chunks of 2,5k characters.
 
         Args:
             file (FileEntity): The file entity to split.
@@ -105,9 +107,13 @@ class LangChainRepository:
             list[FileChunkEntity]: A list of file chunk entities containing the file chunks.
         """
 
-        # try:
-            
+        try:
+            all_splits = self.text_splitter.split_text(file.get_file_content())
 
-        # except Exception as e:
-        #     raise Exception("Error while splitting the file: " + str(e))
+            file_chunks = [FileChunkEntity(split, file.get_metadata()) for split in all_splits]
+
+            return file_chunks
+
+        except Exception as e:
+            raise Exception("Error while splitting the file: " + str(e))
         
