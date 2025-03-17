@@ -2,6 +2,7 @@ from app.repositories.conversation_postgres_repository import ConversationPostgr
 from app.models.conversation_model import ConversationModel
 from app.ports.save_conversation_title_port import SaveConversationTitlePort
 from app.ports.get_conversation_port import GetConversationPort
+
 class ConversationPostgresAdapter(GetConversationPort, SaveConversationTitlePort):
 
     def __init__(self, conversation_postgres_repository: ConversationPostgresRepository):

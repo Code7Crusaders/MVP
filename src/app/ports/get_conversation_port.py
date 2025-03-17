@@ -15,4 +15,5 @@ class GetConversationPort(ABC):
         Returns:
             ConversationModel: The conversation model.
         """
+        pass
         

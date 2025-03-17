@@ -38,7 +38,7 @@ class messagePostgresAdapter(GetMessagePort, SaveMessageTitlePort, GetMessagesBy
             title (str): The new title of the message.
         """
         try:
-            self.message_postgres_repository.save_message_title(conversation_id)
+            self.message_postgres_repository.get_messages_by_conversation(conversation_id)
         except Exception as e:
             raise e
 
