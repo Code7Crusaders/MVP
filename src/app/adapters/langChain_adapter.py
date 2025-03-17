@@ -1,17 +1,17 @@
-from app.models.answer_model import AnswerModel
-from app.models.context_model import ContextModel
-from app.models.question_model import QuestionModel
-from app.models.file_chunk_model import FileChunkModel
-from app.models.file_model import FileModel
-from app.models.prompt_template_model import PromptTemplateModel
+from models.answer_model import AnswerModel
+from models.context_model import ContextModel
+from models.question_model import QuestionModel
+from models.file_chunk_model import FileChunkModel
+from models.file_model import FileModel
+from models.prompt_template_model import PromptTemplateModel
 
-from app.entities.query_entity import QueryEntity
-from app.entities.document_context_entity import DocumentContextEntity
-from app.entities.file_entity import FileEntity
+from entities.query_entity import QueryEntity
+from entities.document_context_entity import DocumentContextEntity
+from entities.file_entity import FileEntity
 
-from app.repositories.langChain_repository import LangChainRepository
-from app.ports.split_file_port import SplitFilePort
-from app.ports.generate_answer_port import GenerateAnswerPort
+from repositories.langChain_repository import LangChainRepository
+from ports.split_file_port import SplitFilePort
+from ports.generate_answer_port import GenerateAnswerPort
 
 class LangChainAdapter(GenerateAnswerPort, SplitFilePort):
     

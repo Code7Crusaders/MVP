@@ -1,10 +1,10 @@
-from app.usecases.chat_useCase import ChatUseCase
+from usecases.chat_useCase import ChatUseCase
 
-from app.services.similarity_search_service import SimilaritySearchService
-from app.services.generate_answer_service import GenerateAnswerService
+from services.similarity_search_service import SimilaritySearchService
+from services.generate_answer_service import GenerateAnswerService
 
-from app.models.question_model import QuestionModel 
-from app.models.answer_model import AnswerModel
+from models.question_model import QuestionModel 
+from models.answer_model import AnswerModel
 
 class ChatService(ChatUseCase):
     """

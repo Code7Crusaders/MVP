@@ -1,6 +1,6 @@
-from app.dto.FileDTO import FileDTO
-from app.usecases.add_file_useCase import AddFileUseCase
-from app.models.file_model import FileModel
+from dto.FileDTO import FileDTO
+from usecases.add_file_useCase import AddFileUseCase
+from models.file_model import FileModel
 
 
 class AddFileController:

@@ -1,14 +1,14 @@
-from app.ports.similarity_search_port import SimilaritySearchPort
-from app.ports.add_chunks_port import AddChunksPort
+from ports.similarity_search_port import SimilaritySearchPort
+from ports.add_chunks_port import AddChunksPort
 
-from app.repositories.faiss_repository import FaissRepository
+from repositories.faiss_repository import FaissRepository
 
-from app.models.question_model import QuestionModel
-from app.models.context_model import ContextModel
-from app.models.file_chunk_model import FileChunkModel
+from models.question_model import QuestionModel
+from models.context_model import ContextModel
+from models.file_chunk_model import FileChunkModel
 
-from app.entities.query_entity import QueryEntity
-from app.entities.file_chunk_entity import FileChunkEntity
+from entities.query_entity import QueryEntity
+from entities.file_chunk_entity import FileChunkEntity
 
 
 class FaissAdapter(SimilaritySearchPort, AddChunksPort):

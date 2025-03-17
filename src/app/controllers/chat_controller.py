@@ -1,10 +1,10 @@
-from app.dto.AnswerDTO import AnswerDTO
-from app.dto.QuestionDTO import QuestionDTO
+from dto.AnswerDTO import AnswerDTO
+from dto.QuestionDTO import QuestionDTO
 
-from app.usecases.chat_useCase import ChatUseCase
+from usecases.chat_useCase import ChatUseCase
 
-from app.models.question_model import QuestionModel
-from app.models.answer_model import AnswerModel
+from models.question_model import QuestionModel
+from models.answer_model import AnswerModel
 
 class ChatController:
     """

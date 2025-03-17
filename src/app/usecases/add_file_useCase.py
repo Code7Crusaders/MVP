@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from app.models.file_model import FileModel
+from models.file_model import FileModel
 
 class AddFileUseCase(ABC):
 

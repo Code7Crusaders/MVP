@@ -1,7 +1,7 @@
 from typing import List
-from app.ports.split_file_port import SplitFilePort
-from app.models.file_model import FileModel
-from app.models.file_chunk_model import FileChunkModel
+from ports.split_file_port import SplitFilePort
+from models.file_model import FileModel
+from models.file_chunk_model import FileChunkModel
 
 
 class SplitFileService:

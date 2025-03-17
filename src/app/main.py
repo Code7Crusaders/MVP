@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify
 
-from app.dependencies.dependency_inj import dependency_injection
+from dependencies.dependency_inj import dependency_injection
 
-from app.dto.AnswerDTO import AnswerDTO
-from app.dto.QuestionDTO import QuestionDTO
+from dto.AnswerDTO import AnswerDTO
+from dto.QuestionDTO import QuestionDTO
+from dto.FileDTO import FileDTO
 
 
 app = Flask(__name__)
@@ -11,9 +12,39 @@ app = Flask(__name__)
 # Initialize dependencies
 dependencies = dependency_injection()
 chat_controller = dependencies["chat_controller"]
+add_file_controller = dependencies["add_file_controller"]
 
 
-@app.route("/chat", methods=["POST"])
+@app.route("/api/add_file", methods=["POST"])
+def add_file():
+    """Endpoint to add a PDF or TXT file."""
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and (file.filename.endswith('.pdf') or file.filename.endswith('.txt')):
+        # file_path = f"/upload/{file.filename}"
+        # file.save(file_path)
+
+        # Read file content
+        file_content = file.read()
+
+        # Assuming you have a FileDTO class and add_file_controller
+        file_dto = FileDTO(file.filename, file_content)
+
+        # Process the file (your controller method)
+        add_file_controller.load_file(file_dto)
+
+        return jsonify({"message": "File successfully uploaded"}), 200
+    else:
+        return jsonify({"error": "Unsupported file type"}), 400
+
+
+@app.route("/api/chat_interact", methods=["POST"])
 def chat():
     """Chat endpoint to receive a question and return an answer."""
     data = request.get_json()

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from app.models.context_model import ContextModel
-from app.models.question_model import QuestionModel
+from models.context_model import ContextModel
+from models.question_model import QuestionModel
 
 class SimilaritySearchPort(ABC):
     """

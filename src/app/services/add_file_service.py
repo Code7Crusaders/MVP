@@ -1,7 +1,7 @@
-from app.services.split_file_service import SplitFileService
-from app.services.add_chunks_service import AddChunksService
-from app.models.file_model import FileModel
-from app.models.file_chunk_model import FileChunkModel
+from services.split_file_service import SplitFileService
+from services.add_chunks_service import AddChunksService
+from models.file_model import FileModel
+from models.file_chunk_model import FileChunkModel
 
 class AddFileService:
     """

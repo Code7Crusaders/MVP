@@ -1,7 +1,7 @@
-from app.models.question_model import QuestionModel
-from app.models.context_model import ContextModel 
+from models.question_model import QuestionModel
+from models.context_model import ContextModel 
 
-from app.ports.similarity_search_port import SimilaritySearchPort
+from ports.similarity_search_port import SimilaritySearchPort
 
 class SimilaritySearchService:
     def __init__(self, similarity_search_port: SimilaritySearchPort):

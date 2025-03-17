@@ -1,9 +1,9 @@
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 
-from app.entities.document_context_entity import DocumentContextEntity
-from app.entities.query_entity import QueryEntity
-from app.entities.file_chunk_entity import FileChunkEntity
+from entities.document_context_entity import DocumentContextEntity
+from entities.query_entity import QueryEntity
+from entities.file_chunk_entity import FileChunkEntity
 
 class FaissRepository: 
     def __init__(self, vectorstore: FAISS): 

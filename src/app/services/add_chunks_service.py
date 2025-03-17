@@ -1,8 +1,8 @@
 from typing import List
 
-from app.models.file_chunk_model import FileChunkModel
+from models.file_chunk_model import FileChunkModel
 
-from app.ports.add_chunks_port import AddChunksPort
+from ports.add_chunks_port import AddChunksPort
 
 class AddChunksService:
 
