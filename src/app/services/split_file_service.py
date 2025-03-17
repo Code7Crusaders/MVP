@@ -9,4 +9,7 @@ class SplitFileService:
         self.split_file_port = split_file_port
 
     def split_file(self, file: FileModel) -> List[FileChunkModel]:
-        return self.split_file_port.split_file(file)
+        try:
+            return self.split_file_port.split_file(file)
+        except Exception as e:
+            raise e
