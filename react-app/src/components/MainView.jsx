@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { extendTheme, styled } from '@mui/material/styles';
-//import DashboardIcon from '@mui/icons-material/Dashboard';
-//import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-//import BarChartIcon from '@mui/icons-material/BarChart';
-//import DescriptionIcon from '@mui/icons-material/Description';
-//import LayersIcon from '@mui/icons-material/Layers';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import DescriptionIcon from '@mui/icons-material/Description';
+import LayersIcon from '@mui/icons-material/Layers';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
@@ -95,6 +95,8 @@ export default function DashboardLayoutBasic(props) {
   const { window } = props;
 
   const router = useDemoRouter('/dashboard');
+
+  const demoWindow = window ? window() : undefined;
 
   return (
     <AppProvider
