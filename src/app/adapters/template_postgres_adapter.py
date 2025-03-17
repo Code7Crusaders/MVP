@@ -42,7 +42,7 @@ class TemplatePostgresAdapter(GetTemplatePort, GetTemplateListPort, SaveTemplate
         except Exception as e:
             raise e
         
-    def save_template_title(self, template_id: int, title: str):
+    def save_template(self, question: str, answer: str, author: str):
         """
         Save the title of a template.
         Args:
@@ -50,7 +50,7 @@ class TemplatePostgresAdapter(GetTemplatePort, GetTemplateListPort, SaveTemplate
             title (str): The new title of the template.
         """
         try:
-            self.template_postgres_repository.save_template_title(template_id, title)
+            self.template_postgres_repository.save_template_title(question, answer, author)
         except Exception as e:
             raise e
 
