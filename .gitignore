@@ -6,3 +6,6 @@ __pycache__/
 .vscode/
 
 .env
+
+/src/app/uploads/*
+/src/app/vector_store/*

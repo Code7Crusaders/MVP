@@ -1,12 +1,15 @@
 import psycopg2
 import os
 from dotenv import load_dotenv
+
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_openai import ChatOpenAI
 
 # from adapters.postgres_adapter import PostgresAdapter
 # from repositories.postgres_repository import PostgresRepository
+
+from dependencies.init_vector_store import VECTOR_STORE_PATH, load_vector_store
 
 from controllers.add_file_controller import AddFileController
 from controllers.chat_controller import ChatController
@@ -23,6 +26,8 @@ from adapters.langChain_adapter import LangChainAdapter
 
 from repositories.faiss_repository import FaissRepository
 from repositories.langChain_repository import LangChainRepository
+
+from dto.FileDTO import FileDTO
 
 from models.prompt_template_model import PromptTemplateModel
 
@@ -199,7 +204,6 @@ def initialize_langchain() -> LangChainAdapter:
 
     return langchain_adapter
 
-    
 
 def initialize_faiss() -> FaissAdapter:
 
@@ -211,7 +215,10 @@ def initialize_faiss() -> FaissAdapter:
     # OpenAI embedding model
     embedding_model = OpenAIEmbeddings(model="text-embedding-3-small", openai_api_key=api_key)
 
-    vector_store = FAISS.from_texts([""], embedding_model)
+    if os.path.exists(VECTOR_STORE_PATH) and os.listdir(VECTOR_STORE_PATH):
+        vector_store = load_vector_store(embedding_model)
+    else:
+        vector_store = FAISS.from_texts([""], embedding_model)
 
     faiss_repository = FaissRepository(vector_store)
     faiss_adapter = FaissAdapter(faiss_repository)
@@ -225,6 +232,9 @@ def initialize_prompt_template() -> PromptTemplateModel:
     "ma accessibile e amichevole, e fai riferimento alle informazioni fornite dall'azienda."
 
     return PromptTemplateModel(template)
+
+
+
 
 def dependency_injection() -> dict[str, object]:
     """
