@@ -27,7 +27,7 @@ from adapters.langChain_adapter import LangChainAdapter
 from repositories.faiss_repository import FaissRepository
 from repositories.langChain_repository import LangChainRepository
 
-from app.dto.file_dto import FileDTO
+from dto.file_dto import FileDTO
 
 from models.prompt_template_model import PromptTemplateModel
 

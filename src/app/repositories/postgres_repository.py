@@ -1,10 +1,10 @@
 import psycopg2
-from app.models.message_model import MessageModel
-from app.models.conversation_model import ConversationModel
-from app.models.user_model import UserModel
-from app.models.feedback_model import FeedbackModel
-from app.models.support_message_model import SupportMessageModel
-from app.models.template_model import TemplateModel
+from models.message_model import MessageModel
+from models.conversation_model import ConversationModel
+from models.user_model import UserModel
+from models.feedback_model import FeedbackModel
+from models.support_message_model import SupportMessageModel
+from models.template_model import TemplateModel
 
 class PostgresRepository:
     def __init__(self, conn: psycopg2.extensions.connection):

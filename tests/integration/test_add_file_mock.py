@@ -1,8 +1,8 @@
 import pytest
 from io import BytesIO
 from unittest.mock import patch, MagicMock
-from app.main import app, add_file_controller, detect_encoding
-from app.controllers.add_file_controller import AddFileController
+from main import app, add_file_controller, detect_encoding
+from controllers.add_file_controller import AddFileController
 
 @pytest.fixture
 def client():
@@ -10,7 +10,7 @@ def client():
     with app.test_client() as client:
         yield client
 
-@patch("app.main.detect_encoding", return_value="utf-8")
+@patch("main.detect_encoding", return_value="utf-8")
 @patch.object(add_file_controller, "load_file")
 def test_upload_txt_file(mock_load_file, mock_detect_encoding, client):
     mock_load_file.return_value = None

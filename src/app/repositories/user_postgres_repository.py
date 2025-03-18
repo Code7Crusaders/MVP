@@ -1,5 +1,5 @@
 import psycopg2
-from app.models.user_model import UserModel
+from models.user_model import UserModel
 
 
 class PostgresRepository:

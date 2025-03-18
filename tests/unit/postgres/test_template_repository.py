@@ -2,8 +2,8 @@ import sys
 import os
 import pytest
 from unittest.mock import patch, MagicMock
-from app.repositories.template_postgres_repository import TemplatePostgresRepository
-from app.config.db_config import db_config
+from repositories.template_postgres_repository import TemplatePostgresRepository
+from config.db_config import db_config
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -11,7 +11,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 def template_repo():
     return TemplatePostgresRepository(db_config)
 
-@patch('app.repositories.template_postgres_repository.TemplatePostgresRepository.get_template')
+@patch('repositories.template_postgres_repository.TemplatePostgresRepository.get_template')
 def test_get_template(mock_get_template, template_repo):
     mock_template = MagicMock()
     mock_template.id = 1
@@ -30,7 +30,7 @@ def test_get_template(mock_get_template, template_repo):
     assert template.author == "Test Author"
     assert template.last_modified == "2023-10-01"
 
-@patch('app.repositories.template_postgres_repository.TemplatePostgresRepository.save_template')
+@patch('repositories.template_postgres_repository.TemplatePostgresRepository.save_template')
 def test_save_template(mock_save_template, template_repo):
     mock_save_template.return_value = 1
 
@@ -39,7 +39,7 @@ def test_save_template(mock_save_template, template_repo):
     assert new_template_id == 1
     mock_save_template.assert_called_once_with("Test Question", "Test Answer", "Test Author")
 
-@patch('app.repositories.template_postgres_repository.TemplatePostgresRepository.delete_template')
+@patch('repositories.template_postgres_repository.TemplatePostgresRepository.delete_template')
 def test_delete_template(mock_delete_template, template_repo):
     mock_delete_template.return_value = True
 

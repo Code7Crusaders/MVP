@@ -1,6 +1,6 @@
 import pytest
 from flask import Flask, json
-from app.main import app
+from main import app
 
 @pytest.fixture
 def client():

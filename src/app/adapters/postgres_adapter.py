@@ -1,22 +1,22 @@
 import psycopg2
 from typing import List
-from src.app.ports.add_chunks_port import AddChunksPort
-from src.app.ports.add_file_port import AddFilePort
-from src.app.ports.authentication_port import AuthenticationPort
-from src.app.ports.chat_port import ChatPort
-from src.app.ports.generate_answer_port import GenerateAnswerPort
-from src.app.ports.get_conversation_port import GetConversationPort
-from src.app.ports.get_message_port import GetMessagePort
-from src.app.ports.get_support_messages_port import GetSupportMessagesPort
-from src.app.ports.get_template_list_port import GetTemplateListPort
-from src.app.ports.registration_port import RegistrationPort
-from src.app.ports.save_conversation_title_port import SaveConversationTitlePort
-from src.app.ports.save_feedback_port import SaveFeedbackPort
-from src.app.ports.save_message_port import SaveMessagePort
-from src.app.ports.save_support_message_port import SaveSupportMessagePort
-from src.app.ports.save_template_port import SaveTemplatePort
-from src.app.ports.similarity_search_port import SimilaritySearchPort
-from src.app.ports.split_file_port import SplitFilePort
+from src.ports.add_chunks_port import AddChunksPort
+from src.ports.add_file_port import AddFilePort
+from src.ports.authentication_port import AuthenticationPort
+from src.ports.chat_port import ChatPort
+from src.ports.generate_answer_port import GenerateAnswerPort
+from src.ports.get_conversation_port import GetConversationPort
+from src.ports.get_message_port import GetMessagePort
+from src.ports.get_support_messages_port import GetSupportMessagesPort
+from src.ports.get_template_list_port import GetTemplateListPort
+from src.ports.registration_port import RegistrationPort
+from src.ports.save_conversation_title_port import SaveConversationTitlePort
+from src.ports.save_feedback_port import SaveFeedbackPort
+from src.ports.save_message_port import SaveMessagePort
+from src.ports.save_support_message_port import SaveSupportMessagePort
+from src.ports.save_template_port import SaveTemplatePort
+from src.ports.similarity_search_port import SimilaritySearchPort
+from src.ports.split_file_port import SplitFilePort
 
 class PostgresAdapter(AddChunksPort, AddFilePort, AuthenticationPort, ChatPort, GenerateAnswerPort, GetConversationPort, GetMessagePort, GetSupportMessagesPort, GetTemplateListPort, RegistrationPort, SaveConversationTitlePort, SaveFeedbackPort, SaveMessagePort, SaveSupportMessagePort, SaveTemplatePort, SimilaritySearchPort, SplitFilePort):  
     def __init__(self, repository):

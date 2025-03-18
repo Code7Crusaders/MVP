@@ -2,9 +2,9 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from app.repositories.message_postgres_repository import MessagePostgresRepository
-from app.config.db_config import db_config
-from app.entities.message_entity import MessageEntity
+from repositories.message_postgres_repository import MessagePostgresRepository
+from config.db_config import db_config
+from entities.message_entity import MessageEntity
 from datetime import datetime
 
 def test_get_message():

@@ -2,8 +2,8 @@ import sys
 import os
 import pytest
 from unittest.mock import patch, MagicMock
-from app.repositories.conversation_postgres_repository import ConversationPostgresRepository
-from app.config.db_config import db_config
+from repositories.conversation_postgres_repository import ConversationPostgresRepository
+from config.db_config import db_config
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -11,7 +11,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 def conversation_repo():
     return ConversationPostgresRepository(db_config)
 
-@patch('app.repositories.conversation_postgres_repository.ConversationPostgresRepository.get_conversation')
+@patch('repositories.conversation_postgres_repository.ConversationPostgresRepository.get_conversation')
 def test_get_conversation(mock_get_conversation, conversation_repo):
     # Test case where conversation is found
     mock_conversation = MagicMock()
@@ -32,7 +32,7 @@ def test_get_conversation(mock_get_conversation, conversation_repo):
     
     assert conversation is None
 
-@patch('app.repositories.conversation_postgres_repository.ConversationPostgresRepository.save_conversation_title')
+@patch('repositories.conversation_postgres_repository.ConversationPostgresRepository.save_conversation_title')
 def test_save_conversation_title(mock_save_conversation_title, conversation_repo):
     # Test case where save is successful
     mock_save_conversation_title.return_value = None

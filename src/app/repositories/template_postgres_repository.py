@@ -1,5 +1,5 @@
 import psycopg2
-from app.entities.template_entity import TemplateEntity
+from entities.template_entity import TemplateEntity
 
 class TemplatePostgresRepository:
     def __init__(self, db_config: dict):

@@ -1,8 +1,8 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from app.repositories.support_message_postgres_repository import SupportMessagePostgresRepository
-from app.config.db_config import db_config
+from repositories.support_message_postgres_repository import SupportMessagePostgresRepository
+from config.db_config import db_config
 
 def test_get_support_message():
     repo = SupportMessagePostgresRepository(db_config)

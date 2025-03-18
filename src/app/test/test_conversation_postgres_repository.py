@@ -2,8 +2,8 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from app.repositories.conversation_postgres_repository import ConversationPostgresRepository
-from app.config.db_config import db_config
+from repositories.conversation_postgres_repository import ConversationPostgresRepository
+from config.db_config import db_config
 
 def test_get_conversation():
     repo = ConversationPostgresRepository(db_config)

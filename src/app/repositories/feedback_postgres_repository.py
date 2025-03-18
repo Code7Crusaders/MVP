@@ -1,5 +1,5 @@
 import psycopg2
-from app.models.feedback_model import FeedbackModel
+from models.feedback_model import FeedbackModel
 
 class FeedbackPostgresRepository:
     def __init__(self, conn: psycopg2.extensions.connection):
