@@ -11,7 +11,14 @@ def client():
 
 def test_chat_valid_input(client):
     """Test /api/chat_interact with valid input."""
-    
+    """
+
+    curl -X POST http://localhost:5000/api/chat_interact \
+     -H "Content-Type: application/json" \
+     -d '{"user": "123", "question": "Ciao chi sei e come puoi aiutarmi?"}'
+
+    """
+
     response = client.post("/api/chat_interact", json={"user": "123", "question": "Ciao chi sei e come puoi aiutarmi?"})
 
     assert response.status_code == 200

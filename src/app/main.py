@@ -56,9 +56,9 @@ def add_file():
     if not (file.filename.endswith('.pdf') or file.filename.endswith('.txt')):
         return jsonify({"error": "Unsupported file type"}), 400
 
-    # save file (not recommended for production)
+    # save file 
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-    # file.save(file_path)
+    file.save(file_path)
 
     # Read file content
     if file.filename.endswith('.txt'):
