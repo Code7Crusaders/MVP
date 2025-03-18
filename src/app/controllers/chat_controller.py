@@ -1,5 +1,5 @@
-from dto.AnswerDTO import AnswerDTO
-from dto.QuestionDTO import QuestionDTO
+from dto.answer_dto import AnswerDTO
+from dto.question_dto import QuestionDTO
 
 from usecases.chat_useCase import ChatUseCase
 

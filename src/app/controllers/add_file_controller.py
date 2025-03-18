@@ -1,4 +1,4 @@
-from dto.FileDTO import FileDTO
+from dto.file_dto import FileDTO
 from usecases.add_file_useCase import AddFileUseCase
 from models.file_model import FileModel
 

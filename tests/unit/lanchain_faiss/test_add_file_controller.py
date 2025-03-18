@@ -1,9 +1,9 @@
 import pytest
 from unittest.mock import MagicMock, ANY
-from app.controllers.add_file_controller import AddFileController
-from app.dto.FileDTO import FileDTO
-from app.usecases.add_file_useCase import AddFileUseCase
-from app.models.file_model import FileModel
+from controllers.add_file_controller import AddFileController
+from dto.file_dto import FileDTO
+from usecases.add_file_useCase import AddFileUseCase
+from models.file_model import FileModel
 
 
 @pytest.fixture

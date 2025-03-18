@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import MagicMock
-from app.services.chat_service import ChatService
-from app.services.similarity_search_service import SimilaritySearchService
-from app.services.generate_answer_service import GenerateAnswerService
-from app.models.question_model import QuestionModel
-from app.models.answer_model import AnswerModel
-from app.models.context_model import ContextModel
+from services.chat_service import ChatService
+from services.similarity_search_service import SimilaritySearchService
+from services.generate_answer_service import GenerateAnswerService
+from models.question_model import QuestionModel
+from models.answer_model import AnswerModel
+from models.context_model import ContextModel
 
 
 def test_get_answer_success():
@@ -16,7 +16,7 @@ def test_get_answer_success():
     generate_answer_service_mock = MagicMock(spec=GenerateAnswerService)
     service = ChatService(similarity_search_service_mock, generate_answer_service_mock)
 
-    question = QuestionModel("What is LangChain?")
+    question = QuestionModel(1, "What is LangChain?")
     contexts = [ContextModel("LangChain is a framework for developing applications with LLMs.")]
     expected_answer = AnswerModel("LangChain is a framework that helps developers build applications with LLMs.")
 
@@ -41,7 +41,7 @@ def test_get_answer_similarity_search_exception():
     generate_answer_service_mock = MagicMock(spec=GenerateAnswerService)
     service = ChatService(similarity_search_service_mock, generate_answer_service_mock)
 
-    question = QuestionModel("What is LangChain?")
+    question = QuestionModel(1, "What is LangChain?")
 
     # Simulating an error in similarity search
     similarity_search_service_mock.similarity_search.side_effect = Exception("Similarity search failed")
@@ -61,7 +61,7 @@ def test_get_answer_generate_answer_exception():
     generate_answer_service_mock = MagicMock(spec=GenerateAnswerService)
     service = ChatService(similarity_search_service_mock, generate_answer_service_mock)
 
-    question = QuestionModel("What is LangChain?")
+    question = QuestionModel(2, "What is LangChain?")
     contexts = [ContextModel("LangChain is a framework for developing applications with LLMs.")]
 
     # Mock similarity search success

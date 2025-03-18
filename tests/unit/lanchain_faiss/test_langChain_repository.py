@@ -5,12 +5,12 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 
-from app.repositories.langChain_repository import LangChainRepository
-from app.entities.query_entity import QueryEntity
-from app.entities.document_context_entity import DocumentContextEntity
-from app.entities.answer_entity import AnswerEntity
-from app.entities.file_entity import FileEntity
-from app.entities.file_chunk_entity import FileChunkEntity
+from repositories.langChain_repository import LangChainRepository
+from entities.query_entity import QueryEntity
+from entities.document_context_entity import DocumentContextEntity
+from entities.answer_entity import AnswerEntity
+from entities.file_entity import FileEntity
+from entities.file_chunk_entity import FileChunkEntity
 
 
 load_dotenv()

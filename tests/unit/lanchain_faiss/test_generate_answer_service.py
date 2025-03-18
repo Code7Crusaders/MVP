@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import MagicMock
-from app.models.question_model import QuestionModel
-from app.models.context_model import ContextModel
-from app.models.answer_model import AnswerModel
-from app.models.prompt_template_model import PromptTemplateModel
-from app.ports.generate_answer_port import GenerateAnswerPort
-from app.services.generate_answer_service import GenerateAnswerService
+from models.question_model import QuestionModel
+from models.context_model import ContextModel
+from models.answer_model import AnswerModel
+from models.prompt_template_model import PromptTemplateModel
+from ports.generate_answer_port import GenerateAnswerPort
+from services.generate_answer_service import GenerateAnswerService
 
 def test_generate_answer():
     # Mock dependencies

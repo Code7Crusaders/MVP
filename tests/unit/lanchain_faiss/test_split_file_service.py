@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import MagicMock
-from app.services.add_chunks_service import AddChunksService
-from app.ports.add_chunks_port import AddChunksPort
-from app.models.file_chunk_model import FileChunkModel
+from services.add_chunks_service import AddChunksService
+from ports.add_chunks_port import AddChunksPort
+from models.file_chunk_model import FileChunkModel
 
 def test_load_chunks_success():
     # Mock dependencies

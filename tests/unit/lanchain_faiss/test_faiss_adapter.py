@@ -1,12 +1,12 @@
 import pytest
 from unittest.mock import MagicMock, patch
-from app.adapters.faiss_adapter import FaissAdapter
-from app.repositories.faiss_repository import FaissRepository
-from app.models.question_model import QuestionModel
-from app.models.context_model import ContextModel
-from app.models.file_chunk_model import FileChunkModel
-from app.entities.query_entity import QueryEntity
-from app.entities.file_chunk_entity import FileChunkEntity
+from adapters.faiss_adapter import FaissAdapter
+from repositories.faiss_repository import FaissRepository
+from models.question_model import QuestionModel
+from models.context_model import ContextModel
+from models.file_chunk_model import FileChunkModel
+from entities.query_entity import QueryEntity
+from entities.file_chunk_entity import FileChunkEntity
 
 @pytest.fixture
 def faiss_repository_mock():
@@ -23,14 +23,15 @@ def test_similarity_search_valid_question(faiss_adapter, faiss_repository_mock):
     
     # Mock repository response
     faiss_repository_mock.similarity_search.return_value = [
-        MagicMock(get_content=MagicMock(return_value="AI stands for Artificial Intelligence.")),
-        MagicMock(get_content=MagicMock(return_value="AI is the simulation of human intelligence."))
+        ContextModel(content="AI stands for Artificial Intelligence."),
+        ContextModel(content="AI is the simulation of human intelligence.")
     ]
+
     
     result = faiss_adapter.similarity_search(question_model)
     
     assert len(result) == 2
-    assert isinstance(result[0], ContextModel)
+    assert all(isinstance(item, ContextModel) for item in result)
     assert result[0].get_content() == "AI stands for Artificial Intelligence."
     assert result[1].get_content() == "AI is the simulation of human intelligence."
 

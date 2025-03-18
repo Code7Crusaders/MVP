@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import MagicMock, ANY
-from app.controllers.chat_controller import ChatController
-from app.usecases.chat_useCase import ChatUseCase
-from app.dto.QuestionDTO import QuestionDTO
-from app.dto.AnswerDTO import AnswerDTO
-from app.models.question_model import QuestionModel
-from app.models.answer_model import AnswerModel
+from controllers.chat_controller import ChatController
+from usecases.chat_useCase import ChatUseCase
+from dto.question_dto import QuestionDTO
+from dto.answer_dto import AnswerDTO
+from models.question_model import QuestionModel
+from models.answer_model import AnswerModel
 
 @pytest.fixture
 def mock_chat_usecase():
@@ -13,7 +13,7 @@ def mock_chat_usecase():
     Mock per ChatUseCase.
     """
     mock = MagicMock(spec=ChatUseCase)
-    mock.get_answer.return_value = AnswerModel("Test answer")  
+    mock.get_answer.return_value = AnswerDTO("Test answer")  
     return mock
 
 @pytest.fixture
@@ -29,7 +29,7 @@ def test_get_answer_success():
     """
     # Arrange
     mock_chat_usecase = MagicMock(spec=ChatUseCase)
-    mock_chat_usecase.get_answer.return_value = AnswerModel("Test answer")
+    mock_chat_usecase.get_answer.return_value = AnswerDTO("Test answer")
     chat_controller = ChatController(mock_chat_usecase)
     
     question_dto = QuestionDTO(1, "What is AI?")

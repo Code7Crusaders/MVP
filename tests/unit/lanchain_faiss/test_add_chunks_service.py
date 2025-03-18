@@ -1,9 +1,9 @@
 import pytest
 from unittest.mock import MagicMock
-from app.services.split_file_service import SplitFileService
-from app.ports.split_file_port import SplitFilePort
-from app.models.file_model import FileModel
-from app.models.file_chunk_model import FileChunkModel
+from services.split_file_service import SplitFileService
+from ports.split_file_port import SplitFilePort
+from models.file_model import FileModel
+from models.file_chunk_model import FileChunkModel
 
 def test_split_file_success():
     # Mock dependencies

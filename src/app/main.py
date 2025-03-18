@@ -5,9 +5,9 @@ import fitz
 from dependencies.encoding import detect_encoding
 from dependencies.dependency_inj import dependency_injection
 
-from dto.AnswerDTO import AnswerDTO
-from dto.QuestionDTO import QuestionDTO
-from dto.FileDTO import FileDTO
+from app.dto.answer_dto import AnswerDTO
+from app.dto.question_dto import QuestionDTO
+from app.dto.file_dto import FileDTO
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")  

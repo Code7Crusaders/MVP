@@ -4,15 +4,15 @@ from unittest import mock
 
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
-from app.repositories.faiss_repository import FaissRepository
-from app.entities.document_context_entity import DocumentContextEntity
-from app.entities.query_entity import QueryEntity
-from app.entities.file_chunk_entity import FileChunkEntity
+from repositories.faiss_repository import FaissRepository
+from entities.document_context_entity import DocumentContextEntity
+from entities.query_entity import QueryEntity
+from entities.file_chunk_entity import FileChunkEntity
 
 # Load environment variables from .env
 load_dotenv()
 
-@mock.patch("app.repositories.faiss_repository.FaissRepository")
+@mock.patch("repositories.faiss_repository.FaissRepository")
 def test_similarity_search(mock_faiss_repo):
     mock_repo_instance = mock_faiss_repo.return_value
     mock_repo_instance.similarity_search.return_value = [DocumentContextEntity("Hello world")]  
@@ -23,7 +23,7 @@ def test_similarity_search(mock_faiss_repo):
     assert len(result) > 0  
     assert all(isinstance(doc, DocumentContextEntity) for doc in result)
 
-@mock.patch("app.repositories.faiss_repository.FaissRepository")
+@mock.patch("repositories.faiss_repository.FaissRepository")
 def test_similarity_search_empty_result(mock_faiss_repo):
     mock_repo_instance = mock_faiss_repo.return_value
     mock_repo_instance.similarity_search.side_effect = ValueError("Query cannot be empty")
@@ -34,7 +34,7 @@ def test_similarity_search_empty_result(mock_faiss_repo):
     except ValueError as e:
         assert str(e) == "Query cannot be empty"
 
-@mock.patch("app.repositories.faiss_repository.FaissRepository")
+@mock.patch("repositories.faiss_repository.FaissRepository")
 def test_similarity_search_error(mock_faiss_repo):
     mock_repo_instance = mock_faiss_repo.return_value
     mock_repo_instance.similarity_search.return_value = "NoneType error"
@@ -44,7 +44,7 @@ def test_similarity_search_error(mock_faiss_repo):
     
     assert "NoneType" in result
 
-@mock.patch("app.repositories.faiss_repository.FaissRepository")
+@mock.patch("repositories.faiss_repository.FaissRepository")
 def test_load_chunks(mock_faiss_repo):
     mock_repo_instance = mock_faiss_repo.return_value
     mock_repo_instance.load_chunks.return_value = "3 chunks loaded."
@@ -58,7 +58,7 @@ def test_load_chunks(mock_faiss_repo):
     
     assert result == "3 chunks loaded."
 
-@mock.patch("app.repositories.faiss_repository.FaissRepository")
+@mock.patch("repositories.faiss_repository.FaissRepository")
 def test_load_chunks_empty(mock_faiss_repo):
     mock_repo_instance = mock_faiss_repo.return_value
     mock_repo_instance.load_chunks.side_effect = ValueError("No chunks to load.")
@@ -69,7 +69,7 @@ def test_load_chunks_empty(mock_faiss_repo):
     except ValueError as e:
         assert str(e) == "No chunks to load."
 
-@mock.patch("app.repositories.faiss_repository.FaissRepository")
+@mock.patch("repositories.faiss_repository.FaissRepository")
 def test_load_chunks_error(mock_faiss_repo):
     mock_repo_instance = mock_faiss_repo.return_value
     mock_repo_instance.load_chunks.return_value = "NoneType error"

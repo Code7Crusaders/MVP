@@ -9,3 +9,7 @@ __pycache__/
 
 /src/app/uploads/*
 /src/app/vector_store/*
+
+coverage.xml
+.coverage
+htmlcov/

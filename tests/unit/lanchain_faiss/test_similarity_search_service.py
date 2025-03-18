@@ -1,9 +1,9 @@
 import pytest
 from unittest.mock import Mock
-from app.models.question_model import QuestionModel
-from app.models.context_model import ContextModel
-from app.ports.similarity_search_port import SimilaritySearchPort
-from app.services.similarity_search_service import SimilaritySearchService
+from models.question_model import QuestionModel
+from models.context_model import ContextModel
+from ports.similarity_search_port import SimilaritySearchPort
+from services.similarity_search_service import SimilaritySearchService
 
 def test_similarity_search_success():
     # Arrange
