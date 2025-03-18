@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from app.models.question_model import QuestionModel
-from app.models.answer_model import AnswerModel
+from models.question_model import QuestionModel
+from models.answer_model import AnswerModel
 
 class ChatUseCase(ABC):
 

@@ -4,9 +4,9 @@ import os
 import pytest
 from unittest.mock import patch, MagicMock
 from datetime import datetime
-from app.repositories.message_postgres_repository import MessagePostgresRepository
-from app.config.db_config import db_config
-from app.entities.message_entity import MessageEntity
+from repositories.message_postgres_repository import MessagePostgresRepository
+from config.db_config import db_config
+from entities.message_entity import MessageEntity
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -14,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 def message_repo():
     return MessagePostgresRepository(db_config)
 
-@patch('app.repositories.message_postgres_repository.MessagePostgresRepository.get_message')
+@patch('repositories.message_postgres_repository.MessagePostgresRepository.get_message')
 def test_get_message(mock_get_message, message_repo):
     # Test case where message is found
     mock_message = MagicMock()
@@ -35,7 +35,7 @@ def test_get_message(mock_get_message, message_repo):
     
     assert message is None
 
-@patch('app.repositories.message_postgres_repository.MessagePostgresRepository.save_message')
+@patch('repositories.message_postgres_repository.MessagePostgresRepository.save_message')
 def test_save_message(mock_save_message, message_repo):
     # Test case where save is successful
     mock_save_message.return_value = None
@@ -61,7 +61,7 @@ def test_save_message(mock_save_message, message_repo):
     assert str(excinfo.value) == "Database error"
     mock_save_message.assert_called_with(message)
 
-@patch('app.repositories.message_postgres_repository.MessagePostgresRepository.get_messages_by_conversation')
+@patch('repositories.message_postgres_repository.MessagePostgresRepository.get_messages_by_conversation')
 def test_get_messages_by_conversation(mock_get_messages_by_conversation, message_repo):
     # Test case where messages are found
     mock_message1 = MagicMock()

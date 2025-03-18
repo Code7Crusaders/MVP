@@ -2,8 +2,8 @@ import sys
 import os
 import pytest
 from unittest.mock import patch, MagicMock
-from app.repositories.support_message_postgres_repository import SupportMessagePostgresRepository
-from app.config.db_config import db_config
+from repositories.support_message_postgres_repository import SupportMessagePostgresRepository
+from config.db_config import db_config
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -11,7 +11,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 def support_message_repo():
     return SupportMessagePostgresRepository(db_config)
 
-@patch('app.repositories.support_message_postgres_repository.SupportMessagePostgresRepository.get_support_message')
+@patch('repositories.support_message_postgres_repository.SupportMessagePostgresRepository.get_support_message')
 def test_get_support_message(mock_get_support_message, support_message_repo):
     mock_message = MagicMock()
     mock_message.id = 1
@@ -37,7 +37,7 @@ def test_get_support_message(mock_get_support_message, support_message_repo):
     assert isinstance(support_message.description, str)
     assert isinstance(support_message.created_at, str)
 
-@patch('app.repositories.support_message_postgres_repository.SupportMessagePostgresRepository.save_support_message')
+@patch('repositories.support_message_postgres_repository.SupportMessagePostgresRepository.save_support_message')
 def test_save_support_message(mock_save_support_message, support_message_repo):
     mock_save_support_message.return_value = 1
 

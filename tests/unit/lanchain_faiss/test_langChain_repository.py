@@ -5,12 +5,12 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 
-from app.repositories.langChain_repository import LangChainRepository
-from app.entities.query_entity import QueryEntity
-from app.entities.document_context_entity import DocumentContextEntity
-from app.entities.answer_entity import AnswerEntity
-from app.entities.file_entity import FileEntity
-from app.entities.file_chunk_entity import FileChunkEntity
+from repositories.langChain_repository import LangChainRepository
+from entities.query_entity import QueryEntity
+from entities.document_context_entity import DocumentContextEntity
+from entities.answer_entity import AnswerEntity
+from entities.file_entity import FileEntity
+from entities.file_chunk_entity import FileChunkEntity
 
 
 load_dotenv()
@@ -126,3 +126,35 @@ def test_generate_answer_remember_messages(langChain_repository):
     assert result5.get_answer() != ""
     assert isinstance(result5, AnswerEntity)
     
+def test_split_file(langChain_repository):
+
+    file_content = "a" * 2500 + "b" * 2500 + "c" * 2500 + "d" * 2500
+    file_metadata = "name.txt"
+    file = FileEntity(file_metadata, file_content)
+    result = langChain_repository.split_file(file)
+    assert result is not None
+    assert len(result) == 4
+    assert all(isinstance(chunk, FileChunkEntity) for chunk in result)
+    assert result[0].get_chunk_content() == "a" * 2500
+    assert result[1].get_chunk_content() == "b" * 2500
+    assert result[2].get_chunk_content() == "c" * 2500
+    assert result[3].get_chunk_content() == "d" * 2500
+
+def test_split_file_empty_content(langChain_repository):
+    file_content = ""
+    file_metadata = "name.txt"
+    file = FileEntity(file_metadata, file_content)
+    result = langChain_repository.split_file(file)
+    assert result is not None
+    assert len(result) == 0
+
+def test_split_file_large_content(langChain_repository):
+    
+    file_content = "a" * 15000
+    file_metadata = "name.txt"
+    file = FileEntity(file_metadata, file_content)
+    result = langChain_repository.split_file(file)
+    assert result is not None
+    assert len(result) == 6
+    assert all(isinstance(chunk, FileChunkEntity) for chunk in result)
+    assert all(chunk.get_chunk_content() == "a" * 2500 for chunk in result)

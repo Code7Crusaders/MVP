@@ -1,5 +1,5 @@
 import psycopg2
-from app.entities.message_entity import MessageEntity
+from entities.message_entity import MessageEntity
 
 class MessagePostgresRepository:
     def __init__(self, db_config: dict):
