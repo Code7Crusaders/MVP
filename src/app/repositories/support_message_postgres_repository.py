@@ -48,6 +48,16 @@ class SupportMessagePostgresRepository:
         except psycopg2.Error as e:
             raise e
 
+    def get_support_messages(self) -> list[SupportMessageEntity]:
+        '''
+        Retrieves all support messages from the PostgreSQL database.
+        Returns:
+            list[SupportMessageEntity]: A list of support messages.
+        Raises:
+            psycopg2.Error: If an error occurs while retrieving the support messages from the PostgreSQL database.
+        '''
+        #da fare
+
     def save_support_message(self, user_id: int, description: str, status: str, subject: str):
         '''
         Saves a support message in the PostgreSQL database.
