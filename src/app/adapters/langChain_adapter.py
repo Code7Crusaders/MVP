@@ -13,7 +13,7 @@ from repositories.langChain_repository import LangChainRepository
 from ports.split_file_port import SplitFilePort
 from ports.generate_answer_port import GenerateAnswerPort
 
-class LangChainAdapter(GenerateAnswerPort, SplitFilePort):
+class LangChainAdapter(GenerateAnswerPort, SplitFilePort): 
     
     def __init__(self, lang_chain_repository: LangChainRepository):
         self.lang_chain_repository = lang_chain_repository

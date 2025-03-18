@@ -71,3 +71,22 @@ def test_load_chunks_repository_exception(faiss_adapter, faiss_repository_mock):
     result = faiss_adapter.load_chunks(chunks)
     
     assert result == "Failed to load chunks"
+
+def test_similarity_search_repository_exception(faiss_adapter, faiss_repository_mock):
+    question_model = QuestionModel(user_id=1, question="What is AI?")
+    
+    # Simulate an exception in the repository
+    faiss_repository_mock.similarity_search.side_effect = Exception("Repository error")
+    
+    result = faiss_adapter.similarity_search(question_model)
+    
+    assert result == "Repository error"
+
+
+def test_similarity_search_invalid_question_model(faiss_adapter):
+    
+    invalid_question_model = MagicMock()
+    invalid_question_model.get_question.side_effect = AttributeError("Invalid question model")
+
+    with pytest.raises(AttributeError, match="Invalid question model"):
+        faiss_adapter.similarity_search(invalid_question_model)

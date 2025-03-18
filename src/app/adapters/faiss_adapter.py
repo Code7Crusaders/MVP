@@ -41,7 +41,7 @@ class FaissAdapter(SimilaritySearchPort, AddChunksPort):
             return context_list
         
         except Exception as e:
-            return str(e)
+            return str(e) 
             
     def load_chunks(self, chunks: list[FileChunkModel]):
         """

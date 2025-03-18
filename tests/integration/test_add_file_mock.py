@@ -4,6 +4,23 @@ from unittest.mock import patch, MagicMock
 from main import app, add_file_controller, detect_encoding
 from controllers.add_file_controller import AddFileController
 
+"""
+Integration tests for the /api/add_file endpoint.
+These tests verify the behavior of the file upload functionality, including
+handling of different file types, missing files, and unsupported file types.
+Test cases:
+- test_upload_txt_file: Test uploading a valid .txt file.
+- test_upload_pdf_file: Test uploading a valid .pdf file.
+- test_upload_no_file: Test uploading with no file provided.
+- test_upload_unsupported_file_type: Test uploading an unsupported file type.
+Example usage:
+Test /api/add_file with valid input
+
+curl -X POST http://localhost:5000/api/add_file \
+ -H "Content-Type: multipart/form-data" \
+ -F "file=@test.txt"
+"""
+
 @pytest.fixture
 def client():
     app.config["TESTING"] = True
