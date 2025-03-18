@@ -13,3 +13,4 @@ class SaveMessagePort(ABC):
         Args:
             message (MessageModel): The message model.
         """
+        pass

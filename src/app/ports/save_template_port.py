@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import app.models.template_model as TemplateModel
 
 class SaveTemplatePort(ABC):
     """
@@ -6,12 +7,13 @@ class SaveTemplatePort(ABC):
     """
 
     @abstractmethod
-    def save_template_title(self, question: str, answer: str, author: str) -> None:
+    def save_template(self, question: str, answer: str, author: str) -> int:
         """
-        Save the title of a template by question, answer, and author.
+        Save a template with the provided question, answer, and author.
         Args:
-            question (str): The question of the template.
-            answer (str): The answer of the template.
-            author (str): The author of the template.
+            question (str): The question content of the template.
+            answer (str): The answer content of the template.
+            author (str): The creator of the template.
         """
+        pass
         

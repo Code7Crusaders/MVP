@@ -1,17 +1,14 @@
 from abc import ABC, abstractmethod
-import app.models.support_message_model as SupportMessageModel
+from app.models.support_message_model import SupportMessageModel
 
-class GetSupportMessagePort(ABC):
+class GetSupportMessagesPort(ABC):
     """
-    GetSupportMessagePort is an interface for getting a support message by its ID.
+    GetSupportMessagePort is an interface for getting all support messages.
     """
 
     @abstractmethod
-    def get_support_message(self, message_id: int) -> SupportMessageModel:
+    def get_support_messages(self) -> list[SupportMessageModel]:
         """
-        Get a support message by its ID.
-        Args:
-            message_id (int): The ID of the support message.
         Returns:
-            SupportMessageModel: The support message model.
+            list of SupportMessageModel: The support message model .
         """

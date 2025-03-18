@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import app.models.message_model as MessageModel
+from app.models.message_model import MessageModel
 
 class GetMessagePort(ABC):
     """

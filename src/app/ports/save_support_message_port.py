@@ -16,3 +16,4 @@ class SaveSupportMessagePort(ABC):
             status (str): The status of the support message.
             subject (str): The subject of the support message.
         """
+        pass

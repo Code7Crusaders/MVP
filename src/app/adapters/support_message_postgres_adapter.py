@@ -1,5 +1,5 @@
 from app.repositories.support_message_postgres_repository import SupportMessagePostgresRepository
-import app.models.support_message_model as SupportMessageModel
+from app.models.support_message_model import SupportMessageModel
 from app.ports.get_support_messages_port import GetSupportMessagePort
 from app.ports.save_support_message_port import SaveSupportMessagePort
 
@@ -29,6 +29,28 @@ class SupportMessagePostgresAdapter(GetSupportMessagePort, SaveSupportMessagePor
         except Exception as e:
             raise e
 
+    def get_support_messages(self) -> list[SupportMessageModel]:
+        """
+        Retrieves all support messages.
+        Returns:
+            list[SupportMessageModel]: A list of support messages.
+        """
+        try:
+            support_messages = self.support_message_postgres_repository.get_support_messages()
+            return [
+                SupportMessageModel(
+                    id=support_message.id,
+                    user_id=support_message.user_id,
+                    description=support_message.description,
+                    status=support_message.status,
+                    subject=support_message.subject,
+                    created_at=support_message.created_at
+                )
+                for support_message in support_messages
+            ]
+        except Exception as e:
+            raise e
+        
     def save_support_message(self, user_id: int, description: str, status: str, subject: str):
         """
         Save a support message.

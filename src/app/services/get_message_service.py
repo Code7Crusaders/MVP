@@ -14,4 +14,4 @@ class GetMessageService(GetMessageUseCase):
         """
         Retrieve a message by its ID.
         """
-        return self.get_message_port.get_message_by_id(message_id)
+        return self.get_message_port.get_message(message_id)

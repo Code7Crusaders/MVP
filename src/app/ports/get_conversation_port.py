@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import app.models.conversation_model as ConversationModel
+from app.models.conversation_model import ConversationModel
 
 class GetConversationPort(ABC):
     """

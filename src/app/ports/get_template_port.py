@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import app.models.template_model as TemplateModel
+from app.models.template_model import TemplateModel
 
 class GetTemplatePort(ABC):
     """
@@ -15,3 +15,4 @@ class GetTemplatePort(ABC):
         Returns:
             TemplateModel: The template model.
         """
+        pass
