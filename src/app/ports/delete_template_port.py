@@ -6,7 +6,7 @@ class DeleteTemplatePort(ABC):
     """
 
     @abstractmethod
-    def delete_template(self, author: str, question: str, answer: str) -> None:
+    def delete_template(self, author: str, question: str, answer: str):
         """
         Delete a template by author, question, and answer.
         Args:
@@ -14,3 +14,4 @@ class DeleteTemplatePort(ABC):
             question (str): The question of the template.
             answer (str): The answer of the template.
         """
+        pass

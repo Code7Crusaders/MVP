@@ -5,12 +5,12 @@ class SaveConversationTitleService(SaveConversationTitleUseCase):
     """
     Service class to save conversation titles.
     """
-    def __init__(self, save_conversation_title: SaveConversationTitlePort):
-        self.save_conversation_title = save_conversation_title
+    def __init__(self, save_conversation_title_port: SaveConversationTitlePort):
+        self.save_conversation_title_port = save_conversation_title_port
         
 
     def save_conversation_title(self, conversation_id: int, title: str):
         """
         Save the title of a conversation.
         """
-        self.save_conversation_title.save_title(conversation_id, title)
+        self.save_conversation_title_port.save_conversation_title(conversation_id, title)

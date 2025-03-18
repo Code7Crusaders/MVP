@@ -6,12 +6,12 @@ class GetConversationService(GetConversationUseCase):
     """
     Service class to manage chat interactions.
     """
-    def __init__(self, get_conversation: GetConversationPort):
-        self.get_conversation = get_conversation
+    def __init__(self, get_conversation_port: GetConversationPort):
+        self.get_conversation_port = get_conversation_port
         
 
-    def get_conversation_answer(self, conversation_id: int) -> ConversationModel:
+    def get_conversation(self, conversation_id: int) -> ConversationModel:
         """
         Get the answer to a user's question.
         """
-        return self.conversation_port.get_conversation(conversation_id)
+        return self.get_conversation_port.get_conversation(conversation_id)

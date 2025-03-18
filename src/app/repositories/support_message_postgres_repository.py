@@ -56,7 +56,25 @@ class SupportMessagePostgresRepository:
         Raises:
             psycopg2.Error: If an error occurs while retrieving the support messages from the PostgreSQL database.
         '''
-        #da fare
+        try:
+            query = "SELECT * FROM Support;"
+            with self.__connect() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(query)
+                    results = cursor.fetchall()
+                    return [
+                        SupportMessageEntity(
+                            id=row[0],
+                            user_id=row[1],
+                            description=row[2],
+                            status=row[3],
+                            subject=row[4],
+                            created_at=row[5]
+                        )
+                        for row in results
+                    ]
+        except psycopg2.Error as e:
+            raise e
 
     def save_support_message(self, user_id: int, description: str, status: str, subject: str):
         '''
