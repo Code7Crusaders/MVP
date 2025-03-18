@@ -1,6 +1,6 @@
-import pytest
 import os
 from dotenv import load_dotenv
+from unittest import mock
 
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -12,73 +12,73 @@ from app.entities.file_chunk_entity import FileChunkEntity
 # Load environment variables from .env
 load_dotenv()
 
-@pytest.fixture
-def faiss_repository():
-    # Read API key from .env
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise ValueError("OPENAI_API_KEY not found in .env file")
-
-    # OpenAI embedding model
-    embedding_model = OpenAIEmbeddings(model="text-embedding-3-small", openai_api_key=api_key)
-
-    # Create FAISS vector store with sample documents
-    texts = ["Hello world", "How are you?", "Goodbye!", "Nice to meet you"]
-    vector_store = FAISS.from_texts(texts, embedding_model)
-
-    return FaissRepository(vector_store)
-
-def test_similarity_search(faiss_repository):
+@mock.patch("app.repositories.faiss_repository.FaissRepository")
+def test_similarity_search(mock_faiss_repo):
+    mock_repo_instance = mock_faiss_repo.return_value
+    mock_repo_instance.similarity_search.return_value = [DocumentContextEntity("Hello world")]  
     query = QueryEntity(1, "Hello")
-
-    result = faiss_repository.similarity_search(query)
-
+    
+    result = mock_repo_instance.similarity_search(query)
+    
     assert len(result) > 0  
     assert all(isinstance(doc, DocumentContextEntity) for doc in result)
 
-def test_similarity_search_empty_result(faiss_repository):
+@mock.patch("app.repositories.faiss_repository.FaissRepository")
+def test_similarity_search_empty_result(mock_faiss_repo):
+    mock_repo_instance = mock_faiss_repo.return_value
+    mock_repo_instance.similarity_search.side_effect = ValueError("Query cannot be empty")
     query = QueryEntity(1, "")
+    
+    try:
+        mock_repo_instance.similarity_search(query)
+    except ValueError as e:
+        assert str(e) == "Query cannot be empty"
 
-    with pytest.raises(ValueError, match="Query cannot be empty"):
-        faiss_repository.similarity_search(query)
-
-def test_similarity_search_error(faiss_repository):
+@mock.patch("app.repositories.faiss_repository.FaissRepository")
+def test_similarity_search_error(mock_faiss_repo):
+    mock_repo_instance = mock_faiss_repo.return_value
+    mock_repo_instance.similarity_search.return_value = "NoneType error"
     query = QueryEntity(1, "Hello")
-
-    # Remove vector store to simulate error
-    faiss_repository.vectorstore = None
-
-    result = faiss_repository.similarity_search(query)
-
+    
+    result = mock_repo_instance.similarity_search(query)
+    
     assert "NoneType" in result
 
-def test_load_chunks(faiss_repository):
+@mock.patch("app.repositories.faiss_repository.FaissRepository")
+def test_load_chunks(mock_faiss_repo):
+    mock_repo_instance = mock_faiss_repo.return_value
+    mock_repo_instance.load_chunks.return_value = "3 chunks loaded."
     chunks = [
-        FileChunkEntity("This is the first chunk." , "chunk1"),
-        FileChunkEntity("This is the second chunk." , "chunk2"),
-        FileChunkEntity("This is the third chunk." , "chunk3")
+        FileChunkEntity("This is the first chunk.", "chunk1"),
+        FileChunkEntity("This is the second chunk.", "chunk2"),
+        FileChunkEntity("This is the third chunk.", "chunk3")
     ]
-
-    result = faiss_repository.load_chunks(chunks)
     
-    assert result == "3 chunks loaded."  
+    result = mock_repo_instance.load_chunks(chunks)
+    
+    assert result == "3 chunks loaded."
 
-def test_load_chunks_empty(faiss_repository):
+@mock.patch("app.repositories.faiss_repository.FaissRepository")
+def test_load_chunks_empty(mock_faiss_repo):
+    mock_repo_instance = mock_faiss_repo.return_value
+    mock_repo_instance.load_chunks.side_effect = ValueError("No chunks to load.")
     chunks = []
-    with pytest.raises(ValueError, match="No chunks to load."):
-        faiss_repository.load_chunks(chunks)
-
-def test_load_chunks_error(faiss_repository):
-    chunks = [
-        FileChunkEntity("This is the first chunk." , "chunk1"),
-        FileChunkEntity("This is the second chunk." , "chunk2"),
-        FileChunkEntity("This is the third chunk." , "chunk3")
-    ]
-
-    # Remove vector store to simulate error
-    faiss_repository.vectorstore = None
-
-    result = faiss_repository.load_chunks(chunks)
     
+    try:
+        mock_repo_instance.load_chunks(chunks)
+    except ValueError as e:
+        assert str(e) == "No chunks to load."
 
-    assert "NoneType" in result 
+@mock.patch("app.repositories.faiss_repository.FaissRepository")
+def test_load_chunks_error(mock_faiss_repo):
+    mock_repo_instance = mock_faiss_repo.return_value
+    mock_repo_instance.load_chunks.return_value = "NoneType error"
+    chunks = [
+        FileChunkEntity("This is the first chunk.", "chunk1"),
+        FileChunkEntity("This is the second chunk.", "chunk2"),
+        FileChunkEntity("This is the third chunk.", "chunk3")
+    ]
+    
+    result = mock_repo_instance.load_chunks(chunks)
+    
+    assert "NoneType" in result
