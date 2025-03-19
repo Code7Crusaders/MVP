@@ -15,13 +15,10 @@ from entities.file_chunk_entity import FileChunkEntity
 
 class LangChainRepository:
     def __init__(self, model: ChatOpenAI):
-        try:
-            self.model = model
-            self.user_memories = {}  
-            self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=2500, chunk_overlap=0)
-
-        except Exception as e:
-            raise Exception("Error while initializing LangChain model: " + str(e))
+        
+        self.model = model
+        self.user_memories = {}  
+        self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=2500, chunk_overlap=0)
 
     def get_user_memory(self, user_id: int):
         """Retrieve or create memory for a specific user."""
@@ -108,12 +105,12 @@ class LangChainRepository:
         """
     
         try:
-            # Decodifica il contenuto del file in una stringa se è in formato bytes
+            
             file_content = file.get_file_content()
             if isinstance(file_content, bytes):
-                file_content = file_content.decode('utf-8', errors='ignore')  # decodifica in utf-8, ignora eventuali errori
+                file_content = file_content.decode('utf-8', errors='ignore')  
     
-            # Usa il contenuto decodificato per il text splitter
+            
             all_splits = self.text_splitter.split_text(file_content)
     
             file_chunks = [FileChunkEntity(split, file.get_metadata()) for split in all_splits]

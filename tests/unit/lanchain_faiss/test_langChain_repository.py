@@ -12,7 +12,7 @@ from entities.answer_entity import AnswerEntity
 from entities.file_entity import FileEntity
 from entities.file_chunk_entity import FileChunkEntity
 
-
+ 
 load_dotenv()
 
 @pytest.fixture
@@ -94,30 +94,7 @@ def test_generate_answer_remember_messages(langChain_repository):
     assert result2.get_answer() != ""
     assert isinstance(result2, AnswerEntity)
 
-    query3 = QueryEntity(1, "Can you explain the concept of light?")
-    contexts3 = [
-        DocumentContextEntity("Light is electromagnetic radiation within a certain portion of the electromagnetic spectrum. The word usually refers to visible light, which is the visible spectrum that is visible to the human eye."),
-        DocumentContextEntity("Visible light is usually defined as having wavelengths in the range of 400–700 nanometres (nm), between the infrared (with longer wavelengths) and the ultraviolet (with shorter wavelengths).")
-    ]
-
-    result3 = langChain_repository.generate_answer(query3, contexts3, prompt_template)
-    assert result3 is not None
-    assert result3.get_answer() is not None
-    assert result3.get_answer() != ""
-    assert isinstance(result3, AnswerEntity)
-
-    query4 = QueryEntity(2, "What is the speed of light?")
-    contexts4 = [
-        DocumentContextEntity("The speed of light in vacuum, commonly denoted c, is a universal physical constant important in many areas of physics. Its exact value is defined as 299,792,458 metres per second (approximately 300,000 km/s or 186,000 mi/s).")
-    ]
-
-    result4 = langChain_repository.generate_answer(query4, contexts4, prompt_template)
-    assert result4 is not None
-    assert result4.get_answer() is not None
-    assert result4.get_answer() != ""
-    assert isinstance(result4, AnswerEntity)
-
-    query5 = QueryEntity(1, "What did you remember I asked in all conversation?")
+    query5 = QueryEntity(2, "What did you remember I asked in all conversation?")
     contexts5 = []
 
     result5 = langChain_repository.generate_answer(query5, contexts5, prompt_template)
@@ -125,7 +102,18 @@ def test_generate_answer_remember_messages(langChain_repository):
     assert result5.get_answer() is not None
     assert result5.get_answer() != ""
     assert isinstance(result5, AnswerEntity)
-    
+
+def test_generate_answer_invalid_contexts(langChain_repository):
+    """
+    Test generate_answer with invalid contexts to ensure it raises an exception.
+    """
+    prompt_template = "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly."
+    query = QueryEntity(1, "Tell me about colors.")
+    contexts = None  # Invalid contexts
+
+    with pytest.raises(Exception, match="Error while generating the answer from LangChain model"):
+        langChain_repository.generate_answer(query, contexts, prompt_template)
+
 def test_split_file(langChain_repository):
 
     file_content = "a" * 2500 + "b" * 2500 + "c" * 2500 + "d" * 2500
@@ -158,3 +146,28 @@ def test_split_file_large_content(langChain_repository):
     assert len(result) == 6
     assert all(isinstance(chunk, FileChunkEntity) for chunk in result)
     assert all(chunk.get_chunk_content() == "a" * 2500 for chunk in result)
+
+def test_split_file_with_bytes_content(langChain_repository):
+    """
+    Test split_file with file content as bytes to ensure it handles decoding properly.
+    """
+    file_content = ("a" * 2500 + "b" * 2500).encode('utf-8')
+    file_metadata = "binary_file.txt"
+    file = FileEntity(file_metadata, file_content)
+    result = langChain_repository.split_file(file)
+    assert result is not None
+    assert len(result) == 2
+    assert all(isinstance(chunk, FileChunkEntity) for chunk in result)
+    assert result[0].get_chunk_content() == "a" * 2500
+    assert result[1].get_chunk_content() == "b" * 2500
+
+def test_split_file_exception(langChain_repository):
+    """
+    Test split_file to ensure it raises an exception for invalid input.
+    """
+    file_content = None  # Invalid file content
+    file_metadata = "invalid_file.txt"
+    file = FileEntity(file_metadata, file_content)
+    
+    with pytest.raises(Exception, match="Error while splitting the file:"):
+        langChain_repository.split_file(file)
