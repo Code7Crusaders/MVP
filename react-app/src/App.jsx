@@ -10,7 +10,7 @@ import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
 import { useNavigate } from 'react-router-dom';
-import Chatbot from './components/chatbot'; 
+import Chatbot from './components/Chatbot'; 
 
 const NAVIGATION = [
   {
