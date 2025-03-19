@@ -46,17 +46,17 @@
 }
 
 .center{
-    padding: 20px;
+    padding: 16px;
     flex: 1;
     overflow:  scroll;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 
     .message{
         max-width: 70%;
         display: flex;
-        gap: 20px;
+        gap: 10px;
 
         &.own{
             align-self: flex-end;
@@ -64,13 +64,14 @@
             .texts{
                 p{
                     background-color: #5183fe;
+                    border: none;
                 }
             }
         }
 
         img{
-            width: 30px;
-            height: 30px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             object-fit: cover;
         }
@@ -79,10 +80,9 @@
             flex:1;
             display: flex;
             flex-direction: column;
-            gap: 5px;
             
             p{
-                padding: 20px;
+                padding: 0.8em;
                 background-color: rgba(17, 25, 40, 0.3);
                 border-radius: 10px;
             }
