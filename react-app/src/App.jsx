@@ -3,35 +3,35 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { createTheme } from '@mui/material/styles';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import DescriptionIcon from '@mui/icons-material/Description';  // Assicurati di importare DescriptionIcon
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
-import { useNavigate } from 'react-router-dom';
 import Chatbot from './components/Chatbot'; 
+import AddCommentIcon from '@mui/icons-material/AddComment';
+import ForumIcon from '@mui/icons-material/Forum';
+import ChatIcon from '@mui/icons-material/Chat';
+import MuccaIcon from './assets/mucca.jpg';
 
 const NAVIGATION = [
   {
     segment: 'chatbot',
     title: 'Chatbot',
-    icon: <DashboardIcon />,
+    icon: <AddCommentIcon />,
   },
   {
     segment: 'recent',
-    title: 'Conversazioni recenti',
-    icon: <ShoppingCartIcon />,
+    title: 'Conversazioni salvate',
+    icon: <ForumIcon />,
     children: [
       {
         segment: 'chat1',
         title: 'Chat 1',
-        icon: <DescriptionIcon />,
+        icon: <ChatIcon />,
       },
       {
         segment: 'chat2',
         title: 'Chat 2',
-        icon: <DescriptionIcon />,
+        icon: <ChatIcon />,
       },
     ],
   },
@@ -118,7 +118,7 @@ function DashboardLayoutBranding(props) {
     <AppProvider
       navigation={NAVIGATION}
       branding={{
-        logo: <img src="https://avatars.githubusercontent.com/u/185105956?s=200&v=4" alt="logo originale del Team di Sviluppo Code7Crusaders" />,
+        logo: <img src={MuccaIcon} alt="logo originale del Team di Sviluppo Code7Crusaders" />,
         title: 'Giorgione',
         homeUrl: '/chatbot',
       }}
