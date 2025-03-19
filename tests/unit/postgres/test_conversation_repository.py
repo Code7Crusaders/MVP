@@ -5,7 +5,6 @@ from unittest.mock import patch, MagicMock
 from repositories.conversation_postgres_repository import ConversationPostgresRepository
 from config.db_config import db_config
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 @pytest.fixture
 def conversation_repo():

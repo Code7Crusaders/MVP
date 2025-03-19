@@ -1,11 +1,7 @@
-import sys
-import os
 import pytest
 from unittest.mock import patch, MagicMock
 from repositories.template_postgres_repository import TemplatePostgresRepository
 from config.db_config import db_config
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 @pytest.fixture
 def template_repo():

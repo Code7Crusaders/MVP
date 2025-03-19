@@ -46,8 +46,8 @@ CREATE TABLE Templates (
     id SERIAL PRIMARY KEY,
     question VARCHAR NOT NULL,
     answer VARCHAR NOT NULL,
-    author VARCHAR NOT NULL,
+    author SERIAL NOT NULL,
     last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (author) REFERENCES Users(username) ON DELETE CASCADE
+    FOREIGN KEY (author) REFERENCES Users(id) ON DELETE CASCADE
 );
 

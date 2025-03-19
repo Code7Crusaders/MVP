@@ -8,7 +8,6 @@ from repositories.message_postgres_repository import MessagePostgresRepository
 from config.db_config import db_config
 from entities.message_entity import MessageEntity
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 @pytest.fixture
 def message_repo():

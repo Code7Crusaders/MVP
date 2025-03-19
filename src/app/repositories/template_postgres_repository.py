@@ -28,18 +28,17 @@ class TemplatePostgresRepository:
         Raises:
             psycopg2.Error: If an error occurs while retrieving the template from the PostgreSQL database.
         '''
-        try:
-            query = "SELECT id, question, answer, author, last_modified FROM Templates WHERE id = %s;"
-            with self.__connect() as conn:
-                with conn.cursor() as cursor:
-                    cursor.execute(query, (template_id,))
-                    result = cursor.fetchone()
-                    if result:
-                        return TemplateEntity(id=result[0], question=result[1], answer=result[2], author=result[3], last_modified=result[4])
-                    else:
-                        return None
-        except psycopg2.Error as e:
-            raise e
+        
+        query = "SELECT id, question, answer, author, last_modified FROM Templates WHERE id = %s;"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query, (template_id,))
+                result = cursor.fetchone()
+                if result:
+                    return TemplateEntity(id=result[0], question=result[1], answer=result[2], author=result[3], last_modified=result[4])
+                else:
+                    return None
+        
 
     def get_template_list(self) -> list[TemplateEntity]:
         '''
@@ -47,15 +46,14 @@ class TemplatePostgresRepository:
         Returns:
             list[TemplateEntity]: A list of TemplateEntity objects.
         '''
-        try:
-            query = "SELECT id, question, answer, author, last_modified FROM Templates;"
-            with self.__connect() as conn:
-                with conn.cursor() as cursor:
-                    cursor.execute(query)
-                    rows = cursor.fetchall()
-                    return [TemplateEntity(id=row[0], question=row[1], answer=row[2], author=row[3], last_modified=row[4]) for row in rows]
-        except psycopg2.Error as e:
-            raise e
+        
+        query = "SELECT id, question, answer, author, last_modified FROM Templates;"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                return [TemplateEntity(id=row[0], question=row[1], answer=row[2], author=row[3], last_modified=row[4]) for row in rows]
+        
     
     def save_template(self, question: str, answer: str, author: str) -> int:
         '''
@@ -70,31 +68,28 @@ class TemplatePostgresRepository:
             psycopg2.Error: If an error occurs while saving the template in the PostgreSQL database.
             ValueError: If the author does not exist in the Users table or if the template already exists.
         '''
-        try:
-            # Ensure the author exists in the Users table
-            check_author_query = "SELECT id FROM Users WHERE username = %s;"
-            check_template_query = "SELECT id FROM Templates WHERE question = %s AND answer = %s AND author = %s;"
-            insert_query = "INSERT INTO Templates (question, answer, author) VALUES (%s, %s, %s) RETURNING id;"
-            with self.__connect() as conn:
-                with conn.cursor() as cursor:
-                    cursor.execute(check_author_query, (author,))
-                    author_exists = cursor.fetchone()
-                    if not author_exists:
-                        raise ValueError(f"Author '{author}' does not exist in the Users table.")
+        
+        # Ensure the author exists in the Users table
+        check_author_query = "SELECT id FROM Users WHERE username = %s;"
+        check_template_query = "SELECT id FROM Templates WHERE question = %s AND answer = %s AND author = %s;"
+        insert_query = "INSERT INTO Templates (question, answer, author) VALUES (%s, %s, %s) RETURNING id;"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(check_author_query, (author,))
+                author_exists = cursor.fetchone()
+                if not author_exists:
+                    raise ValueError(f"Author '{author}' does not exist in the Users table.")
                     
-                    # Check if the template already exists
-                    cursor.execute(check_template_query, (question, answer, author))
-                    template_exists = cursor.fetchone()
-                    if template_exists:
-                        raise ValueError("A template with the same question, answer, and author already exists.")
+                # Check if the template already exists
+                cursor.execute(check_template_query, (question, answer, author))
+                template_exists = cursor.fetchone()
+                if template_exists:
+                    raise ValueError("A template with the same question, answer, and author already exists.")
                     
-                    cursor.execute(insert_query, (question, answer, author))
-                    new_template_id = cursor.fetchone()[0]
-                    conn.commit()
-                    return new_template_id
-        except (psycopg2.Error, ValueError) as e:
-            conn.rollback()
-            raise
+                cursor.execute(insert_query, (question, answer, author))
+                new_template_id = cursor.fetchone()[0]
+                conn.commit()
+                return new_template_id
         
     def delete_template(self, author: str, question: str, answer: str) -> bool:
         '''
@@ -108,16 +103,13 @@ class TemplatePostgresRepository:
         Raises:
             psycopg2.Error: If an error occurs while deleting the template from the PostgreSQL database.
         '''
-        try:
-            delete_query = "DELETE FROM Templates WHERE author = %s AND question = %s AND answer = %s;"
-            with self.__connect() as conn:
-                with conn.cursor() as cursor:
-                    cursor.execute(delete_query, (author, question, answer))
-                    if cursor.rowcount > 0:
-                        conn.commit()
-                        return True
-                    else:
-                        return False
-        except psycopg2.Error as e:
-            conn.rollback()
-            raise e
+        
+        delete_query = "DELETE FROM Templates WHERE author = %s AND question = %s AND answer = %s;"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(delete_query, (author, question, answer))
+                if cursor.rowcount > 0:
+                    conn.commit()
+                    return True
+                else:
+                    return False

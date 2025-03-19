@@ -28,6 +28,6 @@ INSERT INTO Support (user_id, description, status, subject) VALUES
 
 -- Inserimento template
 INSERT INTO Templates (question, answer, author, last_modified) VALUES
-('How do I reset my password?', 'Go to settings and click on Reset Password.', 'admin_user', NOW()),
-('What should I do if my account is locked?', 'Contact support to unlock your account.', 'admin_user', NOW()),
-('How can I update my email address?', 'Go to profile settings and update your email.', 'jane_smith', NOW());
+('How do I reset my password?', 'Go to settings and click on Reset Password.', 2, NOW()),
+('What should I do if my account is locked?', 'Contact support to unlock your account.', 2, NOW()),
+('How can I update my email address?', 'Go to profile settings and update your email.', 2, NOW());

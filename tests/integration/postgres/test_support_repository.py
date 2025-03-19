@@ -13,7 +13,7 @@ def repository():
 def test_database_connection(repository):
     """Test if the database connection is successfully established."""
     try:
-        conn = repository._SupportMessagePostgresRepository__connect()  # Access private method
+        conn = repository._SupportMessagePostgresRepository__connect() 
         assert conn is not None
         assert isinstance(conn, psycopg2.extensions.connection)
         assert conn.closed == 0  # 0 means the connection is open
