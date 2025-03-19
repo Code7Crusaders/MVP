@@ -15,7 +15,7 @@ function Chatbot() {
       <div className="Chat">
       <div className="Top">
         <div className="user">
-          <img src="#" alt="icona di giorgione"/>
+          <img src="https://avatars.githubusercontent.com/u/185105956?s=200&v=4" alt="icona di giorgione"/>
           <div className="texts">
             <span>Giorgione</span>
             <p>Lorem ipsum dolor sit amet</p>
@@ -48,7 +48,7 @@ function Chatbot() {
       </div>
       <div className="Bottom">
         <div className="icons">
-          <img src="#" alt="icona di allegato"/>
+          <img src="../assets/addfile.svg" alt="icona di allegato"/>
         </div>
         <input type="text" placeholder="Scrivi un messaggio..."/>
         <button className="sendButton">Invia</button>
