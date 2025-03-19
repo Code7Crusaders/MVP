@@ -65,3 +65,46 @@ def test_save_template(template_repo):
         assert is_deleted is True, "Failed to delete template"
     except Exception as e:
         pytest.fail(f"Failed to delete template: {e}")
+
+
+def test_save_template_author_not_exists(template_repo):
+    """Test saving a template with a non-existing author."""
+    question = "Test Question"
+    answer = "Test Answer"
+    non_existing_author = -1  # ID of a non-existing author
+    
+    with pytest.raises(ValueError, match=f"Author '{non_existing_author}' does not exist in the Users table."):
+        template_repo.save_template(question, answer, non_existing_author)
+
+
+def test_save_template_already_exists(template_repo):
+    """Test saving a template that already exists in the database."""
+    question = "Duplicate Question"
+    answer = "Duplicate Answer"
+    existing_author = 2  # Ensure this author exists in your database
+
+    # Save the template for the first time
+    templates = template_repo.get_template_list()
+    for template in templates:
+        if template.get_question() == question and template.get_answer() == answer and template.get_author() == existing_author:
+            break
+    else:
+        try:
+            template_repo.save_template(question, answer, existing_author)
+        except Exception as e:
+            pytest.fail(f"Failed to save initial template: {e}")
+
+    # Attempt to save the same template again
+    with pytest.raises(ValueError, match="A template with the same question, answer, and author already exists."):
+        template_repo.save_template(question, answer, existing_author)
+
+
+def test_delete_template_not_found(template_repo):
+    """Test deleting a non-existing template from the database."""
+    non_existing_template_id = -1  # ID of a non-existing template
+
+    try:
+        is_deleted = template_repo.delete_template(non_existing_template_id)
+        assert is_deleted is False, "Expected False when deleting a non-existing template"
+    except Exception as e:
+        pytest.fail(f"Failed to handle deletion of non-existing template: {e}")
