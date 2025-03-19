@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from './pages/login.jsx'
 import App from './App.jsx'
-import Chatbot from './components/chatbot.jsx'
 
 import store from "./store.js"
 import { Provider } from "react-redux"
