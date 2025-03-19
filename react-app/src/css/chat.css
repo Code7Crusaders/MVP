@@ -106,6 +106,8 @@
         justify-content: space-between;
         border-top: 1px solid #dddddd35;
         gap: 20px;
+        position:sticky;
+        bottom: 0;
 
         .icons{
             display: flex;
@@ -140,3 +142,4 @@
         }
     }
 }
+

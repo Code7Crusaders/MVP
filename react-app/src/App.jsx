@@ -75,19 +75,13 @@ function OrdersContent() {
 
 function Chat1Content() {
   return (
-    <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-      <Typography>Chat 1</Typography>
-      <Chatbot chatId="chat1" /> 
-    </Box>
+    <Chatbot chatId="chat1" />
   );
 }
 
 function Chat2Content() {
   return (
-    <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-      <Typography>Chat 2</Typography>
       <Chatbot chatId="chat2" /> 
-    </Box>
   );
 }
 
