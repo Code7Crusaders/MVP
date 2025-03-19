@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/landingpage.css';
+import mucca from '../assets/mucca.jpg';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -12,12 +13,13 @@ const LandingPage = () => {
   return (
     <div className="landing-container">
       <header className="landing-header">
+        <img src={mucca} alt="icona giorgione" />
         <h1>Giorgione</h1>
         <p>Il tuo assistente AI per scoprire e acquistare i prodotti tipici della Valsana</p>
       </header>
       <main className="landing-main">
         <section className="landing-section">
-          <h2>Benvenuto in Giorgione</h2>
+          <h2>Cosa siamo</h2>
           <p>
             Giorgione è l'intelligenza artificiale che ti guida alla scoperta dei sapori autentici della Valsana.
             Che tu stia cercando formaggi, vini, salumi o altre prelibatezze, Giorgione ti consiglia i migliori
@@ -28,9 +30,6 @@ const LandingPage = () => {
           </button>
         </section>
       </main>
-      <footer className="landing-footer">
-        <p>© 2023 Giorgione. Tutti i diritti riservati.</p>
-      </footer>
     </div>
   );
 };
