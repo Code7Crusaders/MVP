@@ -11,6 +11,7 @@ const LandingPage = () => {
   };
 
   return (
+    <div className='overlay'>
     <div className="landing-container">
       <header className="landing-header">
         <img src={mucca} alt="icona giorgione" />
@@ -30,6 +31,7 @@ const LandingPage = () => {
           </button>
         </section>
       </main>
+    </div>
     </div>
   );
 };
