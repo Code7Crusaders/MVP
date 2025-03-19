@@ -40,6 +40,24 @@ class ConversationPostgresRepository:
                         return None
         except psycopg2.Error as e:
             raise e
+        
+    def get_conversations(self) -> list[ConversationEntity]:
+        '''
+        Retrieves all conversations from the PostgreSQL database.
+        Returns:
+            list[ConversationEntity]: A list of all retrieved conversations.
+        Raises:
+            psycopg2.Error: If an error occurs while retrieving the conversations from the PostgreSQL database.
+        '''
+        try:
+            query = "SELECT id, title FROM Conversations;"
+            with self.__connect() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(query)
+                    results = cursor.fetchall()
+                    return [ConversationEntity(id=row[0], title=row[1]) for row in results]
+        except psycopg2.Error as e:
+            raise e
 
     def save_conversation_title(self, conversation_id: int, conversation_title: str):
         '''
