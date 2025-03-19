@@ -1,4 +1,4 @@
-class ConversationModel:
+class ConversationDTO:
     def __init__(self, title: str, id: int = None):
         self.id = id
         self.title = title

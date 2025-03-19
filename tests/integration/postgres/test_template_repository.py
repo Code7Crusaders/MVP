@@ -2,6 +2,8 @@ import pytest
 import psycopg2
 from unittest.mock import patch, MagicMock
 
+
+from models.template_model import TemplateModel 
 from repositories.template_postgres_repository import TemplatePostgresRepository
 from entities.template_entity import TemplateEntity
 from config.db_config import db_config
@@ -108,3 +110,4 @@ def test_delete_template_not_found(template_repo):
         assert is_deleted is False, "Expected False when deleting a non-existing template"
     except Exception as e:
         pytest.fail(f"Failed to handle deletion of non-existing template: {e}")
+

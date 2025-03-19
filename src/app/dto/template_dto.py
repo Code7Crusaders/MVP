@@ -1,13 +1,12 @@
-import datetime
+from datetime import datetime
 
-class TemplateModel:
-
-    def __init__(self, question: str , answer: str , author_id: int , last_modified: datetime, id: int = None):
+class TemplateDTO:
+    def __init__(self, question: str, answer: str, author_id: int, last_modified: datetime, id: int = None):
         self.id = id
         self.question = question
         self.answer = answer
         self.author_id = author_id
-        self.last_modified = last_modified 
+        self.last_modified = last_modified
 
     def get_id(self) -> int:
         return self.id
