@@ -9,10 +9,8 @@ class AddFileController:
     """
 
     def __init__(self, add_file_usecase: AddFileUseCase):
-        try:
-            self.add_file_usecase = add_file_usecase
-        except Exception as e:
-            raise e
+        
+        self.add_file_usecase = add_file_usecase
 
     def load_file(self, file: FileDTO):
         """

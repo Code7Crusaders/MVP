@@ -7,7 +7,7 @@ from dto.answer_dto import AnswerDTO
 from models.question_model import QuestionModel
 from models.answer_model import AnswerModel
 
-@pytest.fixture
+@pytest.fixture 
 def mock_chat_usecase():
     """
     Mock per ChatUseCase.

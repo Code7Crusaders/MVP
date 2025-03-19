@@ -8,10 +8,10 @@ from entities.query_entity import QueryEntity
 from entities.file_chunk_entity import FileChunkEntity
 
 class FaissRepository: 
+
     def __init__(self, vectorstore: FAISS): 
         self.vectorstore = vectorstore
-        
-        
+            
     def similarity_search(self, query: QueryEntity) -> list[DocumentContextEntity]:
         """
         Performs a similarity search in the collection and returns the most relevant documents.

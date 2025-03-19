@@ -6,16 +6,13 @@ from usecases.chat_useCase import ChatUseCase
 from models.question_model import QuestionModel
 from models.answer_model import AnswerModel
 
-class ChatController:
+class ChatController: 
     """
     Controller class to manage chat interactions.
     """
     def __init__(self, chat_usecase: ChatUseCase):
         
-        try:
-            self.chat_usecase = chat_usecase
-        except Exception as e:
-            raise e
+        self.chat_usecase = chat_usecase
             
 
     def get_answer(self, user_input: QuestionDTO) -> AnswerDTO:
