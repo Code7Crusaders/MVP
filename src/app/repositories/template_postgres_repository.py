@@ -55,7 +55,7 @@ class TemplatePostgresRepository:
                 return [TemplateEntity(id=row[0], question=row[1], answer=row[2], author=row[3], last_modified=row[4]) for row in rows]
         
     
-    def save_template(self, question: str, answer: str, author: str) -> int:
+    def save_template(self, question: str, answer: int, author: str) -> int:
         '''
         Saves a new template to the PostgreSQL database.
         Args:
@@ -70,7 +70,7 @@ class TemplatePostgresRepository:
         '''
         
         # Ensure the author exists in the Users table
-        check_author_query = "SELECT id FROM Users WHERE username = %s;"
+        check_author_query = "SELECT id FROM Users WHERE id = %s;"
         check_template_query = "SELECT id FROM Templates WHERE question = %s AND answer = %s AND author = %s;"
         insert_query = "INSERT INTO Templates (question, answer, author) VALUES (%s, %s, %s) RETURNING id;"
         with self.__connect() as conn:
@@ -91,25 +91,23 @@ class TemplatePostgresRepository:
                 conn.commit()
                 return new_template_id
         
-    def delete_template(self, author: str, question: str, answer: str) -> bool:
+    def delete_template(self, template_id: int) -> bool:
         '''
-        Deletes a template from the PostgreSQL database based on the author, question, and answer.
+        Deletes a template from the PostgreSQL database based on its ID.
         Args:
-            author (str): The author of the template.
-            question (str): The question of the template.
-            answer (str): The answer of the template.
+            template_id (int): The ID of the template to delete.
         Returns:
             bool: True if the template was deleted, False otherwise.
         Raises:
             psycopg2.Error: If an error occurs while deleting the template from the PostgreSQL database.
         '''
         
-        delete_query = "DELETE FROM Templates WHERE author = %s AND question = %s AND answer = %s;"
+        delete_query = "DELETE FROM Templates WHERE id = %s;"
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(delete_query, (author, question, answer))
-                if cursor.rowcount > 0:
-                    conn.commit()
-                    return True
-                else:
-                    return False
+                cursor.execute(delete_query, (template_id,))
+            if cursor.rowcount > 0:
+                conn.commit()
+                return True
+            else:
+                return False

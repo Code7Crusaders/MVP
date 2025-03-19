@@ -25,7 +25,7 @@ def test_database_connection(template_repo):
 
 def test_get_template(template_repo):
     """Test retrieving a template from the database (ensure test data exists)."""
-    template_id = 4  # existing ID of template in your DB
+    template_id = 1  # existing ID of template in your DB
     template = template_repo.get_template(template_id)
     assert template is not None, "Template not found in database"
     assert isinstance(template, TemplateEntity)
@@ -46,8 +46,8 @@ def test_get_template_list(template_repo):
 def test_save_template(template_repo):
     """Test saving a template to the database."""
     question = "Test Question"
-    author = "admin_user" # enshure that this user exists in your database
-    answer = "Test answer"
+    author = 2 # enshure that this user exists in your database
+    answer = "Test answer jokerigno lesgo"
 
     try:
         template_id = template_repo.save_template(question, answer, author)
@@ -56,3 +56,12 @@ def test_save_template(template_repo):
         assert isinstance(template_id, int), "Template ID should be an integer"
     except Exception as e:
         pytest.fail(f"Failed to save template: {e}")
+
+    """Test deleting a template from the database."""
+
+    try:
+        is_deleted = template_repo.delete_template(template_id)
+        
+        assert is_deleted is True, "Failed to delete template"
+    except Exception as e:
+        pytest.fail(f"Failed to delete template: {e}")
