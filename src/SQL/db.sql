@@ -51,3 +51,9 @@ CREATE TABLE Templates (
     FOREIGN KEY (author) REFERENCES Users(id) ON DELETE CASCADE
 );
 
+-- Query to delete the Templates table and all rows in all tables
+-- DROP TABLE IF EXISTS Templates CASCADE;
+-- DROP TABLE IF EXISTS Support CASCADE;
+-- DROP TABLE IF EXISTS Messages CASCADE;
+-- DROP TABLE IF EXISTS Conversations CASCADE;
+-- DROP TABLE IF EXISTS Users CASCADE;
