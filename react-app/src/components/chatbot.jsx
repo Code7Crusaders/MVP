@@ -47,9 +47,6 @@ function Chatbot() {
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
-        <div className="icons">
-          <img src="../assets/addfile.svg" alt="icona di allegato"/>
-        </div>
         <input type="text" placeholder="Scrivi un messaggio..."/>
         <button className="sendButton">Invia</button>
       </div>
