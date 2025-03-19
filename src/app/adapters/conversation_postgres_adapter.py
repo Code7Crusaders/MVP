@@ -25,6 +25,24 @@ class ConversationPostgresAdapter(GetConversationPort, SaveConversationTitlePort
         except Exception as e:
             raise e
 
+    def get_conversations(self) -> list[ConversationModel]:
+        """
+        Retrieve all conversations.
+        Returns:
+            list[ConversationModel]: A list of conversations.
+        """
+        try:
+            conversations = self.conversation_postgres_repository.get_conversations()
+            return [
+                ConversationModel(
+                    id=conversation.id,
+                    title=conversation.title,
+                )
+                for conversation in conversations
+            ]
+        except Exception as e:
+            raise e
+
     def save_conversation_title(self, conversation_id: int, title: str):
         """
         Save the title of a conversation.

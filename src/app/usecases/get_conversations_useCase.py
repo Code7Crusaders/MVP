@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from app.models.conversation_model import ConversationModel
 
-class GetConversationUseCase(ABC):
+class GetConversationsUseCase(ABC):
     @abstractmethod
-    def get_conversation(self, conversation_id: int) -> ConversationModel:
+    def get_conversations(self) -> list[ConversationModel]:
         pass
-
