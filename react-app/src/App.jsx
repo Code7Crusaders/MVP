@@ -10,7 +10,7 @@ import Chatbot from './components/Chatbot';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import ForumIcon from '@mui/icons-material/Forum';
 import ChatIcon from '@mui/icons-material/Chat';
-import MuccaIcon from './assets/mucca.jpg';
+import MuccaSenzaSfondoIcon from './assets/muccasenzasfondo.png';
 
 const NAVIGATION = [
   {
@@ -118,7 +118,7 @@ function DashboardLayoutBranding(props) {
     <AppProvider
       navigation={NAVIGATION}
       branding={{
-        logo: <img src={MuccaIcon} alt="logo originale del Team di Sviluppo Code7Crusaders" />,
+        logo: <img src={MuccaSenzaSfondoIcon} alt="logo originale del Team di Sviluppo Code7Crusaders" />,
         title: 'Giorgione',
         homeUrl: '/chatbot',
       }}
