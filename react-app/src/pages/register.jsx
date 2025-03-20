@@ -1,6 +1,8 @@
 // src/Register.js
 import React, { useState } from 'react';
 import '../css/register.css';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -152,7 +154,7 @@ const Register = () => {
         <button type="submit" className="register-button">Registrati</button>
         
         <p className="login-link">
-          Hai già un account? <a href="/login">Accedi qui</a>
+          Hai già un account? <Link to="/login">Accedi</Link>
         </p>
       </form>
     </div>
