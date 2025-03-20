@@ -133,9 +133,7 @@
             font-size: 16px;
         }
 
-        input::placeholder{
-            color: white;
-        }
+        
 
         .sendButton{
             background-color: #5183fe;

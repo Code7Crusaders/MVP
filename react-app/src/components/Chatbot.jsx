@@ -15,13 +15,13 @@ function Chatbot() {
   
   const inputChatStyle = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#e6e6e6',
-    textcolor: theme.palette.mode === 'dark' ? 'white' : 'black', 
+    color: theme.palette.mode === 'dark' ? 'white' : 'black', 
   };
 
   const endRef = useRef(null);
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [])
+  }, [count]);  
 
   return (
     <>
@@ -62,7 +62,14 @@ function Chatbot() {
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
-        <input type="text" placeholder="Scrivi un messaggio..." style={inputChatStyle}/>
+      <input  type="text"  placeholder="Scrivi un messaggio..." 
+        style={{
+            backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#e6e6e6',
+            color: theme.palette.mode === 'dark' ? 'white' : 'black',
+            '::placeholder': {
+              color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray'
+            }
+        }}/>
         <button className='sendButton'>Invia</button>
       </div>
       </div>
