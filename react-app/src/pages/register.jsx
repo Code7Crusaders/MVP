@@ -70,7 +70,7 @@ const Register = () => {
   return (
     <div className="register-container">
       <form onSubmit={handleSubmit} className="register-form">
-        <h2>Registrazione</h2>
+        <h1>Registrazione</h1>
         {error && <div className="error-message">{error}</div>}
         
         <div className="form-group">
@@ -79,6 +79,7 @@ const Register = () => {
             type="text"
             name="username"
             value={formData.username}
+            placeholder='Inserisci il tuo username'
             onChange={handleInputChange}
             required
           />
@@ -90,6 +91,7 @@ const Register = () => {
             type="email"
             name="email"
             value={formData.email}
+            placeholder='Inserisci la tua email'
             onChange={handleInputChange}
             required
           />
@@ -101,6 +103,7 @@ const Register = () => {
             type="password"
             name="password"
             value={formData.password}
+            placeholder='Inserisci la tua password'
             onChange={handleInputChange}
             required
           />
@@ -112,6 +115,7 @@ const Register = () => {
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
+            placeholder='Reinserisci la password'
             onChange={handleInputChange}
             required
           />
@@ -123,6 +127,7 @@ const Register = () => {
             type="text"
             name="firstName"
             value={formData.firstName}
+            placeholder='Inserisci il tuo nome'
             onChange={handleInputChange}
             required
           />
@@ -134,6 +139,7 @@ const Register = () => {
             type="text"
             name="lastName"
             value={formData.lastName}
+            placeholder='Inserisci il tuo cognome'
             onChange={handleInputChange}
             required
           />
@@ -156,6 +162,7 @@ const Register = () => {
         <p className="login-link">
           Hai già un account? <Link to="/login">Accedi</Link>
         </p>
+        <p>* Campi Obbligatori</p>
       </form>
     </div>
   );
