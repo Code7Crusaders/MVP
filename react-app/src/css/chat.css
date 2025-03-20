@@ -38,7 +38,7 @@
             .btnsTop{
                 padding: 5px;
                 border-radius: 5px;
-                background-color: #5183fe;
+                background-color: #004097;
                 cursor: pointer;
             }
         }
@@ -58,7 +58,7 @@
             max-width: 70%;
             display: flex;
             gap: 10px;
-
+            color: white;
             
 
             &.own{
@@ -66,7 +66,7 @@
             
                 .texts{
                     p{
-                        background-color: #7fa3ff;
+                        background-color: #5183fe;
                         border: none;
                     }
                 }
@@ -91,7 +91,7 @@
             
                 p{
                     padding: 0.8em;
-                    background-color: rgb(137, 124, 220);
+                    background-color: slateblue;
                     border-radius: 10px;
                 }
 
@@ -136,7 +136,7 @@
         
 
         .sendButton{
-            background-color: #5183fe;
+            background-color: #004097;
             color:white;
             padding: 20px;
             border: none;
