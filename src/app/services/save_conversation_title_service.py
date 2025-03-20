@@ -1,5 +1,6 @@
 from app.usecases.save_conversation_title_useCase import SaveConversationTitleUseCase
 from app.ports.save_conversation_title_port import SaveConversationTitlePort
+from app.models.conversation_model import ConversationModel
 
 class SaveConversationTitleService(SaveConversationTitleUseCase):
     """
@@ -9,8 +10,8 @@ class SaveConversationTitleService(SaveConversationTitleUseCase):
         self.save_conversation_title_port = save_conversation_title_port
         
 
-    def save_conversation_title(self, conversation_id: int, title: str):
+    def save_conversation_title(self, conversation: ConversationModel) -> bool:
         """
         Save the title of a conversation.
         """
-        self.save_conversation_title_port.save_conversation_title(conversation_id, title)
+        self.save_conversation_title_port.save_conversation_title(conversation)

@@ -3,6 +3,6 @@ from app.models.conversation_model import ConversationModel
 
 class GetConversationUseCase(ABC):
     @abstractmethod
-    def get_conversation(self, conversation_id: int) -> ConversationModel:
+    def get_conversation(self, conversation: ConversationModel) -> ConversationModel:
         pass
 

@@ -8,7 +8,7 @@ class ConversationPostgresAdapter(GetConversationPort, SaveConversationTitlePort
     def __init__(self, conversation_postgres_repository: ConversationPostgresRepository):
         self.conversation_postgres_repository = conversation_postgres_repository
     
-    def get_conversation(self, conversation_id: int) -> ConversationModel:
+    def get_conversation(self, conversation: ConversationModel) -> ConversationModel:
         """
         Retrieve a conversation by its ID.
         Args:
@@ -17,10 +17,10 @@ class ConversationPostgresAdapter(GetConversationPort, SaveConversationTitlePort
             ConversationModel: The retrieved conversation.
         """
         try:
-            conversation = self.conversation_postgres_repository.get_conversation(conversation_id)
+            conversation = self.conversation_postgres_repository.get_conversation(conversation.get_id())
             return ConversationModel(
-                id=conversation.id,
-                title=conversation.title,
+                id=conversation.get_id(),
+                title=conversation.get_title(),
             )
         except Exception as e:
             raise e
@@ -43,7 +43,7 @@ class ConversationPostgresAdapter(GetConversationPort, SaveConversationTitlePort
         except Exception as e:
             raise e
 
-    def save_conversation_title(self, conversation_id: int, title: str):
+    def save_conversation_title(self, conversation: ConversationModel) -> bool:
         """
         Save the title of a conversation.
         Args:
@@ -51,7 +51,7 @@ class ConversationPostgresAdapter(GetConversationPort, SaveConversationTitlePort
             title (str): The new title of the conversation.
         """
         try:
-            self.conversation_postgres_repository.save_conversation_title(conversation_id, title)
+            self.conversation_postgres_repository.save_conversation_title(conversation)
         except Exception as e:
             raise e
 

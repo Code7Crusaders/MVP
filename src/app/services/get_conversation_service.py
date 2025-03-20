@@ -10,8 +10,8 @@ class GetConversationService(GetConversationUseCase):
         self.get_conversation_port = get_conversation_port
         
 
-    def get_conversation(self, conversation_id: int) -> ConversationModel:
+    def get_conversation(self, conversation: ConversationModel) -> ConversationModel:
         """
         Get the answer to a user's question.
         """
-        return self.get_conversation_port.get_conversation(conversation_id)
+        return self.get_conversation_port.get_conversation(conversation.get_id())

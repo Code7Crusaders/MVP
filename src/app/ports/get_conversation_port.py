@@ -7,11 +7,11 @@ class GetConversationPort(ABC):
     """
 
     @abstractmethod
-    def get_conversation(self, conversation_id: int) -> ConversationModel:
+    def get_conversation(self, conversation: ConversationModel) -> ConversationModel:
         """
-        Get a conversation by its ID.
+        Get a conversation by its model.
         Args:
-            conversation_id (int): The ID of the conversation.
+            conversation (ConversationModel): The conversation model.
         Returns:
             ConversationModel: The conversation model.
         """
