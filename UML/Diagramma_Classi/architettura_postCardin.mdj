@@ -37881,14 +37881,6 @@
 					]
 				},
 				{
-					"_type": "UMLClass",
-					"_id": "AAAAAAGVbSm54dUHXPM=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Class1"
-				},
-				{
 					"_type": "UMLInterface",
 					"_id": "AAAAAAGVbSnLvdaMhLU=",
 					"_parent": {
@@ -40201,24 +40193,6 @@
 				},
 				{
 					"_type": "UMLClass",
-					"_id": "AAAAAAGVbTgpKwmSKCk=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Class2",
-					"operations": [
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAGVbTiLTxiqTUA=",
-							"_parent": {
-								"$ref": "AAAAAAGVbTgpKwmSKCk="
-							},
-							"name": "save_message"
-						}
-					]
-				},
-				{
-					"_type": "UMLClass",
 					"_id": "AAAAAAGVbTwrIQ8xL94=",
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
@@ -40530,14 +40504,6 @@
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
 					"name": "chatReact"
-				},
-				{
-					"_type": "UMLClass",
-					"_id": "AAAAAAGVbVqBynQYQhM=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Class3"
 				},
 				{
 					"_type": "UMLClass",
@@ -43152,22 +43118,6 @@
 					]
 				},
 				{
-					"_type": "UMLInterface",
-					"_id": "AAAAAAGVbYCkL/sQFfU=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Interface3"
-				},
-				{
-					"_type": "UMLInterface",
-					"_id": "AAAAAAGVbYCkt/5FjBA=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Interface4"
-				},
-				{
 					"_type": "UMLClass",
 					"_id": "AAAAAAGVlBUKWtY7IaI=",
 					"_parent": {
@@ -45086,14 +45036,6 @@
 				},
 				{
 					"_type": "UMLInterface",
-					"_id": "AAAAAAGVpjGVaghOHOE=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Interface1"
-				},
-				{
-					"_type": "UMLInterface",
 					"_id": "AAAAAAGVpjGgyhylwTI=",
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
@@ -45664,14 +45606,6 @@
 							]
 						}
 					]
-				},
-				{
-					"_type": "UMLClass",
-					"_id": "AAAAAAGVpjgVtnw8nAc=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Class5"
 				},
 				{
 					"_type": "UMLClass",
@@ -46334,22 +46268,6 @@
 				},
 				{
 					"_type": "UMLClass",
-					"_id": "AAAAAAGVqks5uKsoKGg=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "ciao"
-				},
-				{
-					"_type": "UMLClass",
-					"_id": "AAAAAAGVqkt1ZsnFqn4=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "ciao5"
-				},
-				{
-					"_type": "UMLClass",
 					"_id": "AAAAAAGVibSHOejUwQc=",
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
@@ -46467,30 +46385,6 @@
 							"type": "datetime"
 						}
 					]
-				},
-				{
-					"_type": "UMLClass",
-					"_id": "AAAAAAGViy5VorW3lO0=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Class1"
-				},
-				{
-					"_type": "UMLClass",
-					"_id": "AAAAAAGViy5YqrX+LHo=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Class2"
-				},
-				{
-					"_type": "UMLClass",
-					"_id": "AAAAAAGViy5a8rZFe9g=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Class3"
 				},
 				{
 					"_type": "UMLClass",
@@ -46804,14 +46698,6 @@
 							"type": "List<ConversationEntity>"
 						}
 					]
-				},
-				{
-					"_type": "UMLClass",
-					"_id": "AAAAAAGVi0l+aTlrtZY=",
-					"_parent": {
-						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
-					},
-					"name": "Class4"
 				},
 				{
 					"_type": "UMLClass",
