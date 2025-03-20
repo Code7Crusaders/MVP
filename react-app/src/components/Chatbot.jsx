@@ -1,13 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import '../css/chat.css';
 import MuccaIcon from '../assets/mucca.jpg';
-import addIcon from '../assets/addfile.svg';
-import saveIcon from '../assets/save.svg';
-import deleteIcon from '../assets/delete.svg';
-import answIcon from '../assets/answ.svg';
 import { useTheme } from '@mui/material/styles';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import SendIcon from '@mui/icons-material/Send';
+import AddIcon from '@mui/icons-material/Add';
+import QuickreplyIcon from '@mui/icons-material/Quickreply';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 function Chatbot() {
   const [count, setCount] = useState(0);
@@ -25,7 +26,7 @@ function Chatbot() {
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
   }
 
-  const feedbackButtons = {
+  const buttons = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgb(233, 233, 233)' : '#333',
     color: theme.palette.mode === 'dark' ? '#333' : 'white',
   }
@@ -43,10 +44,10 @@ function Chatbot() {
           <p>Prova di un titolo per questa chat</p>
         </div>
         <div className='icons' >
-          <img src={addIcon} className='btnsTop' alt="aggiungi un template" title='Aggiungi Template'/>
-          <img src={answIcon} className='btnsTop' alt="seleziona template" title='Seleziona domanda'/>
-          <img src={saveIcon} className='btnsTop' alt="Salva la chat" title='Salva Chat'/>
-          <img src={deleteIcon} className='btnsTop' alt="Elimina la chat" title='Elimina Chat'/>
+          <button className='btnsTop' alt="aggiungi un template" title='Aggiungi Template' style={buttons}><AddIcon /></button>
+          <button className='btnsTop' alt="seleziona template" title='Seleziona domanda' style={buttons}><QuickreplyIcon /></button>
+          <button className='btnsTop' alt="Salva la chat" title='Salva Chat' style={buttons}><SaveIcon /></button>
+          <button className='btnsTop' alt="Elimina la chat" title='Elimina Chat' style={buttons}><DeleteForeverIcon /></button>
         </div>
       </div>
     
@@ -57,8 +58,8 @@ function Chatbot() {
             <p>Ciao User, come posso esserti utile?</p>
             <span style={timeSpan}>1 min ago</span>
             <div className="feedback">
-              <button className='feedbackButton' style={feedbackButtons}><ThumbUpIcon /></button>
-              <button className='feedbackButton' style={feedbackButtons}><ThumbDownIcon /></button>
+              <button className='feedbackButton' style={buttons}><ThumbUpIcon /></button>
+              <button className='feedbackButton' style={buttons}><ThumbDownIcon /></button>
             </div>
           </div>
         </div>
@@ -74,8 +75,8 @@ function Chatbot() {
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             <span style={timeSpan}>1 min ago</span>
             <div className="feedback">
-              <button className='feedbackButton' style={feedbackButtons}><ThumbUpIcon /></button>
-              <button className='feedbackButton' style={feedbackButtons}><ThumbDownIcon /></button>
+              <button className='feedbackButton' style={buttons}><ThumbUpIcon /></button>
+              <button className='feedbackButton' style={buttons}><ThumbDownIcon /></button>
             </div>
           </div>
         </div>
@@ -83,7 +84,7 @@ function Chatbot() {
       </div>
       <div className="bottom">
       <input  type="text"  placeholder="Scrivi un messaggio..." style={inputChatStyle} />
-        <button className='sendButton'>Invia</button>
+        <button className='sendButton' style={buttons}><SendIcon  /></button>
       </div>
       </div>
     </>

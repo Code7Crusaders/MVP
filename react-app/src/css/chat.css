@@ -29,17 +29,12 @@
         .icons{
             display: flex;
             gap: 18px;
-            
-            img{
-                width: 40px;
-                height: 40px;
-            }
 
             .btnsTop{
-                padding: 5px;
+                padding: 7px;
                 border-radius: 5px;
-                background-color: #004097;
                 cursor: pointer;
+                border: none;
             }
         }
     }
@@ -151,14 +146,11 @@
         
 
         .sendButton{
-            background-color: #004097;
-            color:white;
-            padding: 20px;
+            padding: 14px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 18px;
-            font-weight: 550;
         }
     }
 
