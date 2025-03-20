@@ -1,7 +1,7 @@
 from datetime import datetime
 
 class SupportMessageModel:
-    def __init__(self, user_id: int, description: str, status: bool, subject: str, created_at: datetime, id: int = None):
+    def __init__(self, id: int = None, user_id: int = None, description: str = None, status: bool = None, subject: str = None, created_at: datetime = None):
         self.id = id
         self.user_id = user_id
         self.description = description
