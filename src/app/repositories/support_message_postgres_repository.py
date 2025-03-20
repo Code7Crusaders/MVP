@@ -72,7 +72,7 @@ class SupportMessagePostgresRepository:
                 ]
         
 
-    def save_support_message(self, SupportMessageEntity: SupportMessageEntity) -> int:
+    def save_support_message(self, support_message: SupportMessageEntity) -> int:
         '''
         Saves a support message in the PostgreSQL database.
         Args:
@@ -90,7 +90,7 @@ class SupportMessagePostgresRepository:
         """
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(query, (SupportMessageEntity.get_user_id(), SupportMessageEntity.get_description(), SupportMessageEntity.get_status(), SupportMessageEntity.get_subject(), SupportMessageEntity.get_created_at() ))
+                cursor.execute(query, (support_message.get_user_id(), support_message.get_description(), support_message.get_status(), support_message.get_subject(), support_message.get_created_at() ))
                 conn.commit()
                 return cursor.fetchone()[0]
             

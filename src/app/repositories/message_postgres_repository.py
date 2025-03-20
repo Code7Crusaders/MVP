@@ -20,7 +20,7 @@ class MessagePostgresRepository:
         '''
         return psycopg2.connect(**self.__db_config)
 
-    def get_message(self, message_id: int) -> MessageEntity:
+    def get_message(self, message: MessageEntity) -> MessageEntity:
         '''
         Retrieves a message from the PostgreSQL database by its ID.
         Args:
@@ -38,15 +38,14 @@ class MessagePostgresRepository:
         """
         with self.__connect() as connection:  # Call the method to get the connection object
             with connection.cursor() as cursor:
-                cursor.execute(select_message_query, (message_id,))
+                cursor.execute(select_message_query, (message.get_id(),))
                 result = cursor.fetchone()
                 if result:
                     italy_tz = pytz.timezone('Europe/Rome')  # Define the Italy timezone
-                    created_at_with_tz = result[2].astimezone(italy_tz)  # Convert to Italy timezone
                     message = MessageEntity(
                         id=result[0],
                         text=result[1],
-                        created_at=created_at_with_tz,
+                        created_at=result[2],
                         user_id=result[3],
                         conversation_id=result[4],
                         rating=result[5]

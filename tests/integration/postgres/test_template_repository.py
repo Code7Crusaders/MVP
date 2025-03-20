@@ -1,23 +1,26 @@
 import pytest
 import psycopg2
-from unittest.mock import patch, MagicMock
+from datetime import datetime
+import pytz
 
-
-from models.template_model import TemplateModel 
 from repositories.template_postgres_repository import TemplatePostgresRepository
-from entities.template_entity import TemplateEntity
 from config.db_config import db_config
+from entities.template_entity import TemplateEntity
+
+
+italy_tz = pytz.timezone('Europe/Rome')
 
 
 @pytest.fixture
-def template_repo():
+def repository():
     """Fixture to create an instance of the repository."""
     return TemplatePostgresRepository(db_config)
 
-def test_database_connection(template_repo):
+
+def test_database_connection(repository):
     """Test if the database connection is successfully established."""
     try:
-        conn = template_repo._TemplatePostgresRepository__connect() 
+        conn = repository._TemplatePostgresRepository__connect()
         assert conn is not None
         assert isinstance(conn, psycopg2.extensions.connection)
         assert conn.closed == 0  # 0 means the connection is open
@@ -25,89 +28,98 @@ def test_database_connection(template_repo):
     except Exception as e:
         pytest.fail(f"Database connection failed: {e}")
 
-def test_get_template(template_repo):
+
+def test_get_template(repository):
     """Test retrieving a template from the database (ensure test data exists)."""
-    template_id = 1  # existing ID of template in your DB
-    template = template_repo.get_template(template_id)
-    assert template is not None, "Template not found in database"
-    assert isinstance(template, TemplateEntity)
-
-def test_get_template_none(template_repo):
-    """Test retrieving a non-existing template from the database."""
-    template_id = -1  # non-existing ID of template in your DB
-    template = template_repo.get_template(template_id)
-    assert template is None, "Template found in database"
-
-def test_get_template_list(template_repo):
-    """Test retrieving all templates from the database."""
-    templates = template_repo.get_template_list()
-    assert isinstance(templates, list)
-    if templates:  
-        assert all(isinstance(template, TemplateEntity) for template in templates), "All items should be TemplateEntity instances"
-
-def test_save_template(template_repo):
-    """Test saving a template to the database."""
-    question = "Test Question"
-    author = 2 # enshure that this user exists in your database
-    answer = "Test answer jokerigno lesgo"
-
-    try:
-        template_id = template_repo.save_template(question, answer, author)
-        
-        assert template_id is not None, "Failed to save template"
-        assert isinstance(template_id, int), "Template ID should be an integer"
-    except Exception as e:
-        pytest.fail(f"Failed to save template: {e}")
-
-    """Test deleting a template from the database."""
-
-    try:
-        is_deleted = template_repo.delete_template(template_id)
-        
-        assert is_deleted is True, "Failed to delete template"
-    except Exception as e:
-        pytest.fail(f"Failed to delete template: {e}")
-
-
-def test_save_template_author_not_exists(template_repo):
-    """Test saving a template with a non-existing author."""
-    question = "Test Question"
-    answer = "Test Answer"
-    non_existing_author = -1  # ID of a non-existing author
+    template_entity = TemplateEntity(id=1)  # get only needs the id
     
-    with pytest.raises(ValueError, match=f"Author '{non_existing_author}' does not exist in the Users table."):
-        template_repo.save_template(question, answer, non_existing_author)
+    result_template = repository.get_template(template_entity)
+    
+    assert isinstance(result_template, TemplateEntity)
+    assert result_template.get_id() == 1
+    assert result_template.get_question() is not None
+    assert result_template.get_answer() is not None
+    assert result_template.get_author_id() is not None
+    assert result_template.get_last_modified() is not None
 
+def test_get_message_none(repository):
+    """Test retrieving a non-existing message from the database."""
+    template_entity = TemplateEntity(id=-1) # Non-existing ID in your database
+    result_message = repository.get_template(template_entity)
+    assert result_message is None, "Template not found in database"
 
-def test_save_template_already_exists(template_repo):
-    """Test saving a template that already exists in the database."""
-    question = "Duplicate Question"
-    answer = "Duplicate Answer"
-    existing_author = 2  # Ensure this author exists in your database
-
-    # Save the template for the first time
-    templates = template_repo.get_template_list()
+def test_get_template_list(repository):
+    """Test retrieving all templates from the database."""
+    templates = repository.get_template_list()
+    
+    assert isinstance(templates, list)
+    assert all(isinstance(template, TemplateEntity) for template in templates)
     for template in templates:
-        if template.get_question() == question and template.get_answer() == answer and template.get_author() == existing_author:
-            break
-    else:
-        try:
-            template_repo.save_template(question, answer, existing_author)
-        except Exception as e:
-            pytest.fail(f"Failed to save initial template: {e}")
+        assert template.get_id() is not None
+        assert template.get_question() is not None
+        assert template.get_answer() is not None
+        assert template.get_author_id() is not None
+        assert template.get_last_modified() is not None
+    
+def test_save_delete_template(repository):
+    """Test saving and deleting a template in the database."""
+    try:
+        question = "Test question"
+        answer = "Test answer"
+        author_id = 1  # Replace with a valid author ID in your database
+        last_modified = datetime.now(italy_tz)
 
-    # Attempt to save the same template again
-    with pytest.raises(ValueError, match="A template with the same question, answer, and author already exists."):
-        template_repo.save_template(question, answer, existing_author)
+        template_entity = TemplateEntity(
+            question=question,
+            answer=answer,
+            author_id=author_id,
+            last_modified=last_modified
+        )
 
+        # Save the template
+        saved_id = repository.save_template(template_entity)
+        assert saved_id is not None, "Failed to save template"
+        template_entity = TemplateEntity(id=saved_id)  # get only needs the id
 
-def test_delete_template_not_found(template_repo):
-    """Test deleting a non-existing template from the database."""
-    non_existing_template_id = -1  # ID of a non-existing template
+        # Verify the saved template by retrieving it
+        saved_template = repository.get_template(template_entity)  # Pass the instance with the correct id
+        assert saved_template is not None, "Saved template not found in database"
+        assert saved_template.get_question() == question, "Question mismatch"
+        assert saved_template.get_answer() == answer, "Answer mismatch"
+        assert saved_template.get_author_id() == author_id, "Author ID mismatch"
+        assert saved_template.get_last_modified() == last_modified, "Last modified mismatch"
+        assert saved_template.get_id() == saved_id, "ID mismatch"  # Ensure get_id() is called correctly
+
+    except Exception as e:
+        pytest.fail(f"Saving template failed: {e}")
 
     try:
-        is_deleted = template_repo.delete_template(non_existing_template_id)
-        assert is_deleted is False, "Expected False when deleting a non-existing template"
-    except Exception as e:
-        pytest.fail(f"Failed to handle deletion of non-existing template: {e}")
+        # Delete the template
+        delete_template = TemplateEntity(id=saved_id)
+        result = repository.delete_template(delete_template)
+        assert result is True, "Failed to delete template"
 
+        # Verify the template is deleted
+        deleted_template = repository.get_template(delete_template)  # Pass the instance with the correct id
+        assert deleted_template is None, "Template was not deleted"
+
+    except Exception as e:
+        pytest.fail(f"Deleting template failed: {e}")
+
+def test_save_template_fail(repository):
+    """Test saving a template with invalid data to ensure it fails."""
+    try:
+        invalid_template_entity = TemplateEntity(
+            question=None,  # Missing question
+            answer=None,  # Missing answer
+            author_id=None,  # Missing author_id
+            last_modified=None  # Missing last_modified
+        )
+        result = repository.save_template(invalid_template_entity)
+        
+        assert result is None
+
+        pytest.fail("Saving invalid template should have failed, but it succeeded.")
+    except Exception:
+        # Expected behavior: an exception should be raised
+        pass

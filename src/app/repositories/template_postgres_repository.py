@@ -18,7 +18,7 @@ class TemplatePostgresRepository:
         '''
         return psycopg2.connect(**self.__db_config)
 
-    def get_template(self, template_id: int) -> TemplateEntity:
+    def get_template(self, template: TemplateEntity) -> TemplateEntity:
         '''
         Retrieves a template from the PostgreSQL database by its ID.
         Args:
@@ -32,10 +32,10 @@ class TemplatePostgresRepository:
         query = "SELECT id, question, answer, author, last_modified FROM Templates WHERE id = %s;"
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(query, (template_id,))
+                cursor.execute(query, (template.get_id(),))
                 result = cursor.fetchone()
                 if result:
-                    return TemplateEntity(id=result[0], question=result[1], answer=result[2], author=result[3], last_modified=result[4])
+                    return TemplateEntity(id=result[0], question=result[1], answer=result[2], author_id=result[3], last_modified=result[4])
                 else:
                     return None
         
@@ -52,46 +52,35 @@ class TemplatePostgresRepository:
             with conn.cursor() as cursor:
                 cursor.execute(query)
                 rows = cursor.fetchall()
-                return [TemplateEntity(id=row[0], question=row[1], answer=row[2], author=row[3], last_modified=row[4]) for row in rows]
+                return [TemplateEntity(id=row[0], question=row[1], answer=row[2], author_id=row[3], last_modified=row[4]) for row in rows]
         
-    
-    def save_template(self, question: str, answer: int, author: str) -> int:
+    def save_template(self, template: TemplateEntity) -> int:
         '''
         Saves a new template to the PostgreSQL database.
         Args:
-            question (str): The question of the template.
-            answer (str): The answer of the template.
-            author (str): The author of the template.
+            template (TemplateEntity): The template entity to save.
         Returns:
             int: The ID of the newly created template.
         Raises:
             psycopg2.Error: If an error occurs while saving the template in the PostgreSQL database.
-            ValueError: If the author does not exist in the Users table or if the template already exists.
         '''
-        
-        # Ensure the author exists in the Users table
-        check_author_query = "SELECT id FROM Users WHERE id = %s;"
-        check_template_query = "SELECT id FROM Templates WHERE question = %s AND answer = %s AND author = %s;"
-        insert_query = "INSERT INTO Templates (question, answer, author) VALUES (%s, %s, %s) RETURNING id;"
+        query = """
+            INSERT INTO Templates (question, answer, author, last_modified)
+            VALUES (%s, %s, %s, %s)
+        RETURNING id;
+        """
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(check_author_query, (author,))
-                author_exists = cursor.fetchone()
-                if not author_exists:
-                    raise ValueError(f"Author '{author}' does not exist in the Users table.")
-                    
-                # Check if the template already exists
-                cursor.execute(check_template_query, (question, answer, author))
-                template_exists = cursor.fetchone()
-                if template_exists:
-                    raise ValueError("A template with the same question, answer, and author already exists.")
-                    
-                cursor.execute(insert_query, (question, answer, author))
-                new_template_id = cursor.fetchone()[0]
+                cursor.execute(query, (
+                    template.get_question(), 
+                    template.get_answer(), 
+                    template.get_author_id(), 
+                    template.get_last_modified()
+                ))
                 conn.commit()
-                return new_template_id
-        
-    def delete_template(self, template_id: int) -> bool:
+                return cursor.fetchone()[0]
+            
+    def delete_template(self, template: TemplateEntity) -> bool:
         '''
         Deletes a template from the PostgreSQL database based on its ID.
         Args:
@@ -105,7 +94,7 @@ class TemplatePostgresRepository:
         delete_query = "DELETE FROM Templates WHERE id = %s;"
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(delete_query, (template_id,))
+                cursor.execute(delete_query, (template.get_id(),))
             if cursor.rowcount > 0:
                 conn.commit()
                 return True

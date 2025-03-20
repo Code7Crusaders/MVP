@@ -34,7 +34,7 @@ def test_get_message(repository):
     """Test retrieving a message from the database (ensure test data exists)."""
     message_entity = MessageEntity(id=1)  # get only needs the id
     
-    result_message = repository.get_message(message_entity.get_id())
+    result_message = repository.get_message(message_entity)
     
     assert isinstance(result_message, MessageEntity)
     assert result_message.get_id() == 1
@@ -47,8 +47,8 @@ def test_get_message(repository):
 
 def test_get_message_none(repository):
     """Test retrieving a non-existing message from the database."""
-    message_id = -1  # Non-existing ID in your database
-    result_message = repository.get_message(message_id)
+    message_entity = MessageEntity(id=-1) # Non-existing ID in your database
+    result_message = repository.get_message(message_entity)
 
     assert result_message is None, "Message not found in database"
 
@@ -96,16 +96,16 @@ def test_save_delete_message(repository):
         # Save the message
         saved_id = repository.save_message(message_entity)
         assert saved_id is not None, "Failed to save message"
+        message_entity = MessageEntity(id=saved_id)  # get only needs the id
 
         # Verify the saved message by retrieving it
-        saved_message = repository.get_message(saved_id)
+        saved_message = repository.get_message(message_entity)  # Pass the instance with the correct id
         assert saved_message is not None, "Saved message not found in database"
         assert saved_message.get_text() == text, "Text mismatch"
-        assert saved_message.get_created_at(), "Created at mismatch"
-        assert saved_message.get_user_id() == user_id, "User ID mismatch"
         assert saved_message.get_created_at() == created_at, "Created at mismatch"
+        assert saved_message.get_user_id() == user_id, "User ID mismatch"
         assert saved_message.get_rating() == rating, "Rating mismatch"
-        assert saved_message.get_id() == saved_id, "ID mismatch"
+        assert saved_message.get_id() == saved_id, "ID mismatch"  # Ensure get_id() is called correctly
 
     except Exception as e:
         pytest.fail(f"Saving message failed: {e}")
@@ -117,7 +117,7 @@ def test_save_delete_message(repository):
         assert result is True, "Failed to delete message"
 
         # Verify the message is deleted
-        deleted_message = repository.get_message(saved_id)
+        deleted_message = repository.get_message(delete_message)  # Pass the instance with the correct id
         assert deleted_message is None, "Message was not deleted"
 
     except Exception as e:

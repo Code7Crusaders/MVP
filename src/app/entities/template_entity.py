@@ -1,7 +1,7 @@
 from datetime import datetime
 
 class TemplateEntity:
-    def __init__(self, question: str, answer: str, author_id: int, last_modified: datetime, id: int = None):
+    def __init__(self, id: int = None, question: str = None, answer: str = None, author_id: int = None, last_modified: datetime = None):
         self.id = id
         self.question = question
         self.answer = answer
