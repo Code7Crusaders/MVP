@@ -13,14 +13,16 @@ const Login = () => {
   };
 
   return (
+    <div className='overlay'>
     <div className="login-container">
       <form onSubmit={handleLogin} className="login-form">
-        <h2>Login</h2>
+        <h1>Login</h1>
         <div className="form-group">
           <label htmlFor="username">Username</label>
           <input
             type="text"
             id="username"
+            placeholder='Inserisci il tuo username'
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -31,6 +33,7 @@ const Login = () => {
           <input
             type="password"
             id="password"
+            placeholder='Inserisci la tua password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -41,6 +44,7 @@ const Login = () => {
           Non hai un account? <a href="/register">Registrati</a>
         </p>
       </form>
+    </div>
     </div>
   );
 };

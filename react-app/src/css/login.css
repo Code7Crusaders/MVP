@@ -1,71 +1,69 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+.login-container {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  height: auto;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
   
-  .login-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-  }
+.login-form h1 {
+  margin-bottom: 20px;
+  color: white;
+  font-weight: bold;
+}
   
-  .login-form h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
   
-  .form-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: white;
+}
   
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
-  }
+.form-group > input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-group > input:focus {
+  outline: none;
+  border-color: slateblue;
+}
   
-  .form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
+.login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3498db;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
   
-  .login-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
+.login-button:hover {
+  background-color: #2980b9;
+}
   
-  .login-button:hover {
-    background-color: #0056b3;
-  }
+.register-link {
+  margin-top: 15px;
+  color: white;
+}
   
-  .register-link {
-    margin-top: 15px;
-    color: #555;
-  }
+.register-link a {
+  color: #007bff;
+  text-decoration: none;
+}
   
-  .register-link a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .register-link a:hover {
-    text-decoration: underline;
-  }
+.register-link a:hover {
+  text-decoration: underline;
+}
