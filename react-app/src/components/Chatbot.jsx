@@ -4,12 +4,19 @@ import MuccaIcon from '../assets/mucca.jpg';
 import addIcon from '../assets/addfile.svg';
 import saveIcon from '../assets/save.svg';
 import deleteIcon from '../assets/delete.svg';
-import settingIcon from '../assets/setting.svg';
 import answIcon from '../assets/answ.svg';
+import { useTheme } from '@mui/material/styles';
+
 
 function Chatbot() {
   const [count, setCount] = useState(0);
-
+  
+  const theme = useTheme();
+  
+  const inputChatStyle = {
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#e6e6e6',
+    textcolor: theme.palette.mode === 'dark' ? 'white' : 'black', 
+  };
 
   const endRef = useRef(null);
   useEffect(() => {
@@ -20,18 +27,14 @@ function Chatbot() {
     <>
       <div className="chat">
       <div className="top">
-        <div className="user">
-          <img src={MuccaIcon} alt="icona di giorgione"/>
-          <div className="texts">
-            <span>Giorgione</span>
-            <p>Lorem ipsum dolor sit amet</p>
-          </div>
+        <div className="title">
+          <p>Prova di un titolo per questa chat</p>
         </div>
-        <div className='icons'>
-          <img src={addIcon} alt="aggiungi un template"/>
-          <img src={answIcon} alt="seleziona template"/>
-          <img src={saveIcon} alt="Salva la chat"/>
-          <img src={deleteIcon} alt="Elimina la chat"/>
+        <div className='icons' >
+          <img src={addIcon} className='btnsTop' alt="aggiungi un template"/>
+          <img src={answIcon} className='btnsTop' alt="seleziona template"/>
+          <img src={saveIcon} className='btnsTop' alt="Salva la chat"/>
+          <img src={deleteIcon} className='btnsTop' alt="Elimina la chat"/>
         </div>
       </div>
     
@@ -59,8 +62,8 @@ function Chatbot() {
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
-        <input type="text" placeholder="Scrivi un messaggio..."/>
-        <button className="sendButton">Invia</button>
+        <input type="text" placeholder="Scrivi un messaggio..." style={inputChatStyle}/>
+        <button className='sendButton'>Invia</button>
       </div>
       </div>
     </>

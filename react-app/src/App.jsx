@@ -110,7 +110,7 @@ DemoPageContent.propTypes = {
 
 function DashboardLayoutBranding(props) {
   const { window } = props;
-
+  
   const router = useDemoRouter('/chatbot');
   const demoWindow = window !== undefined ? window() : undefined;
 

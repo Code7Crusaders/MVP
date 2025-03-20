@@ -8,51 +8,38 @@
     width: 100%;
 
     .top{
-        padding: 20px;
+        padding: 0 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #dddddd35;
 
-        .user{
+        .title{
             display: flex;
             align-items: center;
             gap: 20px;
             flex-direction: row;
 
-            img{
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                object-fit: cover;
-                border: 2px solid slateblue;
-            }
-
-            .texts{
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
-
-                span{
-                    font-size: 18px;
-                    font-weight: bold;
-                }
-
-                p{
-                    font-size: 14px;
-                    font-weight: 300;
-                    color: #a5a5a5;
-                }
+            p{
+                font-size: 20px;
+                font-weight: 600;
             }
         }
 
         .icons{
             display: flex;
-            gap: 20px;
+            gap: 18px;
             
             img{
-                width: 30px;
-                height: 30px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .btnsTop{
+                padding: 5px;
+                border-radius: 5px;
+                background-color: #5183fe;
+                cursor: pointer;
             }
         }
     }
@@ -79,7 +66,7 @@
             
                 .texts{
                     p{
-                        background-color: #5183fe;
+                        background-color: #7fa3ff;
                         border: none;
                     }
                 }
@@ -104,7 +91,7 @@
             
                 p{
                     padding: 0.8em;
-                    background-color: slateblue;
+                    background-color: rgb(137, 124, 220);
                     border-radius: 10px;
                 }
 
@@ -138,13 +125,16 @@
 
         input{
             flex: 1;
-            background-color: rgba(17, 25, 40, 0.5);
             border: none;
             outline: none;
             color: white;
             padding: 20px;
             border-radius: 10px;
             font-size: 16px;
+        }
+
+        input::placeholder{
+            color: white;
         }
 
         .sendButton{
@@ -154,8 +144,11 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: 550;
         }
     }
+
+    
 }
 
