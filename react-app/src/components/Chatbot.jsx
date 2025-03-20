@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
 import '../css/chat.css';
 import MuccaIcon from '../assets/mucca.jpg';
+import addIcon from '../assets/addfile.svg';
+import saveIcon from '../assets/save.svg';
+import deleteIcon from '../assets/delete.svg';
 
 function Chatbot() {
   const [count, setCount] = useState(0);
@@ -21,6 +24,11 @@ function Chatbot() {
             <span>Giorgione</span>
             <p>Lorem ipsum dolor sit amet</p>
           </div>
+        </div>
+        <div className='icons'>
+          <img src={addIcon} />
+          <img src={saveIcon} />
+          <img src={deleteIcon}/>
         </div>
       </div>
     
