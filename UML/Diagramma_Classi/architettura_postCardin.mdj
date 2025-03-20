@@ -26056,7 +26056,7 @@
 											"top": 1024,
 											"width": 375,
 											"height": 13,
-											"text": "+get_conversations(): list<ConversationModel>",
+											"text": "+get_conversations(): list<ConversationEntity>",
 											"horizontalAlignment": 0
 										},
 										{
@@ -34811,7 +34811,7 @@
 											"top": 200,
 											"width": 273.060546875,
 											"height": 13,
-											"text": "+get_conversations(): list<ConversationModel>",
+											"text": "+get_conversations(): list<ConversationDTO>",
 											"horizontalAlignment": 0
 										}
 									],
@@ -43375,7 +43375,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGVskLe2WrQYGo="
 									},
-									"type": "list<ConversationModel>",
+									"type": "list<ConversationEntity>",
 									"direction": "return"
 								}
 							]
@@ -45065,7 +45065,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGVskBBoTdj9nE="
 									},
-									"type": "list<ConversationModel>",
+									"type": "list<ConversationDTO>",
 									"direction": "return"
 								}
 							]
