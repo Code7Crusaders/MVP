@@ -6,7 +6,8 @@ import saveIcon from '../assets/save.svg';
 import deleteIcon from '../assets/delete.svg';
 import answIcon from '../assets/answ.svg';
 import { useTheme } from '@mui/material/styles';
-
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 function Chatbot() {
   const [count, setCount] = useState(0);
@@ -22,6 +23,11 @@ function Chatbot() {
 
   const timeSpan = {
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
+  }
+
+  const feedbackButtons = {
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgb(233, 233, 233)' : '#333',
+    color: theme.palette.mode === 'dark' ? '#333' : 'white',
   }
 
   const endRef = useRef(null);
@@ -50,6 +56,10 @@ function Chatbot() {
           <div className="texts">
             <p>Ciao User, come posso esserti utile?</p>
             <span style={timeSpan}>1 min ago</span>
+            <div className="feedback">
+              <button className='feedbackButton' style={feedbackButtons}><ThumbUpIcon /></button>
+              <button className='feedbackButton' style={feedbackButtons}><ThumbDownIcon /></button>
+            </div>
           </div>
         </div>
         <div className="message own"> 
@@ -63,6 +73,10 @@ function Chatbot() {
           <div className="texts">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             <span style={timeSpan}>1 min ago</span>
+            <div className="feedback">
+              <button className='feedbackButton' style={feedbackButtons}><ThumbUpIcon /></button>
+              <button className='feedbackButton' style={feedbackButtons}><ThumbDownIcon /></button>
+            </div>
           </div>
         </div>
         <div ref={endRef}></div>

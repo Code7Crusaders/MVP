@@ -59,8 +59,8 @@
             display: flex;
             gap: 10px;
             color: white;
+            position: relative;
             
-
             &.own{
                 align-self: flex-end;
             
@@ -99,6 +99,21 @@
                     font-size: 13px;
                 }
             }
+
+            .feedback {
+                position: absolute;
+                bottom: 15px;
+                right: 0;
+                display: flex;
+                gap: 3px;                
+                button{
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+                
+            }
+            
         }
     }
 
