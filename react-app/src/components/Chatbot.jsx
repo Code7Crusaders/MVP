@@ -4,6 +4,8 @@ import MuccaIcon from '../assets/mucca.jpg';
 import addIcon from '../assets/addfile.svg';
 import saveIcon from '../assets/save.svg';
 import deleteIcon from '../assets/delete.svg';
+import settingIcon from '../assets/setting.svg';
+import answIcon from '../assets/answ.svg';
 
 function Chatbot() {
   const [count, setCount] = useState(0);
@@ -26,9 +28,10 @@ function Chatbot() {
           </div>
         </div>
         <div className='icons'>
-          <img src={addIcon} />
-          <img src={saveIcon} />
-          <img src={deleteIcon}/>
+          <img src={addIcon} alt="aggiungi un template"/>
+          <img src={answIcon} alt="seleziona template"/>
+          <img src={saveIcon} alt="Salva la chat"/>
+          <img src={deleteIcon} alt="Elimina la chat"/>
         </div>
       </div>
     
