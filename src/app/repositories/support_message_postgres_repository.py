@@ -4,35 +4,34 @@ from entities.support_message_entity import SupportMessageEntity
 class SupportMessagePostgresRepository:
     def __init__(self, db_config: dict):
         '''
-        Initializes the PostgresRepository with the given database configuration.
+        Initializes the repository with the given database configuration.
         Args:
-            db_config (dict): The configuration dictionary for the PostgreSQL database.
+            db_config (dict): A dictionary containing the PostgreSQL database configuration parameters.
         '''
         self.__db_config = db_config
 
     def __connect(self):
         '''
-        Establishes a new connection to the PostgreSQL database.
+        Creates and returns a new connection to the PostgreSQL database.
         Returns:
-            psycopg2.extensions.connection: The connection object to the PostgreSQL database.
+            psycopg2.extensions.connection: A connection object to interact with the PostgreSQL database.
         '''
         return psycopg2.connect(**self.__db_config)
 
-    def get_support_message(self, message_id: int) -> SupportMessageEntity:
+    def get_support_message(self, support_message: SupportMessageEntity) -> SupportMessageEntity:
         '''
-        Retrieves a support message from the PostgreSQL database by its ID.
+        Retrieves a support message from the PostgreSQL database by its entity.
         Args:
-            message_id (int): The ID of the support message to retrieve.
+            support_message (SupportMessageEntity): The support message entity containing the ID to retrieve.
         Returns:
-            SupportMessageEntity: The retrieved support message.
+            SupportMessageEntity: The retrieved support message, or None if not found.
         Raises:
             psycopg2.Error: If an error occurs while retrieving the support message from the PostgreSQL database.
         '''
-        
         query = "SELECT * FROM Support WHERE id = %s;"
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(query, (message_id,))
+                cursor.execute(query, (support_message.get_id(),))
                 result = cursor.fetchone()
                 if result:
                     return SupportMessageEntity(
@@ -50,7 +49,7 @@ class SupportMessagePostgresRepository:
         '''
         Retrieves all support messages from the PostgreSQL database.
         Returns:
-            list[SupportMessageEntity]: A list of support messages.
+            list[SupportMessageEntity]: A list of all retrieved support messages.
         Raises:
             psycopg2.Error: If an error occurs while retrieving the support messages from the PostgreSQL database.
         '''
@@ -73,14 +72,11 @@ class SupportMessagePostgresRepository:
                 ]
         
 
-    def save_support_message(self, user_id: int, description: str, status: str, subject: str):
+    def save_support_message(self, SupportMessageEntity: SupportMessageEntity) -> int:
         '''
         Saves a support message in the PostgreSQL database.
         Args:
-            user_id (int): The ID of the user.
-            description (str): The description of the support message.
-            status (str): The status of the support message.
-            subject (str): The subject of the support message.
+            SupportMessageEntity (SupportMessageEntity): The support message entity to save.
         Returns:
             int: The ID of the saved support message.
         Raises:
@@ -89,28 +85,29 @@ class SupportMessagePostgresRepository:
         
         query = """
             INSERT INTO Support (user_id, description, status, subject, created_at)
-            VALUES (%s, %s, %s::boolean, %s, NOW())
+            VALUES (%s, %s, %s::boolean, %s, %s)
             RETURNING id;
         """
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(query, (user_id, description, status, subject))
+                cursor.execute(query, (SupportMessageEntity.get_user_id(), SupportMessageEntity.get_description(), SupportMessageEntity.get_status(), SupportMessageEntity.get_subject(), SupportMessageEntity.get_created_at() ))
                 conn.commit()
                 return cursor.fetchone()[0]
             
-    def delete_support_message(self, message_id: int)-> bool:
+    def delete_support_message(self, support_message : SupportMessageEntity)-> bool:
         '''
         Deletes a support message from the PostgreSQL database by its ID.
         Args:
-            message_id (int): The ID of the support message to delete.
+            support_message (SupportMessageEntity): The support message entity to delete.
+        Returns:
+            bool: True if the support message was successfully deleted, False otherwise.
         Raises:
             psycopg2.Error: If an error occurs while deleting the support message from the PostgreSQL database.
         '''
-        
         query = "DELETE FROM Support WHERE id = %s;"
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(query, (message_id,))
+                cursor.execute(query, (support_message.get_id(),))
                 conn.commit()
                 return cursor.rowcount > 0
         

@@ -14,11 +14,6 @@ def conversation_repo():
 
 
 def test_get_conversation(conversation_repo):
-    # # Test case where conversation is found
-    # mock_conversation = MagicMock()
-    # mock_conversation.id = 4
-    # mock_conversation.title = "Test Conversation"
-    # mock_get_conversation.return_value = mock_conversation
 
     conversation = ConversationEntity(id=4, title="Test Conversation")
 

@@ -1,16 +1,16 @@
 -- Inserimento utenti
-INSERT INTO Users (id, username, password_hash, email, phone, first_name, last_name, is_admin) VALUES
-(1, 'john_doe', 'hashed_password_1', 'john.doe@example.com', '1234567890123456', 'John', 'Doe', FALSE),
-(2, 'admin_user', 'hashed_password_2', 'admin@example.com', '9876543210987654', 'Admin', 'User', TRUE),
-(3, 'jane_smith', 'hashed_password_3', 'jane.smith@example.com', '1122334455667788', 'Jane', 'Smith', FALSE),
-(4, 'michael_brown', 'hashed_password_4', 'michael.brown@example.com', '2233445566778899', 'Michael', 'Brown', FALSE);
+INSERT INTO Users (username, password_hash, email, phone, first_name, last_name, is_admin) VALUES
+('john_doe', 'hashed_password_1', 'john.doe@example.com', '1234567890123456', 'John', 'Doe', FALSE),
+('admin_user', 'hashed_password_2', 'admin@example.com', '9876543210987654', 'Admin', 'User', TRUE),
+('jane_smith', 'hashed_password_3', 'jane.smith@example.com', '1122334455667788', 'Jane', 'Smith', FALSE),
+('michael_brown', 'hashed_password_4', 'michael.brown@example.com', '2233445566778899', 'Michael', 'Brown', FALSE);
 
 -- Inserimento conversazioni
-INSERT INTO Conversations (id, title) VALUES
-(1, 'General Chat'),
-(2, 'Support Discussion'),
-(3, 'Development Talks'),
-(4, 'Casual Conversations');
+INSERT INTO Conversations (title) VALUES
+('General Chat'),
+('Support Discussion'),
+('Development Talks'),
+('Casual Conversations');
 
 -- Inserimento messaggi
 INSERT INTO Messages (text, user_id, conversation_id, rating, is_bot) VALUES
