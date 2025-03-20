@@ -97,12 +97,20 @@ def test_save_delete_template(repository):
         # Delete the template
         delete_template = TemplateEntity(id=saved_id)
         result = repository.delete_template(delete_template)
+        assert result is not None, "Delete function returned None"
+        assert isinstance(result, bool), "Delete function did not return a boolean"
         assert result is True, "Failed to delete template"
 
         # Verify the template is deleted
         deleted_template = repository.get_template(delete_template)  # Pass the instance with the correct id
         assert deleted_template is None, "Template was not deleted"
 
+        # Verify behavior when trying to delete a non-existing template
+        non_existing_template = TemplateEntity(id=-1)  # Non-existing ID in your database
+        result = repository.delete_template(non_existing_template)
+        assert result is not None, "Delete function returned None for non-existing template"
+        assert isinstance(result, bool), "Delete function did not return a boolean for non-existing template"
+        assert result is False, "Delete function should return False for non-existing template"
     except Exception as e:
         pytest.fail(f"Deleting template failed: {e}")
 

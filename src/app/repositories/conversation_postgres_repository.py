@@ -60,7 +60,7 @@ class ConversationPostgresRepository:
         except psycopg2.Error as e:
             raise e
 
-    def save_conversation_title(self, conversation_entity: ConversationEntity) -> bool:
+    def save_conversation_title(self, conversation: ConversationEntity) -> bool:
         '''
         Saves the title of a conversation in the PostgreSQL database.
         If the conversation does not exist, it creates a new one.
@@ -75,7 +75,7 @@ class ConversationPostgresRepository:
             insert_query = "INSERT INTO Conversations (title) VALUES (%s)"
             with self.__connect() as conn:
                 with conn.cursor() as cursor:
-                    cursor.execute(insert_query, (conversation_entity.get_title(),))
+                    cursor.execute(insert_query, (conversation.get_title(),))
                     conn.commit()
                     return True
         except psycopg2.Error as e:
