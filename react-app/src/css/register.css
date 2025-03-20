@@ -4,6 +4,8 @@
   align-items: center;
   min-height: 100vh;
   background-image: url("../assets/provaSfondo.png");
+  background-size: cover;
+  background-position: center;
   line-height: 1em;
   font-size: 16px;
   font-family: 'Arial', sans-serif;
