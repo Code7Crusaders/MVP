@@ -14,6 +14,7 @@ import MuccaSenzaSfondoIcon from './assets/muccasenzasfondo.png';
 import 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import RichiestaSupporto from './components/RichiestaSupporto';
+import Metriche from './components/Metriche';
 
 const NAVIGATION = [
   {
@@ -43,7 +44,12 @@ const NAVIGATION = [
   },
   {
     segment: 'support',
-    title: 'RichiestaSupporto',
+    title: 'Richiesta Supporto',
+    icon: <AddCommentIcon />,
+  },
+  {
+    segment: 'metrics',
+    title: 'Visualizza Metriche',
     icon: <AddCommentIcon />,
   },
 ];
@@ -99,6 +105,12 @@ function SupportContent(){
   );
 }
 
+function MetricheContent(){
+  return (
+    <Metriche/>
+  );
+}
+
 function DemoPageContent({ pathname }) {
   if (pathname === '/chatbot') {
     return <DashboardContent />;
@@ -110,6 +122,8 @@ function DemoPageContent({ pathname }) {
     return <Chat2Content />;
   } else if (pathname === '/support'){
     return <SupportContent/>;
+  } else if (pathname === '/metrics'){
+    return <Metriche/>
   }
 
   return (
