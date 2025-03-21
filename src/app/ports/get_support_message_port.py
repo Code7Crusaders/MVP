@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from app.models.support_message_model import SupportMessageModel
+from models.support_message_model import SupportMessageModel
 
 class GetSupportMessagePort(ABC):
     """
