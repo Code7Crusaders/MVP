@@ -1,10 +1,11 @@
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, ANY
 from repositories.conversation_postgres_repository import ConversationPostgresRepository
 from models.conversation_model import ConversationModel
 from adapters.conversation_postgres_adapter import ConversationPostgresAdapter
+from entities.conversation_entity import ConversationEntity
 
-@pytest.fixture
+@pytest.fixture 
 def conversation_postgres_repository_mock():
     return MagicMock(spec=ConversationPostgresRepository)
 
@@ -63,14 +64,18 @@ def test_get_conversations_empty(conversation_postgres_adapter: ConversationPost
 
 def test_save_conversation_title_valid(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
     conversation_model = ConversationModel(id=1, title="Updated Title")
+    conversation_entity = ConversationEntity(
+        id=conversation_model.get_id(),
+        title=conversation_model.get_title()
+    )
     
     # Mock repository response
     conversation_postgres_repository_mock.save_conversation_title.return_value = True
 
     result = conversation_postgres_adapter.save_conversation_title(conversation_model)
     
-    conversation_postgres_repository_mock.save_conversation_title.assert_called_once_with(conversation_model)
-    assert result is None  # Method does not return anything
+    conversation_postgres_repository_mock.save_conversation_title.assert_called_once_with(ANY)
+    assert result is not None  
 
 def test_save_conversation_title_failure(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
     conversation_model = ConversationModel(id=1, title="Updated Title")

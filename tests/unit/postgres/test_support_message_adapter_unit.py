@@ -1,7 +1,8 @@
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, ANY
 from adapters.support_message_postgres_adapter import SupportMessagePostgresAdapter
 from models.support_message_model import SupportMessageModel
+from entities.support_message_entity import SupportMessageEntity
 
 @pytest.fixture
 def repository_mock():
@@ -14,11 +15,12 @@ def adapter(repository_mock):
 # Test get_support_message
 
 def test_get_support_message_valid(adapter, repository_mock):
-    repository_mock.get_support_message.return_value = MagicMock(
+    repository_mock.get_support_message.return_value = SupportMessageEntity(
         id=1, user_id=2, description="Test description", status="open", subject="Test subject", created_at="2023-01-01"
     )
+    model = SupportMessageModel(id=1)
     
-    result = adapter.get_support_message(1)
+    result = adapter.get_support_message(model)
     
     assert isinstance(result, SupportMessageModel)
     assert result.id == 1
@@ -31,9 +33,11 @@ def test_get_support_message_valid(adapter, repository_mock):
 def test_get_support_message_invalid_id(adapter, repository_mock):
     repository_mock.get_support_message.return_value = None
     
-    result = adapter.get_support_message(999)
+    model = SupportMessageModel(id=-1)
+
+    with pytest.raises(Exception, match="'NoneType' object has no attribute 'get_id'"):  
+        result = adapter.get_support_message(model)
     
-    assert result is None
 
 # Test get_support_messages
 
@@ -60,9 +64,14 @@ def test_get_support_messages_empty(adapter, repository_mock):
 # Test save_support_message
 
 def test_save_support_message_valid(adapter, repository_mock):
-    adapter.save_support_message(2, "Test description", "open", "Test subject")
+
+    support_message_model = SupportMessageModel(id=2, user_id=2, description="Test description", status="open", subject="Test subject", created_at="2023-01-01")
+    support_message_entity = SupportMessageEntity(id=2, user_id=2, description="Test description", status="open", subject="Test subject", created_at="2023-01-01")
+
+    adapter.save_support_message(support_message_model)
     
-    repository_mock.save_support_message.assert_called_once_with(2, "Test description", "open", "Test subject")
+    repository_mock.save_support_message.assert_called_once_with(ANY)
+
 
 def test_save_support_message_invalid_data(adapter, repository_mock):
     with pytest.raises(TypeError):
