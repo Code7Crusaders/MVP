@@ -13,6 +13,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import MuccaSenzaSfondoIcon from './assets/muccasenzasfondo.png';
 import 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import RichiestaSupporto from './components/RichiestaSupporto';
 
 const NAVIGATION = [
   {
@@ -39,6 +40,11 @@ const NAVIGATION = [
   },
   {
     kind: 'divider',
+  },
+  {
+    segment: 'support',
+    title: 'RichiestaSupporto',
+    icon: <AddCommentIcon />,
   },
 ];
 
@@ -87,6 +93,12 @@ function Chat2Content() {
   );
 }
 
+function SupportContent(){
+  return (
+    <RichiestaSupporto/>
+  );
+}
+
 function DemoPageContent({ pathname }) {
   if (pathname === '/chatbot') {
     return <DashboardContent />;
@@ -96,6 +108,8 @@ function DemoPageContent({ pathname }) {
     return <Chat1Content />;
   } else if (pathname === '/recent/chat2') {
     return <Chat2Content />;
+  } else if (pathname === '/support'){
+    return <SupportContent/>;
   }
 
   return (
