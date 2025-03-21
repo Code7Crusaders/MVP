@@ -5,6 +5,23 @@ import { useTheme } from '@mui/material/styles';
 const RichiestaSupporto = () => {
 
   const theme = useTheme();
+
+  const inputChatStyle = {
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
+    color: theme.palette.mode === 'dark' ? 'white' : 'black',
+            '::placeholder': {
+              color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
+  };
+
+  const buttons = {
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgb(233, 233, 233)' : '#333',
+    color: theme.palette.mode === 'dark' ? '#333' : 'white',
+  }
+
+  const timeSpan = {
+    color: theme.palette.mode === 'dark' ? 'white' : 'black',
+  }
+
   const [formData, setFormData] = useState({
     user_id: '',
     subject: '',
@@ -60,7 +77,7 @@ const RichiestaSupporto = () => {
       <form onSubmit={handleSubmit}>
 
         <div className="form-group">
-          <label htmlFor="subject">Oggetto:</label>
+          <label style={timeSpan} htmlFor="subject">Oggetto:</label>
           <input
             type="text"
             id="subject"
@@ -69,11 +86,12 @@ const RichiestaSupporto = () => {
             onChange={handleChange}
             required
             maxLength="255"
+            style={inputChatStyle}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="description">Descrizione:</label>
+          <label style={timeSpan} htmlFor="description">Descrizione:</label>
           <textarea
             id="description"
             name="description"
@@ -81,10 +99,11 @@ const RichiestaSupporto = () => {
             onChange={handleChange}
             required
             rows="5"
+            style={inputChatStyle}
           />
         </div>
 
-        <button className='bottoneSupporto' type="submit" disabled={loading}>
+        <button style={buttons} className='bottoneSupporto' type="submit" disabled={loading}>
           {loading ? 'Invio in corso...' : 'Invia richiesta'}
         </button>
       </form>

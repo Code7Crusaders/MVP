@@ -2,7 +2,6 @@
     width: 60%;
     margin: 2rem auto;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     font-size: 16px;
   }
   .support-form-container > h1 {
@@ -19,12 +18,12 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
+    font-size: 18px;
   }
   
   input, textarea {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ddd;
     border-radius: 4px;
   }
 
@@ -38,8 +37,6 @@
   }
   
   button.bottoneSupporto {
-    background-color: #007bff;
-    color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -48,6 +45,7 @@
     font-size: 16px;
     font-weight: bold;
     margin-top: 0.5rem;
+    height: 70px;
   }
   
   .success-message {
