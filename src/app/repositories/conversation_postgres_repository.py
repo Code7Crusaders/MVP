@@ -63,16 +63,16 @@ class ConversationPostgresRepository:
         Saves the title of a conversation in the PostgreSQL database.
         If the conversation does not exist, it creates a new one.
         Args:
-            conversation_entity (ConversationEntity): The conversation entity containing the ID and title.
+            conversation (ConversationEntity): The conversation entity containing the ID and title.
         Returns:
-            bool: True if the operation is successful, False otherwise.
+            int: The ID of the saved conversation.
         Raises:
             psycopg2.Error: If an error occurs while saving the conversation title in the PostgreSQL database.
         '''
-        
-        insert_query = "INSERT INTO Conversations (title) VALUES (%s)"
+        insert_query = "INSERT INTO Conversations (title) VALUES (%s) RETURNING id;"
         with self.__connect() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(insert_query, (conversation.get_title(),))
+                saved_id = cursor.fetchone()[0]
                 conn.commit()
-                return True
+                return saved_id

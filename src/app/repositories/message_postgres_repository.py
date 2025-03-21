@@ -1,5 +1,4 @@
 import psycopg2
-import pytz  # Import pytz for timezone conversion
 from entities.message_entity import MessageEntity
 from entities.conversation_entity import ConversationEntity
 
@@ -41,7 +40,6 @@ class MessagePostgresRepository:
                 cursor.execute(select_message_query, (message.get_id(),))
                 result = cursor.fetchone()
                 if result:
-                    italy_tz = pytz.timezone('Europe/Rome')  # Define the Italy timezone
                     message = MessageEntity(
                         id=result[0],
                         text=result[1],
@@ -75,7 +73,6 @@ class MessagePostgresRepository:
                 cursor.execute(select_messages_query, (conversation.get_id(),))
                 rows = cursor.fetchall()
                 if rows:
-                    italy_tz = pytz.timezone('Europe/Rome')  # Define the Italy timezone
                     return [
                         MessageEntity(
                             id=row[0],
@@ -106,7 +103,7 @@ class MessagePostgresRepository:
         RETURNING id;
         """
         params = (message.get_text(), message.get_created_at(), message.get_user_id(), message.get_conversation_id(), message.get_rating())
-        with self.__connect() as connection:  # Call the method to get the connection object
+        with self.__connect() as connection:  
             with connection.cursor() as cursor:
                 cursor.execute(insert_message_query, params)
                 created_id = cursor.fetchone()[0]
