@@ -9,8 +9,10 @@ const RichiestaSupporto = () => {
   const inputChatStyle = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
+    fontFamily: theme.typography.fontFamily,
             '::placeholder': {
-              color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
+              color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',
+              fontFamily: theme.typography.fontFamily,} 
   };
 
   const buttons = {
@@ -86,6 +88,7 @@ const RichiestaSupporto = () => {
             onChange={handleChange}
             required
             maxLength="255"
+            placeholder="Inserisci l'oggetto della tua richiesta di supporto"
             style={inputChatStyle}
           />
         </div>
@@ -99,6 +102,7 @@ const RichiestaSupporto = () => {
             onChange={handleChange}
             required
             rows="5"
+            placeholder='Inserisci il contenuto della tua richiesta di supporto'
             style={inputChatStyle}
           />
         </div>

@@ -12,40 +12,44 @@
   .form-group {
     margin-bottom: 1rem;
     font-size: 16px;
+    border: none;
   }
   
   label {
     display: block;
     margin-bottom: 0.5rem;
-    font-weight: bold;
     font-size: 18px;
   }
-  
-  input, textarea {
+  #subject, #description {
     width: 100%;
-    padding: 8px;
+    padding: 15px;
     border-radius: 4px;
+    border: none;
+    font-size: 16px;
+    border: 0.2px solid #464646;
   }
 
   textarea{
-    font-size: 16px;
     height: 300px;
+    resize: none;
   }
 
+  #subject:focus{
+    border: 2px solid slateblue;
+  }
   textarea:focus{
     border: 1px solid slateblue;
   }
   
   button.bottoneSupporto {
-    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     width: 100%;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 550;
     margin-top: 0.5rem;
-    height: 70px;
+    height: 50px;
   }
   
   .success-message {

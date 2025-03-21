@@ -15,6 +15,8 @@ import 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import RichiestaSupporto from './components/RichiestaSupporto';
 import Metriche from './components/Metriche';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 const NAVIGATION = [
   {
@@ -45,12 +47,15 @@ const NAVIGATION = [
   {
     segment: 'support',
     title: 'Richiesta Supporto',
-    icon: <AddCommentIcon />,
+    icon: <ContactSupportIcon />,
+  },
+  {
+    kind: 'divider',
   },
   {
     segment: 'metrics',
     title: 'Visualizza Metriche',
-    icon: <AddCommentIcon />,
+    icon: <EqualizerIcon />,
   },
 ];
 
