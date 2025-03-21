@@ -72,7 +72,25 @@ class ConversationPostgresRepository:
         insert_query = "INSERT INTO Conversations (title) VALUES (%s) RETURNING id;"
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(insert_query, (conversation.get_title(),))
+                cursor.execute(insert_query, (conversation.get_title(),)) 
                 saved_id = cursor.fetchone()[0]
                 conn.commit()
                 return saved_id
+            
+    def delete_conversation(self, conversation: ConversationEntity)-> bool:
+        '''
+        Deletes a conversation from the PostgreSQL database.
+        Args:
+            conversation (ConversationEntity): The conversation entity to delete.
+        Returns:
+            bool: True if the conversation was successfully deleted, False otherwise.
+        Raises:
+            psycopg2.Error: If an error occurs while deleting the conversation from the PostgreSQL database.
+        '''
+        id = conversation.get_id()
+        delete_query = "DELETE FROM Conversations WHERE id = %s;"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(delete_query, (id,))
+                conn.commit()
+                return cursor.rowcount > 0

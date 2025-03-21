@@ -55,7 +55,7 @@ def test_get_conversations(repository):
         assert conversation.get_title() is not None
 
 
-def test_save_conversation_title(repository):
+def test_save_delete_conversation_title(repository): 
     """Test saving a conversation title in the database."""
     try:
         title = "Test Conversation" 
@@ -63,15 +63,25 @@ def test_save_conversation_title(repository):
 
         # Save the conversation
         result = repository.save_conversation_title(conversation_entity)
-        assert result is True, "Failed to save conversation"
+        assert isinstance(result, int), "Saved conversation ID is not an integer"
 
         # Verify the saved conversation by retrieving it
-        saved_conversations = repository.get_conversations()
-        saved_conversation = next(
-            (conv for conv in saved_conversations if conv.get_title() == title), None
-        )
+        saved_conversation = repository.get_conversation(ConversationEntity(id=result))
+
         assert saved_conversation is not None, "Saved conversation not found in database"
         assert saved_conversation.get_title() == title, "Title mismatch"
 
     except Exception as e:
         pytest.fail(f"Saving conversation failed: {e}")
+
+    try:
+        # Delete the saved conversation
+        result = repository.delete_conversation(saved_conversation)
+        assert result is True, "Conversation deletion failed"
+
+        # Verify the deleted conversation by retrieving it
+        deleted_conversation = repository.get_conversation(saved_conversation)
+        assert deleted_conversation is None, "Deleted conversation still exists in database"
+    
+    except Exception as e:
+        pytest.fail(f"Deleting conversation failed: {e}")

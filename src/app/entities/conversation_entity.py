@@ -1,5 +1,5 @@
 class ConversationEntity:
-    def __init__(self, title: str, id: int = None):
+    def __init__(self, title: str = None, id: int = None):
         self.id = id
         self.title = title
 
