@@ -4,52 +4,102 @@ from app.ports.get_message_port import GetMessagePort
 from app.ports.get_messages_by_conversation import GetMessagesByConversationPort
 from app.ports.save_message_port import SaveMessageTitlePort
 
+from entities.message_entity import MessageEntity
+
 class messagePostgresAdapter(GetMessagePort, SaveMessageTitlePort, GetMessagesByConversationPort):
 
     def __init__(self, message_postgres_repository: MessagePostgresRepository):
         self.message_postgres_repository = message_postgres_repository
     
-    def get_message(self, message_id: int) -> MessageModel:
+    def get_message(self, message: MessageModel) -> MessageModel:
         """
         Retrieve a message by its ID.
         Args:
-            message_id (int): The ID of the message to retrieve.
+            message (MessageModel): The message object containing the ID to retrieve.
         Returns:
-            messageModel: The retrieved message.
+            MessageModel: The retrieved message.
         """
         try:
-            message = self.message_postgres_repository.get_message(message_id)
-            return MessageModel(
-                id=message.id,
-                text=message.text,
-                created_at=message.created_at,
-                user_id=message.user_id,
-                conversation_id=message.conversation_id,
-                rating=message.rating
+
+            message_entity = MessageEntity(
+                id=message.get_id(),
+                text=message.get_text(),
+                created_at=message.get_created_at(),
+                user_id=message.get_user_id(),
+                conversation_id=message.get_conversation_id(),
+                rating=message.get_rating()
             )
+
+            message = self.message_postgres_repository.get_message(message_entity)
+
+            return MessageModel(
+                id=message.get_id(),
+                text=message.get_text(),
+                created_at=message.get_created_at(),
+                user_id=message.get_user_id(),
+                conversation_id=message.get_conversation_id(),
+                rating=message.get_rating()
+            )
+        
         except Exception as e:
             raise e
 
-    def get_messages_by_conversation(self, conversation_id: int) -> list[MessageModel]:
+    def get_messages_by_conversation(self, conversation: MessageModel) -> list[MessageModel]:
         """
-        Save a message.
+        Retrieve messages by conversation.
         Args:
-            message_id (int): The ID of the message.
-            title (str): The new title of the message.
+            conversation (MessageModel): The conversation object containing the ID to retrieve messages for.
+        Returns:
+            list[MessageModel]: A list of retrieved messages.
         """
         try:
-            self.message_postgres_repository.get_messages_by_conversation(conversation_id)
+
+            conversation_entity = MessageEntity(
+                id=conversation.get_id(),
+                text=conversation.get_text(),
+                created_at=conversation.get_created_at(),
+                user_id=conversation.get_user_id(),
+                conversation_id=conversation.get_conversation_id(),
+                rating=conversation.get_rating()
+            )
+
+            messages = self.message_postgres_repository.get_messages_by_conversation(conversation_entity)
+
+            return [
+                MessageModel(
+                    id=message.get_id(),
+                    text=message.get_text(),
+                    created_at=message.get_created_at(),
+                    user_id=message.get_user_id(),
+                    conversation_id=message.get_conversation_id(),
+                    rating=message.get_rating()
+                )
+                for message in messages
+            ]
+
         except Exception as e:
             raise e
 
-    def save_message(self, message: MessageModel):
+    def save_message(self, message: MessageModel)-> int:
         """
         Save a message.
         Args:
             message (MessageModel): The message to save.
+        Returns:
+            int: The ID of the saved
         """
         try:
-            self.message_postgres_repository.save_message(message)
+            message_entity = MessageEntity(
+                id=message.get_id(),
+                text=message.get_text(),
+                created_at=message.get_created_at(),
+                user_id=message.get_user_id(),
+                conversation_id=message.get_conversation_id(),
+                rating=message.get_rating()
+            )
+
+            return self.message_postgres_repository.save_message(message_entity)
+        
         except Exception as e:
             raise e 
 

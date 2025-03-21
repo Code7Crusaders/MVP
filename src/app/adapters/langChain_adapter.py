@@ -30,15 +30,19 @@ class LangChainAdapter(GenerateAnswerPort, SplitFilePort):
         Returns:
             AnswerModel: The generated answer model containing the answer text.
         """
-        question_entity = QueryEntity(question.get_user_id(), question.get_question())
+        try:
+            question_entity = QueryEntity(question.get_user_id(), question.get_question())
 
-        context_entities = []
-        for context_model in context:
-            context_entities.append(DocumentContextEntity(context_model.get_content()))
+            context_entities = []
+            for context_model in context:
+                context_entities.append(DocumentContextEntity(context_model.get_content()))
 
-        answer = self.lang_chain_repository.generate_answer(question_entity, context_entities, prompt_template.get_prompt_template_content())
+            answer = self.lang_chain_repository.generate_answer(question_entity, context_entities, prompt_template.get_prompt_template_content())
 
-        return AnswerModel(answer.get_answer())
+            return AnswerModel(answer.get_answer())
+        
+        except Exception as e:
+            raise e
 
     def split_file(self, file: FileModel) -> list[FileChunkModel]:
         """
@@ -50,13 +54,17 @@ class LangChainAdapter(GenerateAnswerPort, SplitFilePort):
         Returns:
             list[FileChunkModel]: A list of file chunk models containing the chunk content and metadata.
         """
-        file_entity = FileEntity(file.get_filename(), file.get_file_content())
+        try:
+            file_entity = FileEntity(file.get_filename(), file.get_file_content())
 
-        file_chunks = self.lang_chain_repository.split_file(file_entity)
+            file_chunks = self.lang_chain_repository.split_file(file_entity)
 
-        file_chunk_models = []
-        for file_chunk in file_chunks:
-            file_chunk_models.append(FileChunkModel(file_chunk.get_chunk_content(), file_chunk.get_metadata()))
+            file_chunk_models = []
+            for file_chunk in file_chunks:
+                file_chunk_models.append(FileChunkModel(file_chunk.get_chunk_content(), file_chunk.get_metadata()))
 
-        return file_chunk_models
+            return file_chunk_models
+        
+        except Exception as e:
+            raise e
 

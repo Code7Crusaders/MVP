@@ -20,11 +20,11 @@ class TemplatePostgresRepository:
 
     def get_template(self, template: TemplateEntity) -> TemplateEntity:
         '''
-        Retrieves a template from the PostgreSQL database by its ID.
+        Retrieves a template from the PostgreSQL database using the provided template entity.
         Args:
-            template_id (int): The ID of the template to retrieve.
+            template (TemplateEntity): The template entity containing the ID of the template to retrieve.
         Returns:
-            TemplateEntity: The retrieved template.
+            TemplateEntity: The retrieved template, or None if no template is found.
         Raises:
             psycopg2.Error: If an error occurs while retrieving the template from the PostgreSQL database.
         '''
@@ -84,7 +84,7 @@ class TemplatePostgresRepository:
         '''
         Deletes a template from the PostgreSQL database based on its ID.
         Args:
-            template_id (int): The ID of the template to delete.
+            template (TemplateEntity): The template entity containing the ID of the template to delete.
         Returns:
             bool: True if the template was deleted, False otherwise.
         Raises:

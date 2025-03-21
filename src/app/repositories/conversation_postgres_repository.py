@@ -22,9 +22,9 @@ class ConversationPostgresRepository:
         '''
         Retrieves a conversation from the PostgreSQL database by its ID.
         Args:
-            conversation_id (int): The ID of the conversation to retrieve.
+            conversation (ConversationEntity): The conversation entity containing the ID to retrieve.
         Returns:
-            ConversationEntity: The retrieved conversation.
+            ConversationEntity: The retrieved conversation, or None if not found.
         Raises:
             psycopg2.Error: If an error occurs while retrieving the conversation from the PostgreSQL database.
         '''
@@ -58,7 +58,7 @@ class ConversationPostgresRepository:
                 results = cursor.fetchall()
                 return [ConversationEntity(id=row[0], title=row[1]) for row in results]
 
-    def save_conversation_title(self, conversation: ConversationEntity) -> bool:
+    def save_conversation_title(self, conversation: ConversationEntity) -> int:
         '''
         Saves the title of a conversation in the PostgreSQL database.
         If the conversation does not exist, it creates a new one.

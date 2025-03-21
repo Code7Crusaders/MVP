@@ -24,7 +24,7 @@ class MessagePostgresRepository:
         '''
         Retrieves a message from the PostgreSQL database by its ID.
         Args:
-            message_id (int): The ID of the message to retrieve.
+            message (MessageEntity): The message entity containing the ID of the message to retrieve.
         Returns:
             MessageEntity: The retrieved message data.
         Raises:
@@ -58,7 +58,7 @@ class MessagePostgresRepository:
         '''
         Retrieves all messages associated with a specific conversation from the PostgreSQL database.
         Args:
-            conversation_id (int): The ID of the conversation.
+            conversation (ConversationEntity): The conversation entity containing the ID of the conversation.
         Returns:
             list[MessageEntity]: A list of MessageEntity objects.
         Raises:

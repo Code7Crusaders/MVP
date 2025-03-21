@@ -5,27 +5,42 @@ from app.ports.get_template_list_port import GetTemplateListPort
 from app.ports.save_template_port import SaveTemplatePort
 from app.ports.delete_template_port import DeleteTemplatePort
 
+from entities.template_entity import TemplateEntity
+
 
 class TemplatePostgresAdapter(GetTemplatePort, GetTemplateListPort, SaveTemplatePort, DeleteTemplatePort):
 
     def __init__(self, template_postgres_repository: TemplatePostgresRepository):
         self.template_postgres_repository = template_postgres_repository
     
-    def get_template(self, template_id: int) -> TemplateModel:
+    def get_template(self, template: TemplateModel) -> TemplateModel:
         """
-        Retrieve a template by its ID.
+        Retrieve a template by its details.
         Args:
-            template_id (int): The ID of the template to retrieve.
+            template (TemplateModel): The template details to retrieve.
         Returns:
-            templateModel: The retrieved template.
+            TemplateModel: The retrieved template.
         """
         try:
-            template = self.template_postgres_repository.get_template(template_id)
-            return TemplateModel(
-                question=template.question,
-                answer=template.answer,
-                author=template.author,
+
+            template_entity = TemplateEntity(
+                id=template.get_id(),
+                question=template.get_question(),
+                answer=template.get_answer(),
+                author_id=template.get_author_id(),
+                last_modified=template.get_last_modified()
             )
+
+            template = self.template_postgres_repository.get_template(template_entity)
+
+            return TemplateModel(
+                id=template.get_id(),
+                question=template.get_question(),
+                answer=template.get_answer(),
+                author_id=template.get_author_id(),
+                last_modified=template.get_last_modified()
+            )
+        
         except Exception as e:
             raise e
 
@@ -37,33 +52,67 @@ class TemplatePostgresAdapter(GetTemplatePort, GetTemplateListPort, SaveTemplate
             list[TemplateModel]: A list of TemplateModel objects.
         """
         try:
+
             templates = self.template_postgres_repository.get_template_list()
-            return [TemplateModel(question=template.question, answer=template.answer, author=template.author) for template in templates]
+
+            return [ 
+                TemplateModel(
+                    id=template.get_id(),
+                    question=template.get_question(),
+                    answer=template.get_answer(),
+                    author_id=template.get_author_id(),
+                    last_modified=template.get_last_modified()
+                )
+                for template in templates
+            ]
+        
         except Exception as e:
             raise e
         
-    def save_template(self, question: str, answer: str, author: str):
+    def save_template(self, template: TemplateModel) -> int:
         """
-        Save the title of a template.
+        Save a template.
         Args:
-            template_id (int): The ID of the template.
-            title (str): The new title of the template.
+            template (TemplateModel): The template to save.
+        Returns:
+            int: The ID of the saved template.
         """
         try:
-            self.template_postgres_repository.save_template_title(question, answer, author)
+
+            template_entity = TemplateEntity(
+                id=template.get_id(),
+                question=template.get_question(),
+                answer=template.get_answer(),
+                author_id=template.get_author_id(),
+                last_modified=template.get_last_modified()
+            )
+
+            return self.template_postgres_repository.save_template_title(template_entity)
+            
         except Exception as e:
             raise e
 
-    def delete_template(self, author: str, question: str, answer: str):
+
+    def delete_template(self, template: TemplateModel) -> bool:
         """
         Delete a template.
         Args:
-            author (str): The author of the template.
-            question (str): The question of the template.
-            answer (str): The answer of the template.
+            template (TemplateModel): The template to delete.
+        Returns:
+            bool: True if the template was deleted successfully, otherwise False.
         """
         try:
-            self.template_postgres_repository.delete_template(author, question, answer)
+            
+            template_entity = TemplateEntity(
+                id=template.get_id(),
+                question=template.get_question(),
+                answer=template.get_answer(),
+                author_id=template.get_author_id(),
+                last_modified=template.get_last_modified()
+            )
+
+            return self.template_postgres_repository.delete_template(template_entity)
+
         except Exception as e:
             raise e
 
