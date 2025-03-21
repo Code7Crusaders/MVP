@@ -11,6 +11,8 @@ import AddCommentIcon from '@mui/icons-material/AddComment';
 import ForumIcon from '@mui/icons-material/Forum';
 import ChatIcon from '@mui/icons-material/Chat';
 import MuccaSenzaSfondoIcon from './assets/muccasenzasfondo.png';
+import 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const NAVIGATION = [
   {
@@ -110,12 +112,42 @@ DemoPageContent.propTypes = {
 
 function DashboardLayoutBranding(props) {
   const { window } = props;
+
+  const [session, setSession] = React.useState({
+    user: {
+      name: 'User DiProva',
+      email: 'userdiprova@gmail.com',
+      image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+    },
+  });
+
+  const navigate = useNavigate();
+  const authentication = React.useMemo(() => {
+     
+    return {
+      signIn: () => {
+        setSession({
+          user: {
+            name: 'User DiProva',
+            email: 'bharatkashyap@outlook.com',
+            image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+          },
+        });
+      },
+      signOut: () => {
+        setSession(null);
+        navigate('/login'); 
+      },
+    };
+  }, []);
   
   const router = useDemoRouter('/chatbot');
   const demoWindow = window !== undefined ? window() : undefined;
 
   return (
     <AppProvider
+      session={session}
+      authentication={authentication}
       navigation={NAVIGATION}
       branding={{
         logo: <img src={MuccaSenzaSfondoIcon} alt="logo originale del Team di Sviluppo Code7Crusaders" />,
