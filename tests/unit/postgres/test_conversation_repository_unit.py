@@ -34,7 +34,7 @@ def test_get_conversation(conversation_repo):
 
 def test_save_conversation_title(conversation_repo):
 
-    conversation = ConversationEntity(title="Test porcodiodfksdfjxzknbgjklnzjndrfgsdfnjk;'sdnjklbesjbkgnjkl;asngjohadsrjklgbeajkbl;esfbnkjleNOJRSGEADHNIOUSGAEBN")
+    conversation = ConversationEntity(title="Hi there")
 
     result = conversation_repo.save_conversation_title(conversation)
     

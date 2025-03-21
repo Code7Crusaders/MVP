@@ -50,15 +50,13 @@ class ConversationPostgresRepository:
         Raises:
             psycopg2.Error: If an error occurs while retrieving the conversations from the PostgreSQL database.
         '''
-        try:
-            query = "SELECT id, title FROM Conversations;"
-            with self.__connect() as conn:
-                with conn.cursor() as cursor:
-                    cursor.execute(query)
-                    results = cursor.fetchall()
-                    return [ConversationEntity(id=row[0], title=row[1]) for row in results]
-        except psycopg2.Error as e:
-            raise e
+        
+        query = "SELECT id, title FROM Conversations;"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query)
+                results = cursor.fetchall()
+                return [ConversationEntity(id=row[0], title=row[1]) for row in results]
 
     def save_conversation_title(self, conversation: ConversationEntity) -> bool:
         '''
@@ -71,14 +69,10 @@ class ConversationPostgresRepository:
         Raises:
             psycopg2.Error: If an error occurs while saving the conversation title in the PostgreSQL database.
         '''
-        try:
-            insert_query = "INSERT INTO Conversations (title) VALUES (%s)"
-            with self.__connect() as conn:
-                with conn.cursor() as cursor:
-                    cursor.execute(insert_query, (conversation.get_title(),))
-                    conn.commit()
-                    return True
-        except psycopg2.Error as e:
-            if 'conn' in locals() and conn:
-                conn.rollback()
-            return False
+        
+        insert_query = "INSERT INTO Conversations (title) VALUES (%s)"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(insert_query, (conversation.get_title(),))
+                conn.commit()
+                return True

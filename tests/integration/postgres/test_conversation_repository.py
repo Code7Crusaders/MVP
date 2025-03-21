@@ -58,7 +58,7 @@ def test_get_conversations(repository):
 def test_save_conversation_title(repository):
     """Test saving a conversation title in the database."""
     try:
-        title = "Test Conversation"
+        title = "Test Conversation" 
         conversation_entity = ConversationEntity(title=title)
 
         # Save the conversation
