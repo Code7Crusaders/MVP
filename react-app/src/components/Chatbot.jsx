@@ -9,17 +9,19 @@ import AddIcon from '@mui/icons-material/Add';
 import QuickreplyIcon from '@mui/icons-material/Quickreply';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Dialog, DialogContent, DialogActions, TextField, Button, DialogContentText } from '@mui/material';
 
 function Chatbot() {
   const [count, setCount] = useState(0);
+  const [open, setOpen] = useState(false); // Stato per gestire il DIALOG
   
   const theme = useTheme();
   
   const inputChatStyle = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
-            '::placeholder': {
-              color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
+    '::placeholder': {
+      color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
   };
 
   const timeSpan = {
@@ -28,8 +30,22 @@ function Chatbot() {
 
   const buttons = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgb(233, 233, 233)' : '#333',
-    color: theme.palette.mode === 'dark' ? '#333' : 'white',
+    color: theme.palette.mode === 'dark' ? '#333' : 'white', 
   }
+
+  // DIALOG per il salvataggio della chat
+  const chiudiDialogSalvataggio = () => {
+    setOpen(false); 
+  };
+  const SalvaChat = () => {
+    // Salvataggio della chat
+    setOpen(false); 
+  };
+  const apriDialogSalvataggio = () => {
+    setOpen(true); 
+  };
+
+
 
   const endRef = useRef(null);
   useEffect(() => {
@@ -46,7 +62,7 @@ function Chatbot() {
         <div className='icons' >
           <button className='btnsTop' alt="aggiungi un template" title='Aggiungi Template' style={buttons}><AddIcon /></button>
           <button className='btnsTop' alt="seleziona template" title='Seleziona domanda' style={buttons}><QuickreplyIcon /></button>
-          <button className='btnsTop' alt="Salva la chat" title='Salva Chat' style={buttons}><SaveIcon /></button>
+          <button className='btnsTop' alt="Salva la chat" title='Salva Chat' style={buttons} onClick={apriDialogSalvataggio}><SaveIcon /></button>
           <button className='btnsTop' alt="Elimina la chat" title='Elimina Chat' style={buttons}><DeleteForeverIcon /></button>
         </div>
       </div>
@@ -87,6 +103,22 @@ function Chatbot() {
         <button className='sendButton' style={buttons}><SendIcon  /></button>
       </div>
       </div>
+
+      {/* DIALOG per il salvataggio della chat */}
+      <Dialog open={open} onClose={chiudiDialogSalvataggio} fullWidth>
+        <DialogContentText style={{ ...{ fontSize: '30px', padding: '16px 24px 0 24px', fontWeight: 'bold' }, ...timeSpan }}>Salva Chat</DialogContentText>
+        <DialogContentText style={{...{fontSize: '16px', paddingLeft:'24px',}, ...timeSpan}}>Inserisci il titolo della conversazione da salvare</DialogContentText>
+        <DialogContent>
+          <TextField style={{ ...{borderRadius: '8px'}, ...inputChatStyle}}
+            placeholder="Titolo Chat"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions style={{paddingBottom: '25px', paddingRight: '24px'}}>
+          <Button onClick={chiudiDialogSalvataggio} style={buttons}>Annulla</Button>
+          <Button onClick={SalvaChat} style={buttons}>Salva chat</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

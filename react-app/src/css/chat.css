@@ -135,13 +135,12 @@
 
         input{
             flex: 1;
-            border: none;
             outline: none;
             color: white;
             padding: 20px;
             border-radius: 10px;
             font-size: 16px;
-            border: 0.2px solid #464646;
+            border: 0.5px solid #464646;
         }
 
         
