@@ -1,12 +1,12 @@
-from app.repositories.message_postgres_repository import MessagePostgresRepository
-from app.models.message_model import MessageModel
-from app.ports.get_message_port import GetMessagePort
-from app.ports.get_messages_by_conversation import GetMessagesByConversationPort
-from app.ports.save_message_port import SaveMessageTitlePort
+from repositories.message_postgres_repository import MessagePostgresRepository
+from models.message_model import MessageModel
+from ports.get_message_port import GetMessagePort
+from ports.get_messages_by_conversation import GetMessagesByConversationPort
+from ports.save_message_port import SaveMessagePort
 
 from entities.message_entity import MessageEntity
 
-class messagePostgresAdapter(GetMessagePort, SaveMessageTitlePort, GetMessagesByConversationPort):
+class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConversationPort):
 
     def __init__(self, message_postgres_repository: MessagePostgresRepository):
         self.message_postgres_repository = message_postgres_repository
@@ -55,12 +55,7 @@ class messagePostgresAdapter(GetMessagePort, SaveMessageTitlePort, GetMessagesBy
         try:
 
             conversation_entity = MessageEntity(
-                id=conversation.get_id(),
-                text=conversation.get_text(),
-                created_at=conversation.get_created_at(),
-                user_id=conversation.get_user_id(),
-                conversation_id=conversation.get_conversation_id(),
-                rating=conversation.get_rating()
+                id=conversation.get_id()
             )
 
             messages = self.message_postgres_repository.get_messages_by_conversation(conversation_entity)

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import app.models.template_model as TemplateModel
+import models.template_model as TemplateModel
 
 class SaveTemplatePort(ABC):
     """

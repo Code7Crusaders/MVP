@@ -1,9 +1,9 @@
-from app.repositories.template_postgres_repository import TemplatePostgresRepository
-from app.models.template_model import TemplateModel
-from app.ports.get_template_port import GetTemplatePort
-from app.ports.get_template_list_port import GetTemplateListPort
-from app.ports.save_template_port import SaveTemplatePort
-from app.ports.delete_template_port import DeleteTemplatePort
+from repositories.template_postgres_repository import TemplatePostgresRepository
+from models.template_model import TemplateModel
+from ports.get_template_port import GetTemplatePort
+from ports.get_template_list_port import GetTemplateListPort
+from ports.save_template_port import SaveTemplatePort
+from ports.delete_template_port import DeleteTemplatePort
 
 from entities.template_entity import TemplateEntity
 
@@ -87,7 +87,7 @@ class TemplatePostgresAdapter(GetTemplatePort, GetTemplateListPort, SaveTemplate
                 last_modified=template.get_last_modified()
             )
 
-            return self.template_postgres_repository.save_template_title(template_entity)
+            return self.template_postgres_repository.save_template(template_entity)
             
         except Exception as e:
             raise e

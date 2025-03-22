@@ -85,3 +85,11 @@ def test_save_conversation_title_failure(conversation_postgres_adapter: Conversa
     
     with pytest.raises(Exception, match="Failed to save title"):
         conversation_postgres_adapter.save_conversation_title(conversation_model)
+
+
+def test_get_conversations_exception(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
+    # Simulate repository exception
+    conversation_postgres_repository_mock.get_conversations.side_effect = Exception("Database error")
+
+    with pytest.raises(Exception, match="Database error"):
+        conversation_postgres_adapter.get_conversations()
