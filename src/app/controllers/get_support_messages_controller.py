@@ -1,5 +1,5 @@
-from app.dto.support_message_dto import SupportMessageDTO
-from app.usecases.get_support_messages_useCase import GetSupportMessagesUseCase
+from dto.support_message_dto import SupportMessageDTO
+from usecases.get_support_messages_useCase import GetSupportMessagesUseCase
 
 
 class GetSupportMessagesController:
@@ -22,14 +22,15 @@ class GetSupportMessagesController:
             
             return [
                 SupportMessageDTO(
-                    id=model.id,
-                    user_id=model.user_id,
-                    description=model.text,
-                    status=model.is_bot,
-                    subject=model.conversation_id,
-                    created_at=model.created_at
+                    id=model.get_id(),
+                    user_id=model.get_user_id(),
+                    description=model.get_description(),
+                    status=model.get_status(),
+                    subject=model.get_subject(),
+                    created_at=model.get_created_at()
                 )
                 for model in result_models
             ]
+        
         except Exception as e:
             raise e

@@ -12,27 +12,35 @@ class GetMessageController:
         
         self.get_message_usecase = get_message_usecase
 
-    def get_message(self, message_id: int) -> MessageDTO:
+    def get_message(self, message_dto: MessageDTO) -> MessageDTO:
         """
-        Retrieve a message from the database.
-        
+        Retrieve a message by its ID.
         Args:
-            message_id (int): The ID of the message to retrieve.
-
+            message_dto (MessageDTO): The message DTO containing the ID to retrieve.
         Returns:
-            MessageDTO: The data transfer object containing message details.
+            MessageDTO: The retrieved message DTO.
         """
         try:
-            result_model = self.get_message_usecase.get_message(message_id)
+
+            message_model = MessageModel(
+                id=message_dto.get_id(),
+                text=message_dto.get_text(),
+                user_id=message_dto.get_user_id(),
+                conversation_id=message_dto.get_conversation_id(),
+                rating=message_dto.get_rating(),
+                created_at=message_dto.get_created_at()
+            )
+
+            message_result = self.get_message_usecase.get_message(message_model)
             
             return MessageDTO(
-                id=result_model.id,
-                text=result_model.text,
-                user_id=result_model.user_id,
-                conversation_id=result_model.conversation_id,
-                rating=result_model.rating,
-                is_bot=result_model.is_bot,
-                created_at=result_model.created_at
+                id=message_result.get_id(),
+                text=message_result.get_text(),
+                user_id=message_result.get_user_id(),
+                conversation_id=message_result.get_conversation_id(),
+                rating=message_result.get_rating(),
+                created_at=message_result.get_created_at()
             )
+        
         except Exception as e:
             raise e
