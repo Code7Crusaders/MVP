@@ -1,6 +1,6 @@
-from app.usecases.get_support_message_useCase import GetSupportMessageUseCase
-from app.ports.get_support_message_port import GetSupportMessagePort
-from app.models.support_message_model import SupportMessageModel
+from usecases.get_support_message_useCase import GetSupportMessageUseCase
+from ports.get_support_message_port import GetSupportMessagePort
+from models.support_message_model import SupportMessageModel
 
 class GetSupportMessageService(GetSupportMessageUseCase):
     """
@@ -10,8 +10,15 @@ class GetSupportMessageService(GetSupportMessageUseCase):
         self.get_support_message_port = get_support_message_port
         
 
-    def get_support_message(self, message_id: int) -> SupportMessageModel:
+    def get_support_message(self, message: SupportMessageModel) -> SupportMessageModel:
         """
-        Get the support message by message ID.
+        Retrieves a support message.
+        Args:
+            message (SupportMessageModel): The support message model containing the details.
+        Returns:
+            SupportMessageModel: The retrieved support message.
         """
-        return self.get_support_message_port.get_support_message(message_id)
+        try:
+            return self.get_support_message_port.get_support_message(message)
+        except Exception as e:
+            raise e

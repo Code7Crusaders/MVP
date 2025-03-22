@@ -1,15 +1,23 @@
-from app.ports.save_support_message_port import SaveSupportMessagePort
-from app.models.support_message_model import SupportMessageModel
+from ports.save_support_message_port import SaveSupportMessagePort
+from models.support_message_model import SupportMessageModel
+from usecases.save_support_message_useCase import SaveSupportMessageUseCase
 
-class SaveSupportMessageService:
+class SaveSupportMessageService(SaveSupportMessageUseCase):
     """
     Service class to save a support message.
     """
     def __init__(self, save_support_message_port: SaveSupportMessagePort):
         self.save_support_message_port = save_support_message_port
     
-    def save_support_message(self, user_id: int, description: str, status: str, subject: str) -> SupportMessageModel:
+    def save_support_message(self, support_message: SupportMessageModel)-> int:
         """
-        Save a support message with the given details.
+        Save a support message.
+        Args:
+            support_message (SupportMessageModel): The support message to save.
+        Returns:
+            int: The ID of the saved support message.
         """
-        return self.save_support_message_port.save_support_message(user_id, description, status, subject)
+        try:
+            return self.save_support_message_port.save_support_message(support_message)
+        except Exception as e:
+            raise e

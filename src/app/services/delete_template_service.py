@@ -1,5 +1,6 @@
-from app.usecases.delete_template_useCase import DeleteTemplateUseCase
-from app.ports.delete_template_port import DeleteTemplatePort
+from usecases.delete_template_useCase import DeleteTemplateUseCase
+from ports.delete_template_port import DeleteTemplatePort
+from models.template_model import TemplateModel
 
 class DeleteTemplateService(DeleteTemplateUseCase):
     """
@@ -9,8 +10,18 @@ class DeleteTemplateService(DeleteTemplateUseCase):
         self.delete_template_port = delete_template_port
         
 
-    def delete_template(self, author: str, question: str, answer: str):
+    def delete_template(self, template : TemplateModel)-> bool:
         """
-        Get the answer to a user's question.
+        Delete a template from db.
+        Args:
+            template (TemplateModel): The template to be deleted.
+
+        Returns:
+            bool: True if the template was deleted, False otherwise.
         """
-        return self.delete_template_port.delete_template(author, question, answer)
+        try:
+            return self.delete_template_port.delete_template(template)
+        except Exception as e:
+            raise e
+        
+

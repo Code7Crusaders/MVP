@@ -1,6 +1,6 @@
-from app.usecases.get_conversations_useCase import GetConversationsUseCase
-from app.models.conversation_model import ConversationModel
-from app.ports.get_conversations_port import GetConversationsPort
+from usecases.get_conversations_useCase import GetConversationsUseCase
+from models.conversation_model import ConversationModel
+from ports.get_conversations_port import GetConversationsPort
 
 class GetConversationsService(GetConversationsUseCase):
     """
@@ -12,6 +12,13 @@ class GetConversationsService(GetConversationsUseCase):
 
     def get_conversations(self) -> list[ConversationModel]:
         """
-        Get the answer to a user's question.
+        Get all conversations.
+        Returns:
+            List[ConversationModel]: A list of conversation models.
         """
-        return self.get_conversations_port.get_conversations()
+        try:
+            
+            return self.get_conversations_port.get_conversations()
+
+        except Exception as e:
+            raise e
