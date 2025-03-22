@@ -7,11 +7,12 @@ class GetMessagePort(ABC):
     """
 
     @abstractmethod
-    def get_message(self, message_id: int) -> MessageModel:
+    def get_message(self, message: MessageModel) -> MessageModel:
         """
-        Get a message by its ID.
+        Retrieve a message by its ID.
         Args:
-            message_id (int): The ID of the message.
+            message (MessageModel): The message object containing the ID to retrieve.
         Returns:
-            MessageModel: The message model.
+            MessageModel: The retrieved message.
         """
+        

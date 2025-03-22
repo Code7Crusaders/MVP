@@ -7,13 +7,11 @@ class SaveSupportMessagePort(ABC):
     """
 
     @abstractmethod
-    def save_support_message(self, user_id: int, description: str, status: str, subject: str):
+    def save_support_message(self, support_message: SupportMessageModel)-> int:
         """
         Save a support message.
         Args:
-            user_id (int): The ID of the user.
-            description (str): The description of the support message.
-            status (str): The status of the support message.
-            subject (str): The subject of the support message.
+            support_message (SupportMessageModel): The support message to save.
+        Returns:
+            int: The ID of the saved support message.
         """
-        pass

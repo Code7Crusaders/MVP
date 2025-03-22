@@ -7,13 +7,12 @@ class SaveTemplatePort(ABC):
     """
 
     @abstractmethod
-    def save_template(self, question: str, answer: str, author: str) -> int:
+    def save_template(self, template: TemplateModel) -> int:
         """
-        Save a template with the provided question, answer, and author.
+        Save a template.
         Args:
-            question (str): The question content of the template.
-            answer (str): The answer content of the template.
-            author (str): The creator of the template.
+            template (TemplateModel): The template to save.
+        Returns:
+            int: The ID of the saved template.
         """
-        pass
         

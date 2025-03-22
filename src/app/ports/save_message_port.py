@@ -7,10 +7,9 @@ class SaveMessagePort(ABC):
     """
 
     @abstractmethod
-    def save_message(self, message: MessageModel):
+    def save_message(self, message: MessageModel)-> int:
         """
         Save a message.
         Args:
             message (MessageModel): The message model.
         """
-        pass

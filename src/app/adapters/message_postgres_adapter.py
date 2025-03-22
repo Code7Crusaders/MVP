@@ -1,12 +1,13 @@
 from app.repositories.message_postgres_repository import MessagePostgresRepository
 from app.models.message_model import MessageModel
+
 from app.ports.get_message_port import GetMessagePort
 from app.ports.get_messages_by_conversation import GetMessagesByConversationPort
-from app.ports.save_message_port import SaveMessageTitlePort
+from app.ports.save_message_port import SaveMessagePort
 
 from entities.message_entity import MessageEntity
 
-class messagePostgresAdapter(GetMessagePort, SaveMessageTitlePort, GetMessagesByConversationPort):
+class messagePostgresAdapter(GetMessagePort, GetMessagesByConversationPort, SaveMessagePort):
 
     def __init__(self, message_postgres_repository: MessagePostgresRepository):
         self.message_postgres_repository = message_postgres_repository

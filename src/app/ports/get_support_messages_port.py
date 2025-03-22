@@ -9,6 +9,7 @@ class GetSupportMessagesPort(ABC):
     @abstractmethod
     def get_support_messages(self) -> list[SupportMessageModel]:
         """
+        Retrieves all support messages.
         Returns:
-            list of SupportMessageModel: The support message model .
+            list[SupportMessageModel]: A list of support messages.
         """

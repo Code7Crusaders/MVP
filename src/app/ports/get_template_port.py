@@ -7,12 +7,11 @@ class GetTemplatePort(ABC):
     """
 
     @abstractmethod
-    def get_template(self, template_id: int) -> TemplateModel:
+    def get_template(self, template: TemplateModel) -> TemplateModel:
         """
-        Get a template by its ID.
+        Retrieve a template by its details.
         Args:
-            template_id (int): The ID of the template.
+            template (TemplateModel): The template details to retrieve.
         Returns:
-            TemplateModel: The template model.
+            TemplateModel: The retrieved template.
         """
-        pass

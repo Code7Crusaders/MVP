@@ -7,4 +7,12 @@ class SplitFilePort(ABC):
 
     @abstractmethod
     def split_file(self, file: FileModel) -> list[FileChunkModel]:
-        pass
+        """
+        Splits the given file into chunks.
+
+        Args:
+            file (FileModel): The file model containing the filename and file content.
+
+        Returns:
+            list[FileChunkModel]: A list of file chunk models containing the chunk content and metadata.
+        """

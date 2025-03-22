@@ -7,12 +7,11 @@ class GetSupportMessagePort(ABC):
     """
 
     @abstractmethod
-    def get_support_message(self, message_id: int) -> SupportMessageModel:
+    def get_support_message(self, message: SupportMessageModel) -> SupportMessageModel:
         """
-        Get a support message by its ID.
-        Args:ò
-            message_id (int): The ID of the support message.
+        Retrieves a support message.
+        Args:
+            message (SupportMessageModel): The support message model containing the details.
         Returns:
-            SupportMessageModel: The support message model.
+            SupportMessageModel: The retrieved support message.
         """
-        pass

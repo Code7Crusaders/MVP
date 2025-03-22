@@ -7,11 +7,11 @@ class GetMessagesByConversationPort(ABC):
     """
 
     @abstractmethod
-    def get_messages_by_conversation(self, conversation_id: int) -> list[MessageModel]:
+    def get_messages_by_conversation(self, conversation: MessageModel) -> list[MessageModel]:
         """
-        Get messages by conversation ID.
+        Retrieve messages by conversation.
         Args:
-            conversation_id (int): The ID of the conversation.
+            conversation (MessageModel): The conversation object containing the ID to retrieve messages for.
         Returns:
-            list[MessageModel]: The list of message models.
+            list[MessageModel]: A list of retrieved messages.
         """
