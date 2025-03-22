@@ -9,11 +9,12 @@ import AddIcon from '@mui/icons-material/Add';
 import QuickreplyIcon from '@mui/icons-material/Quickreply';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Dialog, DialogContent, DialogActions, TextField, Button, DialogContentText } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, TextField, Button, DialogContentText, Alert } from '@mui/material';
 
 function Chatbot() {
   const [count, setCount] = useState(0);
-  const [open, setOpen] = useState(false); // Stato per gestire il DIALOG
+  const [Salvataggio, setSalvataggioOpen] = useState(false); // Stato per gestire il DIALOG di salvataggio
+  const [Eliminazione, setEliminazioneOpen] = useState(false); // Stato per gestire il DIALOG dell'eliminazione
   
   const theme = useTheme();
   
@@ -35,14 +36,27 @@ function Chatbot() {
 
   // DIALOG per il salvataggio della chat
   const chiudiDialogSalvataggio = () => {
-    setOpen(false); 
+    setSalvataggioOpen(false); 
   };
   const SalvaChat = () => {
+    //controllare che non sia vuoto il titolo
     // Salvataggio della chat
-    setOpen(false); 
+    setSalvataggioOpen(false); 
   };
   const apriDialogSalvataggio = () => {
-    setOpen(true); 
+    setSalvataggioOpen(true); 
+  };
+
+  // DIALOG per l'eliminazione della chat
+  const chiudiDialogEliminazione = () => {
+    setEliminazioneOpen(false); 
+  };
+  const EliminaChat = () => {
+    // Eliminazione della chat
+    setEliminazioneOpen(false); 
+  };
+  const apriDialogEliminazione = () => {
+    setEliminazioneOpen(true); 
   };
 
 
@@ -63,7 +77,7 @@ function Chatbot() {
           <button className='btnsTop' alt="aggiungi un template" title='Aggiungi Template' style={buttons}><AddIcon /></button>
           <button className='btnsTop' alt="seleziona template" title='Seleziona domanda' style={buttons}><QuickreplyIcon /></button>
           <button className='btnsTop' alt="Salva la chat" title='Salva Chat' style={buttons} onClick={apriDialogSalvataggio}><SaveIcon /></button>
-          <button className='btnsTop' alt="Elimina la chat" title='Elimina Chat' style={buttons}><DeleteForeverIcon /></button>
+          <button className='btnsTop' alt="Elimina la chat" title='Elimina Chat' style={buttons} onClick={apriDialogEliminazione}><DeleteForeverIcon /></button>
         </div>
       </div>
     
@@ -105,18 +119,29 @@ function Chatbot() {
       </div>
 
       {/* DIALOG per il salvataggio della chat */}
-      <Dialog open={open} onClose={chiudiDialogSalvataggio} fullWidth>
-        <DialogContentText style={{ ...{ fontSize: '30px', padding: '16px 24px 0 24px', fontWeight: 'bold' }, ...timeSpan }}>Salva Chat</DialogContentText>
-        <DialogContentText style={{...{fontSize: '16px', paddingLeft:'24px',}, ...timeSpan}}>Inserisci il titolo della conversazione da salvare</DialogContentText>
+      <Dialog open={Salvataggio} onClose={chiudiDialogSalvataggio} fullWidth>
+        <DialogContentText style={{ ...{ fontSize: '30px', margin: '16px 24px 0 24px', fontWeight: 'bold', }, ...timeSpan }}>Salva Chat</DialogContentText>
+        <DialogContentText style={{...{fontSize: '16px', marginLeft:'24px',}, ...timeSpan }}>Inserisci il titolo della conversazione da salvare</DialogContentText>
         <DialogContent>
           <TextField style={{ ...{borderRadius: '8px'}, ...inputChatStyle}}
             placeholder="Titolo Chat"
             fullWidth
           />
         </DialogContent>
-        <DialogActions style={{paddingBottom: '25px', paddingRight: '24px'}}>
+        <DialogActions style={{marginBottom: '25px', marginRight: '24px'}}>
           <Button onClick={chiudiDialogSalvataggio} style={buttons}>Annulla</Button>
           <Button onClick={SalvaChat} style={buttons}>Salva chat</Button>
+        </DialogActions>
+      </Dialog>
+
+
+      {/* DIALOG per l'eliminazione della chat */}
+      <Dialog open={Eliminazione} onClose={chiudiDialogEliminazione}>
+      <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>Prova di un titolo per questa chat</DialogContentText>
+      <DialogContentText style={{ ...{ fontSize: '16px', margin:'6px 24px 0 24px',}, ...timeSpan }}>Sei sicuro di voler eliminare questa conversazione?</DialogContentText>
+        <DialogActions style={{margin: '10px 16px 20px 0'}}>
+          <Button onClick={chiudiDialogEliminazione} style={buttons}>Annulla</Button>
+          <Button onClick={EliminaChat} style={buttons}>Elimina chat</Button>
         </DialogActions>
       </Dialog>
     </>
