@@ -1,12 +1,9 @@
-from typing import List
-
 from models.file_chunk_model import FileChunkModel
-
 from ports.add_chunks_port import AddChunksPort
 
 class AddChunksService:
 
-    def __init__(self, add_chunks_port: AddChunksPort, ):
+    def __init__(self, add_chunks_port: AddChunksPort ):
         self.add_chunks_port = add_chunks_port
 
 

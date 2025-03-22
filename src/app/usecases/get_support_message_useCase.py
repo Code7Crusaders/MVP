@@ -1,7 +1,14 @@
 from abc import ABC, abstractmethod
-from app.models.support_message_model import SupportMessageModel
+from models.support_message_model import SupportMessageModel
 
 class GetSupportMessageUseCase(ABC):
+
     @abstractmethod
-    def get_support_message(self, message_id: int) -> SupportMessageModel:
-        pass
+    def get_support_message(self, message: SupportMessageModel) -> SupportMessageModel:
+        """
+        Retrieves a support message.
+        Args:
+            message (SupportMessageModel): The support message model containing the details.
+        Returns:
+            SupportMessageModel: The retrieved support message.
+        """

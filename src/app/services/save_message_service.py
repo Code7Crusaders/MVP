@@ -14,6 +14,8 @@ class SaveMessageService(SaveMessageUseCase):
         Save a message.
         Args:
             message (MessageModel): The message model.
+        Returns:
+            int: The ID of the saved message.
         """
         try:
             return self.save_message_port.save_message(message)
