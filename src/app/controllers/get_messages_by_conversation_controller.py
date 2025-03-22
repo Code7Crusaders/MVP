@@ -11,28 +11,36 @@ class GetMessagesByConversationController:
     def __init__(self, get_messages_by_conversation_usecase: GetMessagesByConversationUseCase):
         self.get_messages_by_conversation_usecase = get_messages_by_conversation_usecase
 
-    def get_messages_by_conversation(self, conversation_id: int) -> List[MessageDTO]:
+    def get_messages_by_conversation(self, conversation_dto: MessageDTO) -> List[MessageDTO]:
         """
-        Retrieve messages from the database by conversation ID.
+        Retrieve messages from the database by conversation DTO.
         
         Args:
-            conversation_id (int): The ID of the conversation to retrieve messages for.
+            conversation_dto (MessageDTO): The DTO containing details of the conversation to retrieve messages for.
 
         Returns:
             List[MessageDTO]: A list of data transfer objects containing message details.
         """
         try:
-            result_models = self.get_messages_by_conversation_usecase.get_messages_by_conversation(conversation_id)
+            conversation_model = MessageDTO(
+                id=conversation_dto.get_id(),
+                text=conversation_dto.get_text(),
+                user_id=conversation_dto.get_user_id(),
+                conversation_id=conversation_dto.get_conversation_id(),
+                rating=conversation_dto.get_rating(),
+                created_at=conversation_dto.get_created_at()
+            ) 
+
+            result_models = self.get_messages_by_conversation_usecase.get_messages_by_conversation(conversation_model)
             
             return [
                 MessageDTO(
-                    id=model.id,
-                    text=model.text,
-                    user_id=model.user_id,
-                    conversation_id=model.conversation_id,
-                    rating=model.rating,
-                    is_bot=model.is_bot,
-                    created_at=model.created_at
+                    id=model.get_id(),
+                    text=model.get_text(),
+                    user_id=model.get_user_id(),
+                    conversation_id=model.get_conversation_id(),
+                    rating=model.get_rating(),
+                    created_at=model.get_created_at()
                 )
                 for model in result_models
             ]
