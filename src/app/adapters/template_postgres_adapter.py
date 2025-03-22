@@ -8,9 +8,9 @@ from ports.delete_template_port import DeleteTemplatePort
 from entities.template_entity import TemplateEntity
 
 
-class TemplatePostgresAdapter(GetTemplatePort, GetTemplateListPort, SaveTemplatePort, DeleteTemplatePort):
+class TemplatePostgresAdapter(GetTemplatePort, GetTemplateListPort, DeleteTemplatePort, SaveTemplatePort):
 
-    def __init__(self, template_postgres_repository: TemplatePostgresRepository):
+    def __init__(self, template_postgres_repository: TemplatePostgresRepository): 
         self.template_postgres_repository = template_postgres_repository
     
     def get_template(self, template: TemplateModel) -> TemplateModel:

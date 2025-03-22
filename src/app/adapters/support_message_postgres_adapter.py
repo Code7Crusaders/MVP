@@ -1,11 +1,12 @@
 from repositories.support_message_postgres_repository import SupportMessagePostgresRepository
 from models.support_message_model import SupportMessageModel
 from ports.get_support_message_port import GetSupportMessagePort
+from ports.get_support_messages_port import GetSupportMessagesPort
 from ports.save_support_message_port import SaveSupportMessagePort
 
 from entities.support_message_entity import SupportMessageEntity
 
-class SupportMessagePostgresAdapter(GetSupportMessagePort, SaveSupportMessagePort):
+class SupportMessagePostgresAdapter(GetSupportMessagePort, GetSupportMessagesPort, SaveSupportMessagePort):
 
     def __init__(self, support_message_postgres_repository: SupportMessagePostgresRepository):
         self.support_message_postgres_repository = support_message_postgres_repository

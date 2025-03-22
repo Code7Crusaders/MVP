@@ -8,4 +8,12 @@ class SimilaritySearchPort(ABC):
     """
     @abstractmethod
     def similarity_search(self, question_model: QuestionModel) -> list[ContextModel]:
-        pass 
+        """
+        Perform a similarity search using the provided question model.
+
+        Args:
+            question_model (QuestionModel): The model containing the question to search for.
+
+        Returns:
+            list[ContextModel]: A list of context models that are similar to the question.
+        """

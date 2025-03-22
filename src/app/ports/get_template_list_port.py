@@ -7,9 +7,9 @@ class GetTemplateListPort(ABC):
     """
 
     @abstractmethod
-    def get_template_list(self) -> list[TemplateModel]:
+    def get_template_list(self) -> list[TemplateModel]: 
         """
-        Retrieve a list of templates.
+        Retrieve all templates.
         Returns:
-            list[TemplateModel]: A list of template models.
+            list[TemplateModel]: A list of TemplateModel objects.
         """

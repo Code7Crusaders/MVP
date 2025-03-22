@@ -10,4 +10,14 @@ class GenerateAnswerPort(ABC):
     """
     @abstractmethod
     def generate_answer(self, question: QuestionModel, context: list[ContextModel], prompt_template: PromptTemplateModel) -> AnswerModel:
-        pass 
+        """
+        Generates an answer based on the given question, context, and prompt template.
+
+        Args:
+            question (QuestionModel): The question model containing the user ID and question text.
+            context (list[ContextModel]): A list of context models containing the context content.
+            prompt_template (PromptTemplateModel): The prompt template model containing the prompt template content.
+
+        Returns:
+            AnswerModel: The generated answer model containing the answer text.
+        """

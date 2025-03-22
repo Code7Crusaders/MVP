@@ -7,12 +7,11 @@ class SaveConversationTitlePort(ABC):
     """
 
     @abstractmethod
-    def save_conversation_title(self, conversation_id: int, title: str) -> ConversationModel:
+    def save_conversation_title(self, conversation: ConversationModel) -> int:
         """
         Save a conversation title by its ID.
         Args:
-            conversation_id (int): The ID of the conversation.
-            title (str): The new title of the conversation.
+            conversation (ConversationModel): The conversation model containing the ID and title.
         Returns:
-            ConversationModel: The updated conversation model.
+            int: The ID of the updated conversation.
         """

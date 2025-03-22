@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from app.models.template_model import TemplateModel
 
 class DeleteTemplatePort(ABC):
     """
@@ -6,12 +7,11 @@ class DeleteTemplatePort(ABC):
     """
 
     @abstractmethod
-    def delete_template(self, author: str, question: str, answer: str):
+    def delete_template(self, template: TemplateModel) -> bool:
         """
-        Delete a template by author, question, and answer.
+        Delete a template.
         Args:
-            author (str): The author of the template.
-            question (str): The question of the template.
-            answer (str): The answer of the template.
+            template (TemplateModel): The template to delete.
+        Returns:
+            bool: True if the template was deleted successfully, otherwise False.
         """
-        pass

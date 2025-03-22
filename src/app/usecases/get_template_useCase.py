@@ -1,16 +1,14 @@
-from app.usecases.get_template_useCase import GetTemplateUseCase
-from app.ports.get_template_port import GetTemplatePort
+from abc import ABC, abstractmethod
+from models.template_model import TemplateModel
 
-class GetTemplateUseCase(GetTemplateUseCase):
-    """
-    Service class to get templates.
-    """
-    def __init__(self, get_template_port: GetTemplatePort):
-        self.get_template_port = get_template_port
+class GetTemplateUseCase(ABC):
         
-
-    def get_template(self, template_id: int):
+    @abstractmethod
+    def get_template(self, template: TemplateModel) -> TemplateModel:
         """
-        Get the template by its ID.
+        Retrieve a template by its details.
+        Args:
+            template (TemplateModel): The template details to retrieve.
+        Returns:
+            TemplateModel: The retrieved template.
         """
-        return self.get_template_port.get_template(template_id)

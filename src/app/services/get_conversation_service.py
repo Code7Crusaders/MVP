@@ -1,6 +1,6 @@
-from app.usecases.get_conversation_useCase import GetConversationUseCase
-from app.models.conversation_model import ConversationModel
-from app.ports.get_conversation_port import GetConversationPort
+from usecases.get_conversation_useCase import GetConversationUseCase
+from models.conversation_model import ConversationModel
+from ports.get_conversation_port import GetConversationPort
 
 class GetConversationService(GetConversationUseCase):
     """
@@ -12,6 +12,16 @@ class GetConversationService(GetConversationUseCase):
 
     def get_conversation(self, conversation: ConversationModel) -> ConversationModel:
         """
-        Get the answer to a user's question.
+        get the conversation title from db using id to get it.
+        Args:
+            conversation (ConversationModel): The conversation to be retrieved.
+        Returns:
+            ConversationModel: The conversation retrieved from db.
         """
-        return self.get_conversation_port.get_conversation(conversation.get_id())
+        try: 
+        
+            return self.get_conversation_port.get_conversation(conversation)
+        
+        except Exception as e:
+            raise e
+        

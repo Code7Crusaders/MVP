@@ -1,11 +1,13 @@
 from repositories.conversation_postgres_repository import ConversationPostgresRepository
 from models.conversation_model import ConversationModel
+
 from ports.save_conversation_title_port import SaveConversationTitlePort
+from ports.get_conversations_port import GetConversationsPort
 from ports.get_conversation_port import GetConversationPort
 
 from entities.conversation_entity import ConversationEntity
 
-class ConversationPostgresAdapter(GetConversationPort, SaveConversationTitlePort):
+class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, SaveConversationTitlePort):
 
     def __init__(self, conversation_postgres_repository: ConversationPostgresRepository):
         self.conversation_postgres_repository = conversation_postgres_repository
