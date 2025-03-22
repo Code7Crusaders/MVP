@@ -16,6 +16,8 @@ class SaveMessageController:
 
         Args:
             message (MessageDTO): The data transfer object containing message details.
+        Returns:
+            int: The ID of the saved message.
         """
 
         try:
