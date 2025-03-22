@@ -2,7 +2,7 @@ class QuestionModel:
     """
     Model class to represent a question.
     """
-    def __init__(self, user_id: int, question: str):
+    def __init__(self, user_id: int = None, question: str = None):
         self.user_id = user_id
         self.question = question
         

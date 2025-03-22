@@ -1,7 +1,7 @@
 from repositories.message_postgres_repository import MessagePostgresRepository
 from models.message_model import MessageModel
 from ports.get_message_port import GetMessagePort
-from ports.get_messages_by_conversation import GetMessagesByConversationPort
+from ports.get_messages_by_conversation_port import GetMessagesByConversationPort
 from ports.save_message_port import SaveMessagePort
 
 from entities.message_entity import MessageEntity
