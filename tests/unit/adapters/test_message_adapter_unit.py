@@ -38,7 +38,7 @@ def test_get_message_invalid_id(message_adapter, message_postgres_repository_moc
 # Test get_messages_by_conversation
 
 def test_get_messages_by_conversation_valid(message_adapter, message_postgres_repository_mock):
-    conversation = ConversationModel(id=1)
+    conversation = MessageModel(conversation_id=1)
     messages = [MessageModel(id=1, text="Hello"), MessageModel(id=2, text="Hi")]
     message_postgres_repository_mock.get_messages_by_conversation.return_value = messages
 
@@ -53,7 +53,7 @@ def test_get_messages_by_conversation_valid(message_adapter, message_postgres_re
     message_postgres_repository_mock.get_messages_by_conversation.assert_called_once()
 
 def test_get_messages_by_conversation_empty(message_adapter, message_postgres_repository_mock):
-    conversation = ConversationModel(id=1)
+    conversation = MessageModel(conversation_id=1)
     message_postgres_repository_mock.get_messages_by_conversation.return_value = []  
 
     result = message_adapter.get_messages_by_conversation(conversation)
@@ -63,7 +63,7 @@ def test_get_messages_by_conversation_empty(message_adapter, message_postgres_re
     message_postgres_repository_mock.get_messages_by_conversation.assert_called_once()
 
 def test_get_messages_by_conversation_exception(message_adapter, message_postgres_repository_mock):
-    conversation = ConversationModel(id=-1)
+    conversation = MessageModel(conversation_id=-1)
     message_postgres_repository_mock.get_messages_by_conversation.side_effect = Exception("Conversation not found")
     
     with pytest.raises(Exception) as exc_info:

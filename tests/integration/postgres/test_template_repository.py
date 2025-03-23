@@ -42,11 +42,11 @@ def test_get_template(repository):
     assert result_template.get_author_id() is not None
     assert result_template.get_last_modified() is not None
 
-def test_get_message_none(repository):
+def test_get_message_error(repository):
     """Test retrieving a non-existing message from the database."""
     template_entity = TemplateEntity(id=-1) # Non-existing ID in your database
-    result_message = repository.get_template(template_entity)
-    assert result_message is None, "Template not found in database"
+    with pytest.raises(ValueError):
+        repository.get_template(template_entity)
 
 def test_get_template_list(repository):
     """Test retrieving all templates from the database."""
@@ -102,8 +102,9 @@ def test_save_delete_template(repository):
         assert result is True, "Failed to delete template"
 
         # Verify the template is deleted
-        deleted_template = repository.get_template(delete_template)  # Pass the instance with the correct id
-        assert deleted_template is None, "Template was not deleted"
+        with pytest.raises(ValueError):
+            repository.get_template(delete_template)  
+        
 
         # Verify behavior when trying to delete a non-existing template
         non_existing_template = TemplateEntity(id=-1)  # Non-existing ID in your database

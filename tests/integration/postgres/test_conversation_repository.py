@@ -34,12 +34,12 @@ def test_get_conversation(repository):
     assert result_conversation.get_title() is not None
 
 
-def test_get_conversation_none(repository):
+def test_get_conversation_error(repository):
     """Test retrieving a non-existing conversation from the database."""
     conversation_entity = ConversationEntity(id=-1, title="place holder")  # Non-existing ID in your database
-    result_conversation = repository.get_conversation(conversation_entity)
-
-    assert result_conversation is None, "Conversation not found in database"
+    
+    with pytest.raises(ValueError):
+        repository.get_conversation(conversation_entity)
 
 
 def test_get_conversations(repository):
@@ -79,9 +79,9 @@ def test_save_delete_conversation_title(repository):
         result = repository.delete_conversation(saved_conversation)
         assert result is True, "Conversation deletion failed"
 
-        # Verify the deleted conversation by retrieving it
-        deleted_conversation = repository.get_conversation(saved_conversation)
-        assert deleted_conversation is None, "Deleted conversation still exists in database"
+        # Verify the deletion by ensuring retrieving it raises an error
+        with pytest.raises(ValueError):
+            repository.get_conversation(saved_conversation)
     
     except Exception as e:
         pytest.fail(f"Deleting conversation failed: {e}")

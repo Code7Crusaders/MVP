@@ -45,16 +45,15 @@ def test_get_message(repository):
     assert result_message.get_created_at() is not None
 
 
-def test_get_message_none(repository):
+def test_get_message_error(repository):
     """Test retrieving a non-existing message from the database."""
-    message_entity = MessageEntity(id=-1) # Non-existing ID in your database
-    result_message = repository.get_message(message_entity)
-
-    assert result_message is None, "Message not found in database"
+    message_entity = MessageEntity(id=-1)  # Non-existing ID in your database
+    with pytest.raises(ValueError):
+        repository.get_message(message_entity)
 
 def test_get_messages_by_conversation(repository):
     """Test retrieving messages by conversation from the database."""
-    conversation = ConversationEntity(id=1, title="General Chat")  # Replace with an existing conversation ID in your database
+    conversation = MessageEntity(conversation_id=1)  # get only needs the conversation_id
     result_messages = repository.get_messages_by_conversation(conversation)
 
     assert result_messages is not None, "Messages not found for the given conversation"
@@ -62,7 +61,7 @@ def test_get_messages_by_conversation(repository):
     assert all(isinstance(message, MessageEntity) for message in result_messages)
 
     for message in result_messages:
-        assert message.get_conversation_id() == conversation.get_id()
+        assert message.get_conversation_id() == conversation.get_conversation_id()
         assert message.get_text() is not None
         assert message.get_created_at() is not None
         assert message.get_user_id() is None or isinstance(message.get_user_id(), int)
@@ -71,10 +70,9 @@ def test_get_messages_by_conversation(repository):
 
 def test_get_messages_by_conversation_empty(repository):
     """Test retrieving messages for a conversation with no messages."""
-    conversation = ConversationEntity(id=-1, title="Non-existing chat")  # Non-existing conversation ID in your database
-    result_messages = repository.get_messages_by_conversation(conversation)
-
-    assert result_messages is None, "Expected no messages for the given conversation"
+    conversation = MessageEntity(conversation_id=-1)  # Non-existing conversation ID in your database
+    with pytest.raises(ValueError):
+        repository.get_messages_by_conversation(conversation)
 
 def test_save_delete_message(repository):
     """Test saving and deleting a message in the database."""
@@ -117,8 +115,8 @@ def test_save_delete_message(repository):
         assert result is True, "Failed to delete message"
 
         # Verify the message is deleted
-        deleted_message = repository.get_message(delete_message)  # Pass the instance with the correct id
-        assert deleted_message is None, "Message was not deleted"
+        with pytest.raises(ValueError):
+            deleted_message = repository.get_message(delete_message)  # Pass the instance with the correct id
 
     except Exception as e:
         pytest.fail(f"Deleting message failed: {e}")

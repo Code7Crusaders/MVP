@@ -28,9 +28,9 @@ def test_get_conversation(conversation_repo):
 
     conversation = ConversationEntity(id=-1, title="Test Conversation")
 
-    conversation = conversation_repo.get_conversation(conversation)
+    with pytest.raises(ValueError):
+        conversation_repo.get_conversation(conversation)
     
-    assert conversation is None
 
 def test_save_conversation_title(conversation_repo):
 

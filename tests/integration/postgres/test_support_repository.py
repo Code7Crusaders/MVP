@@ -44,9 +44,8 @@ def test_get_support_message_none(repository):
     """Test retrieving a non-existing support message from the database."""
     support_message_entity = SupportMessageEntity(id=-1)  # non-existing ID in your DB
 
-    result_message = repository.get_support_message(support_message_entity)
-
-    assert result_message is None, "Message found in database"
+    with pytest.raises(ValueError):
+        repository.get_support_message(support_message_entity)
 
 
 def test_get_support_messages(repository):
