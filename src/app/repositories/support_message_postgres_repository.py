@@ -43,7 +43,7 @@ class SupportMessagePostgresRepository:
                         created_at=result[5]
                     )
                 else:
-                    return None
+                    raise ValueError(f"No support messages found for support message ID {support_message.get_id()}.")
 
     def get_support_messages(self) -> list[SupportMessageEntity]:
         '''

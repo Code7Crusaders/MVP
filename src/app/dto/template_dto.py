@@ -1,7 +1,7 @@
 from datetime import datetime
 
 class TemplateDTO:
-    def __init__(self, question: str, answer: str, author_id: int, last_modified: datetime, id: int = None):
+    def __init__(self, question: str = None, answer: str = None, author_id: int = None, last_modified: datetime = None, id: int = None):
         self.id = id
         self.question = question
         self.answer = answer

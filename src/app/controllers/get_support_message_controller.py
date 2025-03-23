@@ -25,9 +25,9 @@ class GetSupportMessageController:
             support_message_model = SupportMessageModel(
                 id=support_message_dto.get_id(),
                 user_id=support_message_dto.get_user_id(),
-                text=support_message_dto.get_description(),
-                is_bot=support_message_dto.get_status(),
-                conversation_id=support_message_dto.get_subject(),
+                description=support_message_dto.get_description(),
+                status=support_message_dto.get_status(),
+                subject=support_message_dto.get_subject(),
                 created_at=support_message_dto.get_created_at()
             )
 

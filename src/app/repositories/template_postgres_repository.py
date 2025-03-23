@@ -37,7 +37,7 @@ class TemplatePostgresRepository:
                 if result:
                     return TemplateEntity(id=result[0], question=result[1], answer=result[2], author_id=result[3], last_modified=result[4])
                 else:
-                    return None
+                    raise ValueError(f"No template found for template ID {template.get_id()}.")
         
 
     def get_template_list(self) -> list[TemplateEntity]:

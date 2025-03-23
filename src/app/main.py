@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import os
 import fitz
+import pytz
+from datetime import datetime
 
 from dependencies.encoding import detect_encoding
 from dependencies.dependency_inj import dependency_injection
@@ -10,6 +12,10 @@ from dto.question_dto import QuestionDTO
 from dto.file_dto import FileDTO
 from dto.conversation_dto import ConversationDTO
 from dto.message_dto import MessageDTO
+from dto.support_message_dto import SupportMessageDTO
+from dto.template_dto import TemplateDTO
+
+italy_tz = pytz.timezone('Europe/Rome')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")  
@@ -86,9 +92,10 @@ def save_conversation_title():
     # To test this endpoint with curl:
     # curl -X POST http://127.0.0.1:5000/conversation/save_title -H "Content-Type: application/json" -d '{"title": "New Conversation Title"}'
     """
+    data = request.get_json()
 
     conversation = ConversationDTO(
-        title=request.json.get("title")
+        title=data.get("title")
     )
 
     try:
@@ -142,7 +149,7 @@ def get_messages_by_conversation(conversation_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-    return jsonify([{
+    jsonify([{
         "id": message.get_id(),
         "text": message.get_text(),
         "user_id": message.get_user_id(),
@@ -154,47 +161,192 @@ def get_messages_by_conversation(conversation_id):
 
 @app.route("/message/save", methods=["POST"])
 def save_message():
+    """
+    # To test this endpoint with curl:
+    # curl -X POST http://127.0.0.1:5000/message/save -H "Content-Type: application/json" -d '{"text": "Message text", "user_id": 1, "conversation_id": 2, "rating": true}'
+    """
     data = request.get_json()
-    return jsonify(save_message_controller.save(data))
+
+    # Create DTO
+    message = MessageDTO(
+        text=data.get("text"),
+        user_id=data.get("user_id"),
+        conversation_id=data.get("conversation_id"),
+        rating=data.get("rating"),
+        created_at=datetime.now(italy_tz)
+    )
+
+    try:
+        saved_id = save_message_controller.save_message(message)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return jsonify({"message": f"Message saved with id: {saved_id}"}), 200
 
 
 # ---- Support Message Routes ----
 @app.route("/support_message/get/<int:support_message_id>", methods=["GET"])
 def get_support_message(support_message_id):
-    return jsonify(get_support_message_controller.get(support_message_id))
+    """
+    # To test this endpoint with curl:
+    # curl -X GET http://127.0.0.1:5000/support_message/get/<support_message_id>
+    """
+
+    support_message_dto = SupportMessageDTO(
+        id=support_message_id
+    )
+
+    try:
+        support_message = get_support_message_controller.get_support_message(support_message_dto)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+    return jsonify({
+        "id": support_message.get_id(),
+        "user_id": support_message.get_user_id(),
+        "description": support_message.get_description(),
+        "status": support_message.get_status(),
+        "subject": support_message.get_subject(),
+        "created_at": support_message.get_created_at()
+        }), 200
 
 
 @app.route("/support_message/get_all", methods=["GET"])
 def get_support_messages():
-    return jsonify(get_support_messages_controller.get_all())
+    """
+    # To test this endpoint with curl:
+    # curl -X GET http://127.0.0.1:5000/support_message/get_all
+    """
+    try:
+        support_messages = get_support_messages_controller.get_support_messages()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return jsonify([{
+        "id": message.get_id(),
+        "user_id": message.get_user_id(),
+        "description": message.get_description(),
+        "status": message.get_status(),
+        "subject": message.get_subject(),
+        "created_at": message.get_created_at()
+    } for message in support_messages]), 200
 
 
 @app.route("/support_message/save", methods=["POST"])
 def save_support_message():
+    """
+    # To test this endpoint with curl:
+    # curl -X POST http://127.0.0.1:5000/support_message/save -H "Content-Type: application/json" -d '{"user_id": 1, "description": "Support message description", "status": "true", "subject": "Support subject"}'
+    """
     data = request.get_json()
-    return jsonify(save_support_message_controller.save(data))
+
+    # Create DTO
+    support_message = SupportMessageDTO(
+        user_id=data.get("user_id"),
+        description=data.get("description"),
+        status=data.get("status"),
+        subject=data.get("subject"),
+        created_at=datetime.now(italy_tz)
+    )
+
+    try:
+        saved_id = save_support_message_controller.save_support_message(support_message)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return jsonify({"message": f"Support message saved with id: {saved_id}"}), 200
 
 
 # ---- Template Routes ----
 @app.route("/template/delete/<int:template_id>", methods=["DELETE"])
 def delete_template(template_id):
-    return jsonify(delete_template_controller.delete(template_id))
+    """
+    # To test this endpoint with curl:
+    # curl -X DELETE http://127.0.0.1:5000/template/delete/<template_id>
+    """
+    template_dto = TemplateDTO(
+        id=template_id
+    )
+
+    try:
+        result = delete_template_controller.delete_template(template_dto)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    if result:
+        return jsonify({"message": f"Template with id {template_id} deleted successfully"}), 200
+    else:
+        return jsonify({"error": f"Failed to delete template with id {template_id}"}), 500
 
 
 @app.route("/template/get/<int:template_id>", methods=["GET"])
 def get_template(template_id):
-    return jsonify(get_template_controller.get(template_id))
+    """
+    # To test this endpoint with curl:
+    # curl -X GET http://127.0.0.1:5000/template/get/<template_id>
+    """
+
+
+    template_dto = TemplateDTO(
+        id=template_id
+    )
+
+    try:
+        template = get_template_controller.get_template(template_dto)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return jsonify({
+        "id": template.get_id(),
+        "question": template.get_question(),
+        "answer": template.get_answer(),
+        "author_id": template.get_author_id(),
+        "last_modified": template.get_last_modified()
+    }), 200
 
 
 @app.route("/template/get_list", methods=["GET"])
 def get_template_list():
-    return jsonify(get_template_list_controller.get_list())
+    """
+    # To test this endpoint with curl:
+    # curl -X GET http://127.0.0.1:5000/template/get_list
+    """
+    try:
+        templates = get_template_list_controller.get_template_list()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return jsonify([{
+        "id": template.get_id(),
+        "question": template.get_question(),
+        "answer": template.get_answer(),
+        "author_id": template.get_author_id(),
+        "last_modified": template.get_last_modified()
+    } for template in templates]), 200
 
 
 @app.route("/template/save", methods=["POST"])
 def save_template():
+    """
+    # To test this endpoint with curl:
+    # curl -X POST http://127.0.0.1:5000/template/save -H "Content-Type: application/json" -d '{"question": "Sample question", "answer": "Sample answer", "author_id": 1}'
+    """
     data = request.get_json()
-    return jsonify(save_template_controller.save(data))
+
+    # Create DTO
+    template = TemplateDTO(
+        question=data.get("question"),
+        answer=data.get("answer"),
+        author_id=data.get("author_id"),
+        last_modified=datetime.now(italy_tz)
+    )
+
+    try:
+        saved_id = save_template_controller.save_template(template)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return jsonify({"message": f"Template saved with id: {saved_id}"}), 200
 
 
 @app.route("/api/add_file", methods=["POST"])
