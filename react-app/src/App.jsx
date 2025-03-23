@@ -18,6 +18,7 @@ import Metriche from './components/Metriche';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import Templates from './components/Templates';
+import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 
 const NAVIGATION = [
   {
@@ -65,7 +66,7 @@ const NAVIGATION = [
   {
     segment: 'templates',
     title: 'Gestione Templates',
-    icon: <EqualizerIcon />,
+    icon: <AutoAwesomeMosaicIcon />,
   },
 ];
 
