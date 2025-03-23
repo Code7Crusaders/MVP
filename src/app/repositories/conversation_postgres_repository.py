@@ -39,7 +39,7 @@ class ConversationPostgresRepository:
                 if result:
                     return ConversationEntity(id=result[0], title=result[1])
                 else:
-                    return None
+                    raise ValueError(f"Conversation with ID {id} not found.")
         
         
     def get_conversations(self) -> list[ConversationEntity]:

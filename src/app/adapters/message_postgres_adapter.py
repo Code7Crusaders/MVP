@@ -55,7 +55,7 @@ class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConve
         try:
 
             conversation_entity = MessageEntity(
-                id=conversation.get_id()
+                conversation_id=conversation.get_conversation_id()
             )
 
             messages = self.message_postgres_repository.get_messages_by_conversation(conversation_entity)

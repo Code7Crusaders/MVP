@@ -50,9 +50,9 @@ class MessagePostgresRepository:
                     )
                     return message
                 else:
-                    return None
+                    raise ValueError(f"Message with ID {message.get_id()} not found.")
             
-    def get_messages_by_conversation(self, conversation: ConversationEntity) -> list[MessageEntity]:
+    def get_messages_by_conversation(self, conversation: MessageEntity) -> list[MessageEntity]:
         '''
         Retrieves all messages associated with a specific conversation from the PostgreSQL database.
         Args:
@@ -70,7 +70,7 @@ class MessagePostgresRepository:
         """
         with self.__connect() as connection:  # Call the method to get the connection object
             with connection.cursor() as cursor:
-                cursor.execute(select_messages_query, (conversation.get_id(),))
+                cursor.execute(select_messages_query, (conversation.get_conversation_id(),))
                 rows = cursor.fetchall()
                 if rows:
                     return [
@@ -84,7 +84,7 @@ class MessagePostgresRepository:
                         ) for row in rows
                     ]
                 else:
-                    return None
+                    raise ValueError(f"No messages found for conversation ID {conversation.get_conversation_id()}.")
     
     def save_message(self, message: MessageEntity) -> int:
         '''

@@ -1,13 +1,13 @@
 from datetime import datetime
 
 class MessageDTO:
-    def __init__(self, text: str, conversation_id: int, rating: bool, created_at: datetime, id: int = None, user_id: int = None):
+    def __init__(self, id: int = None, text: str = None, user_id: int = None, conversation_id: int = None, rating: bool = None, created_at: datetime = None):
         self.id = id
         self.text = text
         self.user_id = user_id
         self.conversation_id = conversation_id
         self.rating = rating
-        self.created_at = created_at 
+        self.created_at = created_at
 
     def get_id(self):
         return self.id
