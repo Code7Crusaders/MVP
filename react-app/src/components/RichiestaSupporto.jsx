@@ -10,9 +10,6 @@ const RichiestaSupporto = () => {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
     fontFamily: theme.typography.fontFamily,
-            '::placeholder': {
-              color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',
-              fontFamily: theme.typography.fontFamily,} 
   };
 
   const buttons = {

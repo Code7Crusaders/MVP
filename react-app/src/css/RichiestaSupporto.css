@@ -61,3 +61,7 @@
     color: red;
     margin-bottom: 1rem;
   }
+
+  #subject::placeholder, #description::placeholder {
+    color: rgb(160, 160, 160);
+  }
