@@ -17,6 +17,7 @@ import RichiestaSupporto from './components/RichiestaSupporto';
 import Metriche from './components/Metriche';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
+import Templates from './components/Templates';
 
 const NAVIGATION = [
   {
@@ -53,8 +54,17 @@ const NAVIGATION = [
     kind: 'divider',
   },
   {
+    kind: 'header',
+    title: 'Admin',
+  },
+  {
     segment: 'metrics',
     title: 'Visualizza Metriche',
+    icon: <EqualizerIcon />,
+  },
+  {
+    segment: 'templates',
+    title: 'Gestione Templates',
     icon: <EqualizerIcon />,
   },
 ];
@@ -116,6 +126,12 @@ function MetricheContent(){
   );
 }
 
+function TemplatesContent(){
+  return (
+    <Templates/>
+  );
+}
+
 function DemoPageContent({ pathname }) {
   if (pathname === '/chatbot') {
     return <DashboardContent />;
@@ -128,7 +144,9 @@ function DemoPageContent({ pathname }) {
   } else if (pathname === '/support'){
     return <SupportContent/>;
   } else if (pathname === '/metrics'){
-    return <Metriche/>
+    return <MetricheContent/>
+  } else if (pathname === '/templates'){
+    return <TemplatesContent/>
   }
 
   return (

@@ -5,11 +5,12 @@ import { useTheme } from '@mui/material/styles';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import SendIcon from '@mui/icons-material/Send';
-import AddIcon from '@mui/icons-material/Add';
 import QuickreplyIcon from '@mui/icons-material/Quickreply';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Dialog, DialogContent, DialogActions, TextField, Button, DialogContentText, Alert } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+
 
 function Chatbot() {
   const [count, setCount] = useState(0);
@@ -74,10 +75,15 @@ function Chatbot() {
           <p>Prova di un titolo per questa chat</p>
         </div>
         <div className='icons' >
-          <button className='btnsTop' alt="aggiungi un template" title='Aggiungi Template' style={buttons}><AddIcon /></button>
-          <button className='btnsTop' alt="seleziona template" title='Seleziona domanda' style={buttons}><QuickreplyIcon /></button>
-          <button className='btnsTop' alt="Salva la chat" title='Salva Chat' style={buttons} onClick={apriDialogSalvataggio}><SaveIcon /></button>
-          <button className='btnsTop' alt="Elimina la chat" title='Elimina Chat' style={buttons} onClick={apriDialogEliminazione}><DeleteForeverIcon /></button>
+          <Tooltip title="Templates" placement="bottom">  
+            <button className='btnsTop' alt="seleziona template" title='Seleziona domanda' style={buttons}><QuickreplyIcon /></button>
+          </Tooltip>
+          <Tooltip title="Salva Chat" placement="bottom">  
+            <button className='btnsTop' alt="Salva la chat" title='Salva Chat' style={buttons} onClick={apriDialogSalvataggio}><SaveIcon /></button>
+          </Tooltip>
+          <Tooltip title="Elimina Chat" placement="bottom">  
+            <button className='btnsTop' alt="Elimina la chat" title='Elimina Chat' style={buttons} onClick={apriDialogEliminazione}><DeleteForeverIcon /></button>
+          </Tooltip>
         </div>
       </div>
     
