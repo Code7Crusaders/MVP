@@ -36,6 +36,18 @@ def test_generate_answer_valid():
         "Answer the question using the given context:"
     )
 
+def test_generate_answer_exception():
+    lang_chain_repository_mock = MagicMock()
+    lang_chain_repository_mock.generate_answer.side_effect = Exception("Test error")
+
+    lang_chain_adapter = LangChainAdapter(lang_chain_repository_mock)
+
+    question = QuestionModel(user_id=123, question="What is AI?")
+    context = [ContextModel("Artificial Intelligence is a field of study.")]
+    prompt_template = PromptTemplateModel("Answer the question using the given context:")
+
+    with pytest.raises(Exception, match="Test error"):
+        lang_chain_adapter.generate_answer(question, context, prompt_template)
 
 def test_split_file_valid():
     # Mock the repository
@@ -70,4 +82,16 @@ def test_split_file_valid():
     assert result[1].get_metadata() == "Chunk 2 metadata"
 
     lang_chain_repository_mock.split_file.assert_called_once_with(ANY)
+
+def test_split_file_exception():
+    lang_chain_repository_mock = MagicMock()
+    lang_chain_repository_mock.split_file.side_effect = Exception("Test error")
+
+    lang_chain_adapter = LangChainAdapter(lang_chain_repository_mock)
+
+    file = FileModel("test.txt", "This is a test file content.")
+
+    with pytest.raises(Exception, match="Test error"):
+        lang_chain_adapter.split_file(file)
+
 

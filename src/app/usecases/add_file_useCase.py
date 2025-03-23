@@ -5,4 +5,5 @@ class AddFileUseCase(ABC):
 
     @abstractmethod
     def load_file(self, file: FileModel):
-        pass
+        """
+        Load a file into the database."""

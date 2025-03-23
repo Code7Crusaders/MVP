@@ -33,6 +33,9 @@ class GetMessageController:
 
             message_result = self.get_message_usecase.get_message(message_model)
             
+            if not message_result:
+                return None
+
             return MessageDTO(
                 id=message_result.get_id(),
                 text=message_result.get_text(),

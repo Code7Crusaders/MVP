@@ -33,6 +33,9 @@ class GetMessagesByConversationController:
 
             result_models = self.get_messages_by_conversation_usecase.get_messages_by_conversation(conversation_model)
             
+            if not result_models:
+                return None
+            
             return [
                 MessageDTO(
                     id=model.get_id(),

@@ -33,6 +33,9 @@ class GetSupportMessageController:
 
             result_model = self.get_support_message_usecase.get_support_message(support_message_model)
             
+            if not result_model:
+                return None
+
             return SupportMessageDTO(
                 id=result_model.get_id(),
                 user_id=result_model.get_user_id(),

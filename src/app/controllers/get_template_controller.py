@@ -26,6 +26,9 @@ class GetTemplateController:
 
             template_result = self.get_template_use_case.get_template(template_model)
 
+            if template_result is None:
+                return None
+
             return TemplateDTO(
                 id=template_result.get_id(),
                 question=template_result.get_question(),

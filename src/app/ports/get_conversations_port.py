@@ -13,4 +13,3 @@ class GetConversationsPort(ABC):
         Returns:
             List[ConversationModel]: A list of conversation models.
         """
-        pass 
