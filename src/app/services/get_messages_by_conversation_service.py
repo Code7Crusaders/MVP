@@ -1,4 +1,4 @@
-from ports.get_messages_by_conversation import GetMessagesByConversationPort
+from ports.get_messages_by_conversation_port import GetMessagesByConversationPort
 from models.message_model import MessageModel
 
 from usecases.get_messages_by_conversation_useCase import GetMessagesByConversationUseCase
