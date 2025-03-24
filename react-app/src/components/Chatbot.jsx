@@ -22,7 +22,7 @@ function Chatbot() {
   const inputChatStyle = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
-    '::placeholder': {
+    '&::placeholder': {
       color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
   };
 

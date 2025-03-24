@@ -19,6 +19,7 @@ import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import Templates from './components/Templates';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 const NAVIGATION = [
   {
@@ -67,6 +68,11 @@ const NAVIGATION = [
     segment: 'templates',
     title: 'Gestione Templates',
     icon: <AutoAwesomeMosaicIcon />,
+  },
+  {
+    segment: 'assistenza',
+    title: 'Assistenza clienti',
+    icon: <SupportAgentIcon />,
   },
 ];
 
@@ -133,6 +139,12 @@ function TemplatesContent(){
   );
 }
 
+function AssistenzaContent(){
+  return (
+    <p>Assistenza</p>
+  );
+}
+
 function DemoPageContent({ pathname }) {
   if (pathname === '/chatbot') {
     return <DashboardContent />;
@@ -148,6 +160,8 @@ function DemoPageContent({ pathname }) {
     return <MetricheContent/>
   } else if (pathname === '/templates'){
     return <TemplatesContent/>
+  } else if (pathname === '/assistenza'){
+    return <AssistenzaContent/>
   }
 
   return (
