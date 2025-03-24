@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 from flask_bcrypt import Bcrypt
-from dotenv import load_dotenv
+
 import os
 import fitz
 import pytz
@@ -17,6 +17,7 @@ from dto.conversation_dto import ConversationDTO
 from dto.message_dto import MessageDTO
 from dto.support_message_dto import SupportMessageDTO
 from dto.template_dto import TemplateDTO
+from dto.user_dto import UserDTO
 
 
 italy_tz = pytz.timezone('Europe/Rome')
@@ -27,16 +28,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)
 
-# Secure Secret Key
-load_dotenv()
-
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
-jwt = JWTManager(app)
-bcrypt = Bcrypt(app)
-
-
 # Initialize dependencies
-dependencies = dependency_injection()
+dependencies = dependency_injection(app)
 
 chat_controller = dependencies["chat_controller"]
 add_file_controller = dependencies["add_file_controller"]
@@ -58,6 +51,8 @@ get_template_controller = dependencies["get_template_controller"]
 get_template_list_controller = dependencies["get_template_list_controller"]
 save_template_controller = dependencies["save_template_controller"]
 
+registration_controller = dependencies["registration_controller"]
+
 # ---- Authentication Routes ----
 
 @app.route("/register", methods=["POST"])
@@ -67,14 +62,34 @@ def register():
     -H "Content-Type: application/json" \
     -d '{"username": "john", "password": "secret", "email": "john@example.com", "phone": "1234567890", "first_name": "John", "last_name": "Doe"}'
     """
-    data = request.json
+    try:
+        data = request.json
 
-    username = data.get("username")
-    password = data.get("password")
-    email = data.get("email")
-    phone = data.get("phone", "")
-    first_name = data.get("first_name", "")
-    last_name = data.get("last_name", "")
+        username = data.get("username")
+        password = data.get("password")
+        email = data.get("email")
+        phone = data.get("phone", "")
+        first_name = data.get("first_name", "")
+        last_name = data.get("last_name", "")
+
+        user_dto = UserDTO(
+            username=username,
+            password=password,
+            email=email,
+            phone=phone,
+            first_name=first_name,
+            last_name=last_name,
+            is_admin=False
+        )
+
+        success = registration_controller.register(user_dto)
+
+        return jsonify({"message": "User registered successfully"}), 200
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
 
 # ---- Conversation Routes ----
 @app.route("/conversation/get/<int:conversation_id>", methods=["GET"])

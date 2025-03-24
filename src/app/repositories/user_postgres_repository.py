@@ -32,6 +32,13 @@ class UserPostgresRepository:
             bool: True if the user was registered successfully, False otherwise.
         """
 
+        query = "INSERT INTO Users (username, password_hash, email, phone, first_name, last_name, is_admin) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query, (user_model.get_username(), user_model.get_password(), user_model.get_email(), user_model.get_phone(), user_model.get_first_name(), user_model.get_last_name(), user_model.get_is_admin()))
+                conn.commit()
+                return True
+
     def get_user_by_email(self, email: str) -> bool:
         """
         Get a user by email.
@@ -42,6 +49,15 @@ class UserPostgresRepository:
         Returns:
             bool: True if the user exists, False otherwise.
         """
+        query = "SELECT * FROM Users WHERE email = %s;"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query, (email,))
+                result = cursor.fetchone()
+                if result:
+                    return True
+                else:
+                    return False
 
     def get_user_by_username(self, username: str) -> bool:
         """
@@ -53,4 +69,13 @@ class UserPostgresRepository:
         Returns:
             bool: True if the user exists, False otherwise.
         """
+        query = "SELECT * FROM Users WHERE username = %s;"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query, (username,))
+                result = cursor.fetchone()
+                if result:
+                    return True
+                else:
+                    return False
         

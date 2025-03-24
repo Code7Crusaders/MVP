@@ -1,6 +1,9 @@
 import psycopg2
 import os
 from dotenv import load_dotenv
+from flask import Flask, request, jsonify
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
+from flask_bcrypt import Bcrypt
 
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -24,6 +27,7 @@ from controllers.save_conversation_title_controller import SaveConversationTitle
 from controllers.save_message_controller import SaveMessageController
 from controllers.save_support_message_controller import SaveSupportMessageController
 from controllers.save_template_controller import SaveTemplateController
+from controllers.registration_controller import RegistrationController
 
 from services.chat_service import ChatService
 from services.similarity_search_service import SimilaritySearchService
@@ -44,6 +48,8 @@ from services.save_conversation_title_service import SaveConversationTitleServic
 from services.save_message_service import SaveMessageService
 from services.save_support_message_service import SaveSupportMessageService
 from services.save_template_service import SaveTemplateService 
+from services.registration_service import RegistrationService
+from services.validation_service import ValidationService
 
 from adapters.faiss_adapter import FaissAdapter
 from adapters.langChain_adapter import LangChainAdapter
@@ -51,6 +57,7 @@ from adapters.conversation_postgres_adapter import ConversationPostgresAdapter
 from adapters.message_postgres_adapter import MessagePostgresAdapter
 from adapters.support_message_postgres_adapter import  SupportMessagePostgresAdapter 
 from adapters.template_postgres_adapter import TemplatePostgresAdapter
+from adapters.user_postgres_adapter import UserPostgresAdapter
 
 from repositories.faiss_repository import FaissRepository
 from repositories.langChain_repository import LangChainRepository
@@ -58,6 +65,7 @@ from repositories.conversation_postgres_repository import ConversationPostgresRe
 from repositories.message_postgres_repository import MessagePostgresRepository
 from repositories.support_message_postgres_repository import SupportMessagePostgresRepository
 from repositories.template_postgres_repository import TemplatePostgresRepository
+from repositories.user_postgres_repository import UserPostgresRepository
 
 from models.prompt_template_model import PromptTemplateModel
 
@@ -224,15 +232,30 @@ def initialize_template_postgres() -> TemplatePostgresAdapter:
         return TemplatePostgresAdapter(template_postgres_repository)
     except Exception as e:
         raise Exception(f"Error initializing template Postgres adapter: {e}")
+    
+def initialize_user_postgres() -> UserPostgresAdapter:
+    try:
+        # Initialize the repository and adapter for user-related operations
+        user_postgres_repository = UserPostgresRepository(db_config)
+
+        return UserPostgresAdapter(user_postgres_repository)
+    except Exception as e:
+        raise Exception(f"Error initializing user Postgres adapter: {e}")
 
 
-def dependency_injection() -> dict[str, object]:
+def dependency_injection(app : Flask) -> dict[str, object]:
     """
     Initializes and returns a dictionary of controllers dependencies.
     Returns:
       - dict[str, object]: A dictionary of controllers dependencies.
     """
     try:
+
+        # Secure Secret Key
+        app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+        jwt = JWTManager(app)
+        bcrypt = Bcrypt(app)
+
         # Initialize Postgres
         initialize_postgres()
 
@@ -248,6 +271,7 @@ def dependency_injection() -> dict[str, object]:
         message_postgres_adapter = initialize_message_postgres()
         support_message_postgres_adapter = initialize_support_message_postgres()
         template_postgres_adapter = initialize_template_postgres()
+        user_postgres_adapter = initialize_user_postgres()
         
         # Services
         # Langchain
@@ -279,6 +303,9 @@ def dependency_injection() -> dict[str, object]:
         get_template_service = GetTemplateService(template_postgres_adapter)
         get_template_list_service = GetTemplateListService(template_postgres_adapter)
         save_template_service = SaveTemplateService(template_postgres_adapter) 
+
+        validation_service = ValidationService(user_postgres_adapter)
+        registration_service = RegistrationService(user_postgres_adapter, validation_service, bcrypt)
         
 
         # Controllers
@@ -302,6 +329,8 @@ def dependency_injection() -> dict[str, object]:
         get_template_list_controller = GetTemplateListController(get_template_list_service)
         save_template_controller = SaveTemplateController(save_template_service)
 
+        registration_controller = RegistrationController(registration_service)
+
         dependencies = {
             "chat_controller": chat_controller,
             "add_file_controller": add_file_controller,
@@ -317,7 +346,8 @@ def dependency_injection() -> dict[str, object]:
             "delete_template_controller": delete_template_controller,
             "get_template_controller": get_template_controller,
             "get_template_list_controller": get_template_list_controller,
-            "save_template_controller": save_template_controller
+            "save_template_controller": save_template_controller,
+            "registration_controller": registration_controller
         }
 
         return dependencies

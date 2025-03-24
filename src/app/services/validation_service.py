@@ -19,10 +19,12 @@ class ValidationService:
         Raises:
             ValueError: If email or username already exists.
         """
+        # Check if username already exists 
+        if self.validation_port.get_user_by_username(user_model.get_username()):
+            raise ValueError("Username is already taken.")
+        
         # Check if email already exists 
         if self.validation_port.get_user_by_email(user_model.get_email()):
             raise ValueError("Email is already in use.")
 
-        # Check if username already exists 
-        if self.validation_port.get_user_by_username(user_model.get_username()):
-            raise ValueError("Username is already taken.")
+        
