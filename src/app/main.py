@@ -110,7 +110,7 @@ def login():
 
         user_result = authentication_controller.login(user_dto)    
 
-        access_token = create_access_token(identity=user_result.get_id(), additional_claims={"is_admin": user_result.get_is_admin()})
+        access_token = create_access_token(identity=str(user_result.get_id()), additional_claims={"is_admin": user_result.get_is_admin()})
 
         return jsonify(access_token=access_token), 200
 
@@ -148,7 +148,8 @@ def get_conversation(conversation_id):
 def get_conversations():
     """
     # To test this endpoint with curl:
-    # curl -X GET http://127.0.0.1:5000/conversation/get_all
+    curl -X GET http://127.0.0.1:5000/conversation/get_all \
+    -H "Authorization: Bearer <your_token>"
     """
 
     try:
@@ -167,7 +168,8 @@ def get_conversations():
 def save_conversation_title():
     """
     # To test this endpoint with curl:
-    # curl -X POST http://127.0.0.1:5000/conversation/save_title -H "Content-Type: application/json" -d '{"title": "New Conversation Title"}'
+    curl -X POST http://127.0.0.1:5000/conversation/save_title -H "Content-Type: application/json" -d '{"title": "New Conversation Title"}' \
+    -H "Authorization: Bearer <your_token>"
     """
     data = request.get_json()
 
@@ -189,7 +191,8 @@ def save_conversation_title():
 def get_message(message_id):
     """
     # To test this endpoint with curl:
-    # curl -X GET http://127.0.0.1:5000/message/get/<message_id>
+    curl -X GET http://127.0.0.1:5000/message/get/<message_id> \
+    -H "Authorization: Bearer <your_token>"
     """
 
     message = MessageDTO(
@@ -216,7 +219,8 @@ def get_message(message_id):
 def get_messages_by_conversation(conversation_id):
     """
     # To test this endpoint with curl:
-    # curl -X GET http://127.0.0.1:5000/message/get_by_conversation/<conversation_id>
+    curl -X GET http://127.0.0.1:5000/message/get_by_conversation/<conversation_id> \
+    -H "Authorization: Bearer <your_token>"
     """
 
     message = MessageDTO(
@@ -243,7 +247,10 @@ def get_messages_by_conversation(conversation_id):
 def save_message():
     """
     # To test this endpoint with curl:
-    # curl -X POST http://127.0.0.1:5000/message/save -H "Content-Type: application/json" -d '{"text": "Message text", "user_id": 1, "conversation_id": 2, "rating": true}'
+    curl -X POST http://127.0.0.1:5000/message/save \
+    -H "Content-Type: application/json" \
+    -d '{"text": "Message text", "user_id": 1, "conversation_id": 2, "rating": true}' \
+    -H "Authorization: Bearer <your_token>"
     """
     data = request.get_json()
 
@@ -270,7 +277,8 @@ def save_message():
 def get_support_message(support_message_id):
     """
     # To test this endpoint with curl:
-    # curl -X GET http://127.0.0.1:5000/support_message/get/<support_message_id> 
+    curl -X GET http://127.0.0.1:5000/support_message/get/<support_message_id> \
+    -H "Authorization: Bearer <your_token>"
     """
 
     support_message_dto = SupportMessageDTO(
@@ -297,7 +305,8 @@ def get_support_message(support_message_id):
 def get_support_messages():
     """
     # To test this endpoint with curl:
-    # curl -X GET http://127.0.0.1:5000/support_message/get_all
+    curl -X GET http://127.0.0.1:5000/support_message/get_all \
+    -H "Authorization: Bearer <your_token>"
     """
     try:
         support_messages = get_support_messages_controller.get_support_messages()
@@ -319,7 +328,10 @@ def get_support_messages():
 def save_support_message():
     """
     # To test this endpoint with curl:
-    # curl -X POST http://127.0.0.1:5000/support_message/save -H "Content-Type: application/json" -d '{"user_id": 1, "description": "Support message description", "status": "true", "subject": "Support subject"}'
+    curl -X POST http://127.0.0.1:5000/support_message/save \
+    -H "Content-Type: application/json" \
+    -d '{"user_id": 1, "description": "Support message description", "status": "true", "subject": "Support subject"}' \
+    -H "Authorization: Bearer <your_token>"
     """
     data = request.get_json()
 
@@ -346,7 +358,8 @@ def save_support_message():
 def delete_template(template_id):
     """
     # To test this endpoint with curl:
-    # curl -X DELETE http://127.0.0.1:5000/template/delete/<template_id>
+    curl -X DELETE http://127.0.0.1:5000/template/delete/<template_id> \
+    -H "Authorization: Bearer <your_token>"
     """
     template_dto = TemplateDTO(
         id=template_id
@@ -368,7 +381,8 @@ def delete_template(template_id):
 def get_template(template_id):
     """
     # To test this endpoint with curl:
-    # curl -X GET http://127.0.0.1:5000/template/get/<template_id>
+    curl -X GET http://127.0.0.1:5000/template/get/<template_id> \
+    -H "Authorization: Bearer <your_token>"
     """
 
     template_dto = TemplateDTO(
@@ -394,7 +408,8 @@ def get_template(template_id):
 def get_template_list():
     """
     # To test this endpoint with curl:
-    # curl -X GET http://127.0.0.1:5000/template/get_list
+    curl -X GET http://127.0.0.1:5000/template/get_list \
+    -H "Authorization: Bearer <your_token>"
     """
     try:
         templates = get_template_list_controller.get_template_list()
@@ -415,7 +430,10 @@ def get_template_list():
 def save_template():
     """
     # To test this endpoint with curl:
-    # curl -X POST http://127.0.0.1:5000/template/save -H "Content-Type: application/json" -d '{"question": "Sample question", "answer": "Sample answer", "author_id": 1}'
+    curl -X POST http://127.0.0.1:5000/template/save \
+    -H "Content-Type: application/json" \
+    -d '{"question": "Sample question", "answer": "Sample answer", "author_id": 1}' \
+    -H "Authorization: Bearer <your_token>"
     """
     data = request.get_json()
 
@@ -439,6 +457,10 @@ def save_template():
 @jwt_required()
 def add_file():
     """Endpoint to upload a PDF or TXT file.
+    curl -X POST http://127.0.0.1:5000/api/add_file \
+    -H "Authorization: Bearer <your_token>" \
+    -F "file=@/path/to/your/file.pdf"
+
 
     API Call:
     - Method: POST
@@ -503,7 +525,11 @@ def add_file():
 @jwt_required()
 def chat():
     """Chat endpoint to receive a question and return an answer.
-
+    curl -X POST http://localhost:5000/api/chat_interact \
+    -H "Content-Type: application/json" \
+    -d '{"user": "123", "question": "Potresti consigliarmi degli alimenti a base di latticini di cui possiendi informazioni?"}' \
+    -H "Authorization: Bearer <your_token>"
+    
     API Call:
     - Method: POST
     - URL: /api/chat_interact
