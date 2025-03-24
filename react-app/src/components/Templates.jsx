@@ -18,7 +18,7 @@ function Templates() {
     const theme = useTheme();
       
     const backTemplate = {
-        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgb(0, 9, 28)' : '#ededed',
         color: theme.palette.mode === 'dark' ? 'white' : 'black',
       };
 

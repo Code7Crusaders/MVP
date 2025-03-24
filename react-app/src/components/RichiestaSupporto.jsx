@@ -69,7 +69,7 @@ const RichiestaSupporto = () => {
 
   return (
     <div className="support-form-container">
-      <h1>Contatta l'assistenza</h1>
+      <h1 style={{paddingBottom: '5px', borderBottom: '1px solid grey', marginBottom: '30px'}}>Contatta l'assistenza</h1>
       {success && <div className="success-message">Richiesta inviata con successo!</div>}
       {error && <div className="error-message">{error}</div>}
 
