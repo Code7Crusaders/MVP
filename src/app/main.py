@@ -1,4 +1,7 @@
 from flask import Flask, request, jsonify
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
+from flask_bcrypt import Bcrypt
+from dotenv import load_dotenv
 import os
 import fitz
 import pytz
@@ -15,6 +18,7 @@ from dto.message_dto import MessageDTO
 from dto.support_message_dto import SupportMessageDTO
 from dto.template_dto import TemplateDTO
 
+
 italy_tz = pytz.timezone('Europe/Rome')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  
@@ -22,6 +26,14 @@ UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  
 
 app = Flask(__name__)
+
+# Secure Secret Key
+load_dotenv()
+
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
+
 
 # Initialize dependencies
 dependencies = dependency_injection()
@@ -45,6 +57,24 @@ delete_template_controller = dependencies["delete_template_controller"]
 get_template_controller = dependencies["get_template_controller"]
 get_template_list_controller = dependencies["get_template_list_controller"]
 save_template_controller = dependencies["save_template_controller"]
+
+# ---- Authentication Routes ----
+
+@app.route("/register", methods=["POST"])
+def register():
+    """
+    curl -X POST http://127.0.0.1:5000/register \
+    -H "Content-Type: application/json" \
+    -d '{"username": "john", "password": "secret", "email": "john@example.com", "phone": "1234567890", "first_name": "John", "last_name": "Doe"}'
+    """
+    data = request.json
+
+    username = data.get("username")
+    password = data.get("password")
+    email = data.get("email")
+    phone = data.get("phone", "")
+    first_name = data.get("first_name", "")
+    last_name = data.get("last_name", "")
 
 # ---- Conversation Routes ----
 @app.route("/conversation/get/<int:conversation_id>", methods=["GET"])
