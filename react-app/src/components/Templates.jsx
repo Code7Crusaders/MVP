@@ -197,6 +197,10 @@ function Templates() {
                 <p>Prova di un'altra domanda nello stesso template?</p>
             </div>
         </AccordionDetails>
+        <AccordionActions>
+            <Tooltip title='Aggiungi domanda' placement='top'><Button style={buttons} onClick={apriDialogAggiuntaDomanda}><MapsUgcIcon /></Button></Tooltip>
+            <Tooltip title='Elimina Template' placement='top'><Button style={buttons} onClick={apriDialogEliminazione}><DeleteForeverIcon /></Button></Tooltip>
+        </AccordionActions>
       </Accordion>
       <Accordion className='template' style={backTemplate}>
         <AccordionSummary
@@ -215,6 +219,10 @@ function Templates() {
                 <p>Prova di un'altra domanda nello stesso template?</p>
             </div>
         </AccordionDetails>
+        <AccordionActions>
+            <Tooltip title='Aggiungi domanda' placement='top'><Button style={buttons} onClick={apriDialogAggiuntaDomanda}><MapsUgcIcon /></Button></Tooltip>
+            <Tooltip title='Elimina Template' placement='top'><Button style={buttons} onClick={apriDialogEliminazione}><DeleteForeverIcon /></Button></Tooltip>
+        </AccordionActions>
       </Accordion> 
     </div>
 
