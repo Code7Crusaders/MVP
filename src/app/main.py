@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
-from flask_bcrypt import Bcrypt
+from flask_jwt_extended import create_access_token, jwt_required
 
 import os
 import fitz
 import pytz
 from datetime import datetime
+
+from utils.midleware_admin import admin_required
 
 from dependencies.encoding import detect_encoding
 from dependencies.dependency_inj import dependency_injection
@@ -109,7 +110,8 @@ def login():
 
         user_result = authentication_controller.login(user_dto)    
 
-        access_token = create_access_token(identity=username, additional_claims={"is_admin": user_result.get_is_admin()}) 
+        access_token = create_access_token(identity=user_result.get_id(), additional_claims={"is_admin": user_result.get_is_admin()})
+
         return jsonify(access_token=access_token), 200
 
     except Exception as e:
@@ -118,10 +120,13 @@ def login():
 
 # ---- Conversation Routes ----
 @app.route("/conversation/get/<int:conversation_id>", methods=["GET"])
+@jwt_required()
 def get_conversation(conversation_id):
     """
     # To test this endpoint with curl:
-    # curl -X GET http://127.0.0.1:5000/conversation/get/<conversation_id>
+    curl -X GET http://127.0.0.1:5000/conversation/get/<conversation_id> \
+    -H "Authorization: Bearer <your_token>"
+    
     """
     conversation = ConversationDTO(
         id=conversation_id
@@ -139,6 +144,7 @@ def get_conversation(conversation_id):
 
 
 @app.route("/conversation/get_all", methods=["GET"])
+@jwt_required()
 def get_conversations():
     """
     # To test this endpoint with curl:
@@ -157,6 +163,7 @@ def get_conversations():
 
 
 @app.route("/conversation/save_title", methods=["POST"])
+@jwt_required()
 def save_conversation_title():
     """
     # To test this endpoint with curl:
@@ -178,6 +185,7 @@ def save_conversation_title():
 
 # ---- Message Routes ----
 @app.route("/message/get/<int:message_id>", methods=["GET"])
+@jwt_required()
 def get_message(message_id):
     """
     # To test this endpoint with curl:
@@ -204,6 +212,7 @@ def get_message(message_id):
 
 
 @app.route("/message/get_by_conversation/<int:conversation_id>", methods=["GET"])
+@jwt_required()
 def get_messages_by_conversation(conversation_id):
     """
     # To test this endpoint with curl:
@@ -230,6 +239,7 @@ def get_messages_by_conversation(conversation_id):
 
 
 @app.route("/message/save", methods=["POST"])
+@jwt_required()
 def save_message():
     """
     # To test this endpoint with curl:
@@ -256,10 +266,11 @@ def save_message():
 
 # ---- Support Message Routes ----
 @app.route("/support_message/get/<int:support_message_id>", methods=["GET"])
+@jwt_required()
 def get_support_message(support_message_id):
     """
     # To test this endpoint with curl:
-    # curl -X GET http://127.0.0.1:5000/support_message/get/<support_message_id>
+    # curl -X GET http://127.0.0.1:5000/support_message/get/<support_message_id> 
     """
 
     support_message_dto = SupportMessageDTO(
@@ -282,6 +293,7 @@ def get_support_message(support_message_id):
 
 
 @app.route("/support_message/get_all", methods=["GET"])
+@jwt_required()
 def get_support_messages():
     """
     # To test this endpoint with curl:
@@ -303,6 +315,7 @@ def get_support_messages():
 
 
 @app.route("/support_message/save", methods=["POST"])
+@jwt_required()
 def save_support_message():
     """
     # To test this endpoint with curl:
@@ -329,6 +342,7 @@ def save_support_message():
 
 # ---- Template Routes ----
 @app.route("/template/delete/<int:template_id>", methods=["DELETE"])
+@admin_required
 def delete_template(template_id):
     """
     # To test this endpoint with curl:
@@ -350,12 +364,12 @@ def delete_template(template_id):
 
 
 @app.route("/template/get/<int:template_id>", methods=["GET"])
+@jwt_required()
 def get_template(template_id):
     """
     # To test this endpoint with curl:
     # curl -X GET http://127.0.0.1:5000/template/get/<template_id>
     """
-
 
     template_dto = TemplateDTO(
         id=template_id
@@ -376,6 +390,7 @@ def get_template(template_id):
 
 
 @app.route("/template/get_list", methods=["GET"])
+@jwt_required()
 def get_template_list():
     """
     # To test this endpoint with curl:
@@ -396,6 +411,7 @@ def get_template_list():
 
 
 @app.route("/template/save", methods=["POST"])
+@admin_required
 def save_template():
     """
     # To test this endpoint with curl:
@@ -420,6 +436,7 @@ def save_template():
 
 
 @app.route("/api/add_file", methods=["POST"])
+@jwt_required()
 def add_file():
     """Endpoint to upload a PDF or TXT file.
 
@@ -483,6 +500,7 @@ def add_file():
 
 
 @app.route("/api/chat_interact", methods=["POST"])
+@jwt_required()
 def chat():
     """Chat endpoint to receive a question and return an answer.
 
@@ -505,6 +523,7 @@ def chat():
     - Creates a DTO with the user input.
     - Calls the controller to generate a response.
     - Returns the generated answer or an error in case of issues.
+    
     """
     data = request.get_json()
 

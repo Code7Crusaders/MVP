@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 from flask_bcrypt import Bcrypt
+from datetime import timedelta
 
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -255,6 +256,8 @@ def dependency_injection(app : Flask) -> dict[str, object]:
 
         # Secure Secret Key
         app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+        app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=30)  # Token expires in 30 min
+
         jwt = JWTManager(app)
         bcrypt = Bcrypt(app)
 
