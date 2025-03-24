@@ -28,6 +28,7 @@ from controllers.save_message_controller import SaveMessageController
 from controllers.save_support_message_controller import SaveSupportMessageController
 from controllers.save_template_controller import SaveTemplateController
 from controllers.registration_controller import RegistrationController
+from controllers.authentication_controller import AuthenticationController
 
 from services.chat_service import ChatService
 from services.similarity_search_service import SimilaritySearchService
@@ -50,6 +51,7 @@ from services.save_support_message_service import SaveSupportMessageService
 from services.save_template_service import SaveTemplateService 
 from services.registration_service import RegistrationService
 from services.validation_service import ValidationService
+from services.authentication_service import AuthenticationService
 
 from adapters.faiss_adapter import FaissAdapter
 from adapters.langChain_adapter import LangChainAdapter
@@ -306,6 +308,7 @@ def dependency_injection(app : Flask) -> dict[str, object]:
 
         validation_service = ValidationService(user_postgres_adapter)
         registration_service = RegistrationService(user_postgres_adapter, validation_service, bcrypt)
+        authentication_service = AuthenticationService(user_postgres_adapter, bcrypt)
         
 
         # Controllers
@@ -330,6 +333,7 @@ def dependency_injection(app : Flask) -> dict[str, object]:
         save_template_controller = SaveTemplateController(save_template_service)
 
         registration_controller = RegistrationController(registration_service)
+        authentication_controller = AuthenticationController(authentication_service)
 
         dependencies = {
             "chat_controller": chat_controller,
@@ -347,7 +351,8 @@ def dependency_injection(app : Flask) -> dict[str, object]:
             "get_template_controller": get_template_controller,
             "get_template_list_controller": get_template_list_controller,
             "save_template_controller": save_template_controller,
-            "registration_controller": registration_controller
+            "registration_controller": registration_controller,
+            "authentication_controller": authentication_controller
         }
 
         return dependencies

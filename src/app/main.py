@@ -52,6 +52,7 @@ get_template_list_controller = dependencies["get_template_list_controller"]
 save_template_controller = dependencies["save_template_controller"]
 
 registration_controller = dependencies["registration_controller"]
+authentication_controller = dependencies["authentication_controller"]
 
 # ---- Authentication Routes ----
 
@@ -82,13 +83,37 @@ def register():
             is_admin=False
         )
 
-        success = registration_controller.register(user_dto)
+        registration_controller.register(user_dto)
 
         return jsonify({"message": "User registered successfully"}), 200
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@app.route("/login", methods=["POST"])
+def login():
+    """
+    curl -X POST http://127.0.0.1:5000/login \
+    -H "Content-Type: application/json" \
+    -d '{"username": "john", "password": "secret"}'
+    """
+    try:
+        data = request.json
+        username = data.get("username")
+        password = data.get("password")
+
+        user_dto = UserDTO(
+            username=username,
+            password=password
+        )
+
+        user_result = authentication_controller.login(user_dto)    
+
+        access_token = create_access_token(identity=username, additional_claims={"is_admin": user_result.get_is_admin()}) 
+        return jsonify(access_token=access_token), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 # ---- Conversation Routes ----

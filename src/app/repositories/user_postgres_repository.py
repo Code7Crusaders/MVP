@@ -78,4 +78,35 @@ class UserPostgresRepository:
                     return True
                 else:
                     return False
+                
+    def get_user_for_authentication(self, user : UserEntity) -> UserEntity:
+        """
+        Authenticate and retrieve a user.
         
+        Args:
+            user (UserModel): The user model to authenticate.
+
+        Returns:
+            UserModel: The authenticated user model.
+        """
+
+        query = "SELECT * FROM Users WHERE username = %s;"
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query, (user.get_username(),))
+                result = cursor.fetchone()
+                if result:
+                    return UserEntity(
+                        id=result[0],
+                        username=result[1],
+                        password=result[2],
+                        email=result[3],
+                        phone=result[4],
+                        first_name=result[5],
+                        last_name=result[6],
+                        is_admin=result[7]
+                    )
+                else:
+                    return None
+    
+
