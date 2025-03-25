@@ -44,7 +44,9 @@ def test_get_conversation_error(repository):
 
 def test_get_conversations(repository):
     """Test retrieving all conversations from the database."""
-    result_conversations = repository.get_conversations()
+    user_id = 1  # Replace with an existing user ID
+
+    result_conversations = repository.get_conversations(user_id)
 
     assert result_conversations is not None, "No conversations found in the database"
     assert isinstance(result_conversations, list)

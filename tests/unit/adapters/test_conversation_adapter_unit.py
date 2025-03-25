@@ -38,15 +38,19 @@ def test_get_conversation_not_found(conversation_postgres_adapter: ConversationP
 # Test get_conversations
 
 def test_get_conversations_valid(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
+   
     conversations = [
         ConversationModel(id=1, title="Conversation 1"),
         ConversationModel(id=2, title="Conversation 2"),
     ]
     
+    # Suppose conversation are conversation of user_id = 1
+    user_id = 1
+
     # Mock repository response
     conversation_postgres_repository_mock.get_conversations.return_value = conversations
 
-    result = conversation_postgres_adapter.get_conversations()
+    result = conversation_postgres_adapter.get_conversations(user_id)
     
     assert len(result) == 2
     assert result[0].get_title() == "Conversation 1"
@@ -56,7 +60,10 @@ def test_get_conversations_empty(conversation_postgres_adapter: ConversationPost
     # Mock repository response with no conversations
     conversation_postgres_repository_mock.get_conversations.return_value = []
 
-    result = conversation_postgres_adapter.get_conversations()
+    # Suppose conversation are conversation of user_id = 1
+    user_id = 1
+
+    result = conversation_postgres_adapter.get_conversations(user_id)
     
     assert result == []
 
@@ -91,5 +98,8 @@ def test_get_conversations_exception(conversation_postgres_adapter: Conversation
     # Simulate repository exception
     conversation_postgres_repository_mock.get_conversations.side_effect = Exception("Database error")
 
+    # Suppose conversation are conversation of user_id = 1
+    user_id = 1
+
     with pytest.raises(Exception, match="Database error"):
-        conversation_postgres_adapter.get_conversations()
+        conversation_postgres_adapter.get_conversations(user_id)

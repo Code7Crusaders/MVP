@@ -22,7 +22,10 @@ def test_get_conversations_valid(get_conversations_controller, get_conversations
     ]
     get_conversations_use_case_mock.get_conversations.return_value = conversations
 
-    result = get_conversations_controller.get_conversations()
+    # Suppose conversation are conversation of user_id = 1
+    user_id = 1
+
+    result = get_conversations_controller.get_conversations(user_id)
     
     assert len(result) == 2
     assert result[0].id == 1
@@ -34,7 +37,10 @@ def test_get_conversations_valid(get_conversations_controller, get_conversations
 def test_get_conversations_empty(get_conversations_controller, get_conversations_use_case_mock):
     get_conversations_use_case_mock.get_conversations.return_value = []
     
-    result = get_conversations_controller.get_conversations()
+    # Suppose conversation are conversation of user_id = 1
+    user_id = 1
+
+    result = get_conversations_controller.get_conversations(user_id)
     
     assert result == []
     get_conversations_use_case_mock.get_conversations.assert_called_once()
@@ -42,8 +48,11 @@ def test_get_conversations_empty(get_conversations_controller, get_conversations
 def test_get_conversations_exception(get_conversations_controller, get_conversations_use_case_mock):
     get_conversations_use_case_mock.get_conversations.side_effect = Exception("Database error")
     
+    # Suppose conversation are conversation of user_id = 1
+    user_id = 1
+
     with pytest.raises(Exception) as exc_info:
-        get_conversations_controller.get_conversations()
+        get_conversations_controller.get_conversations(user_id)
     
     assert str(exc_info.value) == "Database error"
     get_conversations_use_case_mock.get_conversations.assert_called_once()
