@@ -147,17 +147,13 @@ function Templates() {
         </AccordionSummary>
         <AccordionDetails>
             <div className="domanda">
-                <div className="actions">
-                    <button style={buttons}><DeleteIcon /></button>
-                    <button style={buttons} onClick={apriDialogModifica}><EditIcon /></button>
-                </div>
+                <h3>Domanda<br/></h3>
+                <p></p>
                 <p>Prova di una domanda di un template?</p>
             </div>
             <div className="domanda">
-                <div className="actions">
-                    <button style={buttons}><DeleteIcon /></button>
-                    <button style={buttons} onClick={apriDialogModifica}><EditIcon /></button>
-                </div>
+                <h3>Risposta<br/></h3>
+                <p></p>
                 <p>Prova di un'altra domanda nello stesso template?</p>
             </div>
         </AccordionDetails>
@@ -165,65 +161,7 @@ function Templates() {
             <Tooltip title='Aggiungi domanda' placement='top'><Button style={buttons} onClick={apriDialogAggiuntaDomanda}><MapsUgcIcon /></Button></Tooltip>
             <Tooltip title='Elimina Template' placement='top'><Button style={buttons} onClick={apriDialogEliminazione}><DeleteForeverIcon /></Button></Tooltip>
         </AccordionActions>
-      </Accordion>
-      <Accordion className='template' style={backTemplate}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography component="span" style={{fontSize: '20px', fontWeight: '550'}}>Template 2</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-            <div className="domanda">
-                <div className="actions">
-                    <button style={buttons}><DeleteIcon /></button>
-                    <button style={buttons} onClick={apriDialogModifica}><EditIcon /></button>
-                </div>
-                <p>Prova di una domanda di un template?</p>
-            </div>
-            <div className="domanda">
-                <div className="actions">
-                    <button style={buttons}><DeleteIcon /></button>
-                    <button style={buttons} onClick={apriDialogModifica}><EditIcon /></button>
-                </div>
-                <p>Prova di una domanda di un template?</p>
-            </div>
-            <div className="domanda">
-                <div className="actions">
-                    <button style={buttons}><DeleteIcon /></button>
-                    <button style={buttons} onClick={apriDialogModifica}><EditIcon /></button>
-                </div>
-                <p>Prova di un'altra domanda nello stesso template?</p>
-            </div>
-        </AccordionDetails>
-        <AccordionActions>
-            <Tooltip title='Aggiungi domanda' placement='top'><Button style={buttons} onClick={apriDialogAggiuntaDomanda}><MapsUgcIcon /></Button></Tooltip>
-            <Tooltip title='Elimina Template' placement='top'><Button style={buttons} onClick={apriDialogEliminazione}><DeleteForeverIcon /></Button></Tooltip>
-        </AccordionActions>
-      </Accordion>
-      <Accordion className='template' style={backTemplate}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography component="span" style={{fontSize: '20px', fontWeight: '550'}}>Template 3</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-            <div className="domanda">
-                <div className="actions">
-                    <button style={buttons}><DeleteIcon /></button>
-                    <button style={buttons} onClick={apriDialogModifica}><EditIcon /></button>
-                </div>
-                <p>Prova di un'altra domanda nello stesso template?</p>
-            </div>
-        </AccordionDetails>
-        <AccordionActions>
-            <Tooltip title='Aggiungi domanda' placement='top'><Button style={buttons} onClick={apriDialogAggiuntaDomanda}><MapsUgcIcon /></Button></Tooltip>
-            <Tooltip title='Elimina Template' placement='top'><Button style={buttons} onClick={apriDialogEliminazione}><DeleteForeverIcon /></Button></Tooltip>
-        </AccordionActions>
-      </Accordion> 
+    </Accordion>
     </div>
 
     {/* DIALOG per l'aggiunta di un Template */}
