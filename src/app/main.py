@@ -115,7 +115,16 @@ def login():
 
         access_token = create_access_token(identity=str(user_result.get_id()), additional_claims={"is_admin": user_result.get_is_admin()})
 
-        return jsonify(access_token=access_token), 200
+        return jsonify({
+            "access_token": access_token,
+            "user": {
+                "username": user_result.get_username(),
+                "email": user_result.get_email(),
+                "phone": user_result.get_phone(),
+                "first_name": user_result.get_first_name(),
+                "last_name": user_result.get_last_name()
+            }
+        }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

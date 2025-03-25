@@ -24,6 +24,7 @@ const Login = () => {
 
       if (response.ok) {
         localStorage.setItem('token', data.access_token); // Store JWT in localStorage
+        localStorage.setItem('user', JSON.stringify(data.user)); // Store user details
         navigate('/App'); // Redirect to another page
       } else {
         setError(data.error || 'Credenziali errate');

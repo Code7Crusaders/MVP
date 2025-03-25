@@ -20,6 +20,8 @@ import EqualizerIcon from '@mui/icons-material/Equalizer';
 import Templates from './components/Templates';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import { logout } from './utils/auth';
+import { Account } from '@toolpad/core/Account';
 
 const NAVIGATION = [
   {
@@ -175,40 +177,48 @@ function DemoPageContent({ pathname }) {
 DemoPageContent.propTypes = {
   pathname: PropTypes.string.isRequired,
 };
-
 function DashboardLayoutBranding(props) {
   const { window } = props;
 
-  const [session, setSession] = React.useState({
-    user: {
-      name: 'User DiProva',
-      email: 'userdiprova@gmail.com',
-      image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
-    },
-  });
-
-  const navigate = useNavigate();
-  const authentication = React.useMemo(() => {
-     
-    return {
-      signIn: () => {
-        setSession({
+  const [session, setSession] = React.useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser
+      ? {
           user: {
-            name: 'User DiProva',
-            email: 'bharatkashyap@outlook.com',
+            email: JSON.parse(storedUser).email,
             image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
           },
-        });
-      },
-      signOut: () => {
-        setSession(null);
-        navigate('/login'); 
-      },
-    };
-  }, []);
+        }
+      : {
+          user: {
+            email: 'userdiprova@gmail.com',
+            image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+          },
+        };
+  });
   
-  const router = useDemoRouter('/chatbot');
-  const demoWindow = window !== undefined ? window() : undefined;
+
+  const navigate = useNavigate();
+
+  const authentication = React.useMemo(() => ({
+    signIn: () => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        setSession({
+          user: {
+            email: userData.email,
+          },
+        });
+      }
+    },
+    signOut: () => {
+      setSession(null);
+      logout();
+      navigate('/login');
+    },
+  }), []);
+  
 
   return (
     <AppProvider
@@ -219,13 +229,12 @@ function DashboardLayoutBranding(props) {
         logo: <img src={MuccaSenzaSfondoIcon} alt="logo originale del Team di Sviluppo Code7Crusaders" />,
         title: 'Giorgione',
         homeUrl: '/chatbot',
+        userDisplay: session?.user ? `${session.user.displayName} (${session.user.email})` : 'Guest', 
       }}
-      router={router}
       theme={demoTheme}
-      window={demoWindow}
     >
       <DashboardLayout>
-        <DemoPageContent pathname={router.pathname} />
+        <DemoPageContent pathname={useDemoRouter('/chatbot').pathname} />
       </DashboardLayout>
     </AppProvider>
   );

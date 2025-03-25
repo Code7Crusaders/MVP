@@ -167,7 +167,7 @@ const Register = () => {
         />
       </div>
       <div className='form-group'>
-      <label class="labelButton">* Campi Obbligatori</label>
+      <label className="labelButton">* Campi Obbligatori</label>
       <button type="submit" className="register-button">Registrati</button>
       </div>
     </div>

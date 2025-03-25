@@ -1,12 +1,13 @@
 export const getToken = () => {
     return localStorage.getItem('token');
-  };
+};
   
-  export const logout = () => {
+export const logout = () => {
     localStorage.removeItem('token');
-  };
+    localStorage.removeItem('user');
+};
   
-  export const isAuthenticated = () => {
+export const isAuthenticated = () => {
     return !!getToken();
-  };
+};
   
