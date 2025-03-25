@@ -64,7 +64,7 @@ class MessagePostgresRepository:
         '''
         
         select_messages_query = """
-        SELECT id, text, created_at, user_id, conversation_id, rating
+        SELECT id, text, created_at, user_id, conversation_id, rating, is_bot
         FROM Messages
         WHERE conversation_id = %s;
         """
@@ -74,14 +74,14 @@ class MessagePostgresRepository:
                 rows = cursor.fetchall()
                 if rows:
                     return [
-                        MessageEntity(
-                            id=row[0],
-                            text=row[1],
-                            created_at=row[2],
-                            user_id=row[3],
-                            conversation_id=row[4],
-                            rating=row[5]
-                        ) for row in rows
+                    MessageEntity(
+                        id=row[0],
+                        text=row[1],
+                        created_at=row[2],
+                        user_id=row[3],
+                        conversation_id=row[4],
+                        rating=row[5]
+                    ) for row in rows
                     ]
                 else:
                     raise ValueError(f"No messages found for conversation ID {conversation.get_conversation_id()}.")

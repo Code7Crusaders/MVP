@@ -58,7 +58,7 @@ class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConve
                 conversation_id=conversation.get_conversation_id()
             )
 
-            messages = self.message_postgres_repository.get_messages_by_conversation(conversation_entity)
+            messages = self.message_postgres_repository.get_messages_by_conversation(conversation_entity) 
 
             return [
                 MessageModel(

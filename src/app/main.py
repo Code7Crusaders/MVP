@@ -235,7 +235,7 @@ def get_messages_by_conversation(conversation_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-    jsonify([{
+    return jsonify([{
         "id": message.get_id(),
         "text": message.get_text(),
         "user_id": message.get_user_id(),
@@ -252,15 +252,16 @@ def save_message():
     # To test this endpoint with curl:
     curl -X POST http://127.0.0.1:5000/message/save \
     -H "Content-Type: application/json" \
-    -d '{"text": "Message text", "user_id": 1, "conversation_id": 2, "rating": true}' \
+    -d '{"text": "Message text", "conversation_id": 2, "rating": true}' \
     -H "Authorization: Bearer <your_token>"
     """
     data = request.get_json()
+    user_id = int(get_jwt_identity())
 
     # Create DTO
     message = MessageDTO(
         text=data.get("text"),
-        user_id=data.get("user_id"),
+        user_id=user_id,
         conversation_id=data.get("conversation_id"),
         rating=data.get("rating"),
         created_at=datetime.now(italy_tz)
@@ -276,7 +277,7 @@ def save_message():
 
 # ---- Support Message Routes ----
 @app.route("/support_message/get/<int:support_message_id>", methods=["GET"])
-@jwt_required()
+@admin_required
 def get_support_message(support_message_id):
     """
     # To test this endpoint with curl:
@@ -304,7 +305,7 @@ def get_support_message(support_message_id):
 
 
 @app.route("/support_message/get_all", methods=["GET"])
-@jwt_required()
+@admin_required
 def get_support_messages():
     """
     # To test this endpoint with curl:
@@ -333,14 +334,15 @@ def save_support_message():
     # To test this endpoint with curl:
     curl -X POST http://127.0.0.1:5000/support_message/save \
     -H "Content-Type: application/json" \
-    -d '{"user_id": 1, "description": "Support message description", "status": "true", "subject": "Support subject"}' \
+    -d '{"description": "Support message description", "status": "true", "subject": "Support subject"}' \
     -H "Authorization: Bearer <your_token>"
     """
     data = request.get_json()
+    user_id = int(get_jwt_identity())
 
     # Create DTO
     support_message = SupportMessageDTO(
-        user_id=data.get("user_id"),
+        user_id=user_id,
         description=data.get("description"),
         status=data.get("status"),
         subject=data.get("subject"),
@@ -435,16 +437,17 @@ def save_template():
     # To test this endpoint with curl:
     curl -X POST http://127.0.0.1:5000/template/save \
     -H "Content-Type: application/json" \
-    -d '{"question": "Sample question", "answer": "Sample answer", "author_id": 1}' \
+    -d '{"question": "Sample question", "answer": "Sample answer"}' \
     -H "Authorization: Bearer <your_token>"
     """
     data = request.get_json()
+    user_id = int(get_jwt_identity())
 
     # Create DTO
     template = TemplateDTO(
         question=data.get("question"),
         answer=data.get("answer"),
-        author_id=data.get("author_id"),
+        author_id=user_id,
         last_modified=datetime.now(italy_tz)
     )
 
@@ -457,13 +460,12 @@ def save_template():
 
 
 @app.route("/api/add_file", methods=["POST"])
-@jwt_required()
+@admin_required
 def add_file():
     """Endpoint to upload a PDF or TXT file.
     curl -X POST http://127.0.0.1:5000/api/add_file \
     -H "Authorization: Bearer <your_token>" \
     -F "file=@/path/to/your/file.pdf"
-
 
     API Call:
     - Method: POST
@@ -530,7 +532,7 @@ def chat():
     """Chat endpoint to receive a question and return an answer.
     curl -X POST http://localhost:5000/api/chat_interact \
     -H "Content-Type: application/json" \
-    -d '{"user": "123", "question": "Potresti consigliarmi degli alimenti a base di latticini di cui possiendi informazioni?"}' \
+    -d "{\"question\": \"parlami dell'olio che hai?\"}" \
     -H "Authorization: Bearer <your_token>"
     
     API Call:
@@ -538,7 +540,6 @@ def chat():
     - URL: /api/chat_interact
     - Request Body (JSON):
       {
-          "user": "User ID",
           "question": "Question text"
       }
 
@@ -555,12 +556,12 @@ def chat():
     
     """
     data = request.get_json()
+    user_id = int(get_jwt_identity())
 
     # Validate input
-    if "user" not in data or "question" not in data:
+    if "question" not in data:
         return jsonify({"error": "Invalid input"}), 400
 
-    user_id = data["user"]
     question = data["question"]
 
     # Create DTO and get response

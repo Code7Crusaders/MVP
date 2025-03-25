@@ -13,5 +13,5 @@ class GetMessagesByConversationPort(ABC):
         Args:
             conversation (MessageModel): The conversation object containing the ID to retrieve messages for.
         Returns:
-            list[MessageModel]: A list of retrieved messages.
+            list[MessageModel]: A list of retrieved messages. 
         """
