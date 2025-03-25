@@ -3,40 +3,76 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { createTheme } from '@mui/material/styles';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import DescriptionIcon from '@mui/icons-material/Description';  // Assicurati di importare DescriptionIcon
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
+import Chatbot from './components/Chatbot'; 
+import AddCommentIcon from '@mui/icons-material/AddComment';
+import ForumIcon from '@mui/icons-material/Forum';
+import ChatIcon from '@mui/icons-material/Chat';
+import MuccaSenzaSfondoIcon from './assets/muccasenzasfondo.png';
+import 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import Chatbot from './components/chatbot'; 
+import RichiestaSupporto from './components/RichiestaSupporto';
+import Metriche from './components/Metriche';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import Templates from './components/Templates';
+import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
 const NAVIGATION = [
   {
     segment: 'chatbot',
     title: 'Chatbot',
-    icon: <DashboardIcon />,
+    icon: <AddCommentIcon />,
   },
   {
     segment: 'recent',
-    title: 'Conversazioni recenti',
-    icon: <ShoppingCartIcon />,
+    title: 'Conversazioni salvate',
+    icon: <ForumIcon />,
     children: [
       {
         segment: 'chat1',
         title: 'Chat 1',
-        icon: <DescriptionIcon />,
+        icon: <ChatIcon />,
       },
       {
         segment: 'chat2',
         title: 'Chat 2',
-        icon: <DescriptionIcon />,
+        icon: <ChatIcon />,
       },
     ],
   },
   {
     kind: 'divider',
+  },
+  {
+    segment: 'support',
+    title: 'Richiesta Supporto',
+    icon: <ContactSupportIcon />,
+  },
+  {
+    kind: 'divider',
+  },
+  {
+    kind: 'header',
+    title: 'Admin',
+  },
+  {
+    segment: 'metrics',
+    title: 'Visualizza Metriche',
+    icon: <EqualizerIcon />,
+  },
+  {
+    segment: 'templates',
+    title: 'Gestione Templates',
+    icon: <AutoAwesomeMosaicIcon />,
+  },
+  {
+    segment: 'assistenza',
+    title: 'Assistenza clienti',
+    icon: <SupportAgentIcon />,
   },
 ];
 
@@ -75,19 +111,37 @@ function OrdersContent() {
 
 function Chat1Content() {
   return (
-    <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-      <Typography>Chat 1</Typography>
-      <Chatbot chatId="chat1" /> 
-    </Box>
+    <Chatbot chatId="chat1" />
   );
 }
 
 function Chat2Content() {
   return (
-    <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-      <Typography>Chat 2</Typography>
       <Chatbot chatId="chat2" /> 
-    </Box>
+  );
+}
+
+function SupportContent(){
+  return (
+    <RichiestaSupporto/>
+  );
+}
+
+function MetricheContent(){
+  return (
+    <Metriche/>
+  );
+}
+
+function TemplatesContent(){
+  return (
+    <Templates/>
+  );
+}
+
+function AssistenzaContent(){
+  return (
+    <p>Assistenza</p>
   );
 }
 
@@ -100,6 +154,14 @@ function DemoPageContent({ pathname }) {
     return <Chat1Content />;
   } else if (pathname === '/recent/chat2') {
     return <Chat2Content />;
+  } else if (pathname === '/support'){
+    return <SupportContent/>;
+  } else if (pathname === '/metrics'){
+    return <MetricheContent/>
+  } else if (pathname === '/templates'){
+    return <TemplatesContent/>
+  } else if (pathname === '/assistenza'){
+    return <AssistenzaContent/>
   }
 
   return (
@@ -117,14 +179,44 @@ DemoPageContent.propTypes = {
 function DashboardLayoutBranding(props) {
   const { window } = props;
 
+  const [session, setSession] = React.useState({
+    user: {
+      name: 'User DiProva',
+      email: 'userdiprova@gmail.com',
+      image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+    },
+  });
+
+  const navigate = useNavigate();
+  const authentication = React.useMemo(() => {
+     
+    return {
+      signIn: () => {
+        setSession({
+          user: {
+            name: 'User DiProva',
+            email: 'bharatkashyap@outlook.com',
+            image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+          },
+        });
+      },
+      signOut: () => {
+        setSession(null);
+        navigate('/login'); 
+      },
+    };
+  }, []);
+  
   const router = useDemoRouter('/chatbot');
   const demoWindow = window !== undefined ? window() : undefined;
 
   return (
     <AppProvider
+      session={session}
+      authentication={authentication}
       navigation={NAVIGATION}
       branding={{
-        logo: <img src="https://avatars.githubusercontent.com/u/185105956?s=200&v=4" alt="logo originale del Team di Sviluppo Code7Crusaders" />,
+        logo: <img src={MuccaSenzaSfondoIcon} alt="logo originale del Team di Sviluppo Code7Crusaders" />,
         title: 'Giorgione',
         homeUrl: '/chatbot',
       }}

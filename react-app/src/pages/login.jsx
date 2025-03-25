@@ -1,36 +1,53 @@
-import { useState } from 'react'
-import reactLogo from '../assets/react.svg'
-import viteLogo from '/vite.svg'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import '../css/login.css';
+import { Link } from 'react-router-dom';
 
-function Login() {
-  const [count, setCount] = useState(0)
+const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // Qui puoi aggiungere la logica per il login
+    console.log('Username:', username);
+    console.log('Password:', password);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+    <div className='overlay'>
+    <div className="login-container">
+      <form onSubmit={handleLogin} className="login-form">
+        <h1>Login</h1>
+        <div className="form-group">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            placeholder='Inserisci il tuo username'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder='Inserisci la tua password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" className="login-button">Login</button>
+        <p className="register-link">
+          Non hai un account? <Link to="/register">Registrati</Link>
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <Link to={'/app'}>Vai all'app</Link>
-    </>
-  )
-}
+      </form>
+    </div>
+    </div>
+  );
+};
 
-export default Login
+export default Login;

@@ -1,0 +1,67 @@
+.support-form-container {
+    width: 60%;
+    margin: 2rem auto;
+    padding: 20px;
+    font-size: 16px;
+  }
+  .support-form-container > h1 {
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+    font-size: 16px;
+    border: none;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 18px;
+  }
+  #subject, #description {
+    width: 100%;
+    padding: 15px;
+    border-radius: 4px;
+    border: none;
+    font-size: 16px;
+    border: 0.2px solid #464646;
+  }
+
+  textarea{
+    height: 300px;
+    resize: none;
+  }
+
+  #subject:focus{
+    border: 2px solid slateblue;
+  }
+  textarea:focus{
+    border: 1px solid slateblue;
+  }
+  
+  button.bottoneSupporto {
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 550;
+    margin-top: 0.5rem;
+    height: 50px;
+  }
+  
+  .success-message {
+    color: green;
+    margin-bottom: 1rem;
+  }
+  
+  .error-message {
+    color: red;
+    margin-bottom: 1rem;
+  }
+
+  #subject::placeholder, #description::placeholder {
+    color: rgb(160, 160, 160);
+  }
