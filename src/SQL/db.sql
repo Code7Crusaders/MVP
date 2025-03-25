@@ -24,7 +24,6 @@ CREATE TABLE Messages (
     user_id INTEGER,
     conversation_id INTEGER NOT NULL,
     rating BOOLEAN,
-    is_bot BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
     FOREIGN KEY (conversation_id) REFERENCES Conversations(id) ON DELETE CASCADE
 );
