@@ -1,20 +1,21 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from './App.jsx'
 import Login from './pages/login.jsx'
+import App from './App.jsx'
+import Chatbot from './components/chatbot.jsx'
 
 import store from "./store.js"
-import { Provider} from "react-redux"
+import { Provider } from "react-redux"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App></App>
+    element: <Login></Login>
   },
   {
-    path: "/login",
-    element: <Login></Login>
+    path: "/app",
+    element: <App></App>,
   }
 ])
 
