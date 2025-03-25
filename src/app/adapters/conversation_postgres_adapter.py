@@ -37,7 +37,7 @@ class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, Sav
         except Exception as e:
             raise e
 
-    def get_conversations(self) -> list[ConversationModel]:
+    def get_conversations(self, user_id : int) -> list[ConversationModel]:
         """
         Retrieve all conversations.
         Returns:
@@ -45,7 +45,7 @@ class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, Sav
         """
         try:
 
-            conversations = self.conversation_postgres_repository.get_conversations()
+            conversations = self.conversation_postgres_repository.get_conversations(user_id)
 
             return [
                 ConversationModel(

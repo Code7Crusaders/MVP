@@ -10,7 +10,7 @@ class GetConversationsService(GetConversationsUseCase):
         self.get_conversations_port = get_conversations_port
         
 
-    def get_conversations(self) -> list[ConversationModel]:
+    def get_conversations(self, user_id : int) -> list[ConversationModel]:
         """
         Get all conversations.
         Returns:
@@ -18,7 +18,7 @@ class GetConversationsService(GetConversationsUseCase):
         """
         try:
             
-            return self.get_conversations_port.get_conversations()
+            return self.get_conversations_port.get_conversations(user_id)
 
         except Exception as e:
             raise e

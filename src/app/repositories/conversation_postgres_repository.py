@@ -42,19 +42,26 @@ class ConversationPostgresRepository:
                     raise ValueError(f"Conversation with ID {id} not found.")
         
         
-    def get_conversations(self) -> list[ConversationEntity]:
+    def get_conversations(self, user_id : int) -> list[ConversationEntity]:
         '''
-        Retrieves all conversations from the PostgreSQL database.
+        Retrieves all distinct conversations associated with a specific user from the PostgreSQL database.
+        Args:
+            user_id (int): The ID of the user whose conversations are to be retrieved.
         Returns:
             list[ConversationEntity]: A list of all retrieved conversations.
         Raises:
             psycopg2.Error: If an error occurs while retrieving the conversations from the PostgreSQL database.
         '''
         
-        query = "SELECT id, title FROM Conversations;"
+        query = """
+        SELECT DISTINCT c.id, c.title
+        FROM Conversations c
+        JOIN Messages m ON c.id = m.conversation_id
+        WHERE m.user_id = %s;
+        """
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(query)
+                cursor.execute(query, (user_id,))
                 results = cursor.fetchall()
                 return [ConversationEntity(id=row[0], title=row[1]) for row in results]
 

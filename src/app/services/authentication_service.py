@@ -24,7 +24,7 @@ class AuthenticationService(AuthenticationUseCase):
         try:
 
             retrived_user = self.authentication_port.get_user_for_authentication(user_model)
-            
+
             if retrived_user is None:
                 raise ValueError("Credentials are not valid")
             if not self.bcrypt.check_password_hash(retrived_user.get_password(), user_model.get_password()):

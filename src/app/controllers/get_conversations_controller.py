@@ -7,7 +7,7 @@ class GetConversationsController:
     def __init__(self, get_conversations_use_case: GetConversationsUseCase):
         self.get_conversations_use_case = get_conversations_use_case
 
-    def get_conversations(self) -> list[ConversationDTO]:
+    def get_conversations(self, user_id : int) -> list[ConversationDTO]:
         """
         Get all conversations from the database.
         Returns:
@@ -15,7 +15,7 @@ class GetConversationsController:
         """
         try:
             
-            conversations_result = self.get_conversations_use_case.get_conversations()
+            conversations_result = self.get_conversations_use_case.get_conversations(user_id)
 
             return [
                 ConversationDTO(

@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 
 import os
 import fitz
@@ -151,9 +151,9 @@ def get_conversations():
     curl -X GET http://127.0.0.1:5000/conversation/get_all \
     -H "Authorization: Bearer <your_token>"
     """
-
     try:
-        conversations = get_conversations_controller.get_conversations()
+        user_id = int(get_jwt_identity())    
+        conversations = get_conversations_controller.get_conversations(user_id)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -168,8 +168,11 @@ def get_conversations():
 def save_conversation_title():
     """
     # To test this endpoint with curl:
-    curl -X POST http://127.0.0.1:5000/conversation/save_title -H "Content-Type: application/json" -d '{"title": "New Conversation Title"}' \
-    -H "Authorization: Bearer <your_token>"
+    curl -X POST http://127.0.0.1:5000/conversation/save_title \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer <your_token>" \
+    -d '{"title": "New Conversation Title"}' 
+
     """
     data = request.get_json()
 

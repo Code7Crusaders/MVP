@@ -98,6 +98,7 @@ class UserPostgresAdapter(RegistrationPort, ValidationPort, AuthenticationPort):
                 raise Exception
 
             return UserModel(
+                id=user_result.get_id(),
                 username=user_result.get_username(),
                 password=user_result.get_password(),
                 email=user_result.get_email(),
