@@ -1,37 +1,42 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LandingPage from './pages/landingpage.jsx'
-import Login from './pages/login.jsx'
-import App from './App.jsx'
-import Register from './pages/register.jsx'
+import { Provider } from "react-redux";
+import store from "./store.js";
 
-import store from "./store.js"
-import { Provider } from "react-redux"
+import LandingPage from "./pages/landingpage.jsx";
+import Login from "./pages/login.jsx";
+import Register from "./pages/register.jsx";
+import App from "./App.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LandingPage></LandingPage>
+    element: <LandingPage />,
   },
   {
     path: "/login",
-    element: <Login></Login>
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register></Register>
+    element: <Register />,
   },
   {
     path: "/app",
-    element: <App></App>,
-  }
-])
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
+  },
+]);
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </Provider>
-  </StrictMode>,
-)
+  </StrictMode>
+);

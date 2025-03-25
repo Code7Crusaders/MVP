@@ -19,7 +19,9 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
+    
     const { name, value } = e.target;
+    
     setFormData({
       ...formData,
       [name]: value
@@ -28,44 +30,46 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setError('');
+  
     if (formData.password !== formData.confirmPassword) {
       setError('Le password non coincidono');
       return;
     }
-
+  
     if (formData.phone && formData.phone.length !== 16) {
       setError('Il numero di telefono deve avere 16 caratteri');
       return;
     }
-
+  
     try {
-      // Simulazione chiamata API
-      const response = await fetch('/api/register', {
+      const response = await fetch('http://127.0.0.1:5000/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           username: formData.username,
-          password_hash: formData.password, // Da hasare nel backend
+          password: formData.password,
           email: formData.email,
           phone: formData.phone,
           first_name: formData.firstName,
-          last_name: formData.lastName
-        })
+          last_name: formData.lastName,
+        }),
       });
-
+  
+      const data = await response.json();
+  
       if (response.ok) {
         navigate('/login');
       } else {
-        const data = await response.json();
-        setError(data.message || 'Registrazione fallita');
+        setError(data.error || 'Registrazione fallita');
       }
     } catch (err) {
       setError('Errore di connessione');
     }
   };
+  
 
   return (
     <div className="register-container">

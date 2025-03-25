@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
+from flask import Flask, request, jsonify
 
 import os
 import fitz
@@ -28,6 +30,7 @@ UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Initialize dependencies
 dependencies = dependency_injection(app)
