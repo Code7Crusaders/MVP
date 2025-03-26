@@ -215,3 +215,49 @@
     font-style: italic;
     /* Italic text for emphasis */
 }
+
+/* Style for selected thumbs-up or thumbs-down button */
+.feedbackButton.selected {
+    background-color: #4caf50;
+    /* Green for thumbs-up */
+    color: white;
+}
+
+.feedbackButton.selected:nth-child(2) {
+    background-color: #f44336;
+    /* Red for thumbs-down */
+    color: white;
+}
+
+/* Style for selected thumbs-up button */
+.feedbackButton.selected.thumbs-up {
+    background-color: #4caf50;
+    /* Green for thumbs-up */
+    color: white;
+}
+
+/* Style for selected thumbs-down button */
+.feedbackButton.selected.thumbs-down {
+    background-color: #f44336;
+    /* Red for thumbs-down */
+    color: white;
+}
+
+/* Style for feedback buttons */
+.feedbackButton {
+    background-color: #e0e0e0;
+    /* Default background */
+    color: #333;
+    /* Default text color */
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for feedback buttons */
+.feedbackButton:hover {
+    background-color: #d6d6d6;
+    /* Slightly darker background on hover */
+}

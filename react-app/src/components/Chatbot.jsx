@@ -9,8 +9,13 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
-import { fetchMessages, saveMessage, chatInteract } from '../utils/api'; // Import API functions
-import ReactMarkdown from 'react-markdown'; // Importa react-markdown
+import ReactMarkdown from 'react-markdown';
+import {
+  loadMessages,
+  saveNewMessage,
+  handleFeedback,
+  interactWithChat,
+} from '../utils/MessageHandler'; // Import message handlers
 
 function Chatbot({ chatId }) {
   const [messages, setMessages] = useState([]);
@@ -36,16 +41,16 @@ function Chatbot({ chatId }) {
   };
 
   useEffect(() => {
-    const loadMessages = async () => {
+    const fetchMessages = async () => {
       try {
-        const data = await fetchMessages(chatId); // Fetch messages using API function
-        setMessages(data);
+        const loadedMessages = await loadMessages(chatId);
+        setMessages(loadedMessages);
       } catch (error) {
         console.error('Error loading messages:', error);
       }
     };
 
-    loadMessages();
+    fetchMessages();
   }, [chatId]);
 
   useEffect(() => {
@@ -64,32 +69,21 @@ function Chatbot({ chatId }) {
 
     try {
       // Save the user's message
-      const savedMessage = await saveMessage(newMessage);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { ...newMessage, id: savedMessage.id, created_at: new Date() },
-      ]);
+      const savedMessage = await saveNewMessage(newMessage);
+      setMessages((prevMessages) => [...prevMessages, savedMessage]);
       setInputValue('');
 
-      // Call chatInteract to get the bot's response
-      const botResponse = await chatInteract(inputValue);
-
-      // Save the bot's response as a message
-      const botMessage = {
-        text: botResponse.answer,
-        conversation_id: chatId,
-        rating: null,
-        is_bot: true,
-      };
-
-      const savedBotMessage = await saveMessage(botMessage);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { ...botMessage, id: savedBotMessage.id, created_at: new Date() },
-      ]);
+      // Interact with the chat and save the bot's response
+      const botMessage = await interactWithChat(inputValue, chatId);
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {
       console.error('Failed to send or process message:', error);
     }
+  };
+
+  const handleFeedbackClick = (messageId, isPositive) => {
+    const updatedMessages = handleFeedback(messages, messageId, isPositive);
+    setMessages(updatedMessages);
   };
 
   return (
@@ -122,21 +116,25 @@ function Chatbot({ chatId }) {
           <div key={message.id || `message-${index}`} className={`message ${message.is_bot ? 'bot' : 'own'}`}>
             <div className="texts">
               {message.is_bot ? (
-                // Wrap ReactMarkdown in a container with a specific class
                 <div className="markdown-content">
                   <ReactMarkdown>{message.text}</ReactMarkdown>
                 </div>
               ) : (
-                // Show normal text for user messages
                 <p>{message.text}</p>
               )}
               <span style={timeSpan}>{new Date(message.created_at).toLocaleString()}</span>
               {message.is_bot && (
                 <div className="feedback">
-                  <button className="feedbackButton" style={buttons}>
+                  <button
+                    className={`feedbackButton ${message.selectedRating === true ? 'selected thumbs-up' : ''}`}
+                    onClick={() => handleFeedbackClick(message.id, true)}
+                  >
                     <ThumbUpIcon />
                   </button>
-                  <button className="feedbackButton" style={buttons}>
+                  <button
+                    className={`feedbackButton ${message.selectedRating === false ? 'selected thumbs-down' : ''}`}
+                    onClick={() => handleFeedbackClick(message.id, false)}
+                  >
                     <ThumbDownIcon />
                   </button>
                 </div>
