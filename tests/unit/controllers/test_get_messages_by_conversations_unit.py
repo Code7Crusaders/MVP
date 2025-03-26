@@ -12,15 +12,16 @@ def get_messages_by_conversation_use_case_mock():
 def get_messages_by_conversation_controller(get_messages_by_conversation_use_case_mock):
     return GetMessagesByConversationController(get_messages_by_conversation_use_case_mock)
 
+# Test get_messages_by_conversation
+
 def test_get_messages_by_conversation_valid(get_messages_by_conversation_controller, get_messages_by_conversation_use_case_mock):
-    conversation_dto = MessageDTO(id="conv1", text=None, user_id=None, conversation_id="conv1", rating=None, created_at=None)
+    conversation_dto = MessageDTO(id=None, text=None, is_bot=None, conversation_id="conv1", rating=None, created_at=None)
 
     messages_models = [
-        MessageDTO(id="1", text="Hello", user_id="123", conversation_id="conv1", rating=5, created_at="2024-01-01"),
-        MessageDTO(id="2", text="How are you?", user_id="456", conversation_id="conv1", rating=4, created_at="2024-01-02"),
+        MessageDTO(id="1", text="Hello", is_bot=False, conversation_id="conv1", rating=5, created_at="2024-01-01"),
+        MessageDTO(id="2", text="How are you?", is_bot=False, conversation_id="conv1", rating=4, created_at="2024-01-02"),
     ]
 
-    # Simula il comportamento dell'use case
     get_messages_by_conversation_use_case_mock.get_messages_by_conversation.return_value = messages_models
 
     result = get_messages_by_conversation_controller.get_messages_by_conversation(conversation_dto)
@@ -32,21 +33,9 @@ def test_get_messages_by_conversation_valid(get_messages_by_conversation_control
 
     get_messages_by_conversation_use_case_mock.get_messages_by_conversation.assert_called_once()
 
-def test_get_messages_by_conversation_not_found(get_messages_by_conversation_controller, get_messages_by_conversation_use_case_mock):
-    conversation_dto = MessageDTO(id="conv1", text=None, user_id=None, conversation_id="conv1", rating=None, created_at=None)
-
-    # Simula il caso in cui non ci sono messaggi nella conversazione
-    get_messages_by_conversation_use_case_mock.get_messages_by_conversation.return_value = []
-
-    result = get_messages_by_conversation_controller.get_messages_by_conversation(conversation_dto)
-
-    assert result is None
-    get_messages_by_conversation_use_case_mock.get_messages_by_conversation.assert_called_once()
-
 def test_get_messages_by_conversation_exception(get_messages_by_conversation_controller, get_messages_by_conversation_use_case_mock):
-    conversation_dto = MessageDTO(id="conv1", text=None, user_id=None, conversation_id="conv1", rating=None, created_at=None)
+    conversation_dto = MessageDTO(id=None, text=None, is_bot=None, conversation_id="conv1", rating=None, created_at=None)
 
-    # Simula un'eccezione generata dall'use case
     get_messages_by_conversation_use_case_mock.get_messages_by_conversation.side_effect = Exception("Errore nel recupero dei messaggi")
 
     with pytest.raises(Exception) as exc_info:

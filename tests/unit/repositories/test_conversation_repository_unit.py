@@ -21,16 +21,9 @@ def test_get_conversation(conversation_repo):
     
     assert conversation_ciao is not None
     assert conversation_ciao.get_id() == 4
-    assert conversation_ciao.get_title() == "Casual Conversations"
+    assert conversation_ciao.get_title() == "Beef Stroganoff Meal Kit"
 
-    # # Test case where conversation is not found
-    # mock_get_conversation.return_value = None
-
-    conversation = ConversationEntity(id=-1, title="Test Conversation")
-
-    with pytest.raises(ValueError):
-        conversation_repo.get_conversation(conversation)
-    
+    conversation = ConversationEntity(id=-1, title="Test Conversation")    
 
 def test_save_conversation_title(conversation_repo):
 

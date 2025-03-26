@@ -13,7 +13,7 @@ CREATE TABLE Users (
 -- Creazione della tabella Conversations
 CREATE TABLE Conversations (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(256) NOT NULL
+    title VARCHAR(256) NOT NULL,
     user_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
 );

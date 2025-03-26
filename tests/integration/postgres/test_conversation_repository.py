@@ -3,7 +3,7 @@ import psycopg2
 from repositories.conversation_postgres_repository import ConversationPostgresRepository
 from config.db_config import db_config
 from entities.conversation_entity import ConversationEntity
-
+from unittest.mock import patch, MagicMock
 
 @pytest.fixture
 def repository():
@@ -34,20 +34,38 @@ def test_get_conversation(repository):
     assert result_conversation.get_title() is not None
 
 
-def test_get_conversation_error(repository):
+def test_get_conversation_error(repository, get_conversation_port_mock):
     """Test retrieving a non-existing conversation from the database."""
-    conversation_entity = ConversationEntity(id=-1, title="place holder")  # Non-existing ID in your database
+    conversation_entity = ConversationEntity(id=-1)
+    get_conversation_port_mock.get_conversations.side_effect = Exception("Database error")
     
-    with pytest.raises(ValueError):
+    with pytest.raises(Exception) as exc_info:
         repository.get_conversation(conversation_entity)
 
+    assert str(exc_info.value) == "Database error"
+    get_conversation_port_mock.get_conversations.assert_called_once()
 
-def test_get_conversations(repository):
+
+
+def test_get_conversations(conversation_postgres_repository: ConversationPostgresRepository, conversation_postgres_repository_mock: MagicMock):
     """Test retrieving all conversations from the database."""
+    # Prepare the test data
     user_id = 1  # Replace with an existing user ID
+    conversation_entity = ConversationEntity(id=None, title=None, user_id=user_id)
+    
+    # Mock the repository response
+    mock_conversations = [
+        ConversationEntity(id=1, title="Conversation 1", user_id=user_id),
+        ConversationEntity(id=2, title="Conversation 2", user_id=user_id),
+    ]
+    
+    # Mock the repository method
+    conversation_postgres_repository_mock.get_conversations.return_value = mock_conversations
 
-    result_conversations = repository.get_conversations(user_id)
-
+    # Call the method
+    result_conversations = conversation_postgres_repository.get_conversations(conversation_entity)
+    
+    # Asserts
     assert result_conversations is not None, "No conversations found in the database"
     assert isinstance(result_conversations, list)
     assert all(isinstance(conversation, ConversationEntity) for conversation in result_conversations)
@@ -55,6 +73,7 @@ def test_get_conversations(repository):
     for conversation in result_conversations:
         assert conversation.get_id() is not None
         assert conversation.get_title() is not None
+        assert conversation.get_user_id() == user_id
 
 
 def test_save_delete_conversation_title(repository): 

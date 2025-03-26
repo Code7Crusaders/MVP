@@ -16,7 +16,7 @@ def conversation_postgres_adapter(conversation_postgres_repository_mock: MagicMo
 # Test get_conversation
 
 def test_get_conversation_valid(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
-    conversation_model = ConversationModel(id=1, title="Test Conversation")
+    conversation_model = ConversationModel(id=1, title="Test Conversation", user_id=1)
     
     # Mock repository response
     conversation_postgres_repository_mock.get_conversation.return_value = conversation_model
@@ -25,9 +25,10 @@ def test_get_conversation_valid(conversation_postgres_adapter: ConversationPostg
     
     assert result.get_id() == 1
     assert result.get_title() == "Test Conversation"
+    assert result.get_user_id() == 1
 
 def test_get_conversation_not_found(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
-    conversation_model = ConversationModel(id=1, title="Test Conversation")
+    conversation_model = ConversationModel(id=1, title="Test Conversation", user_id=1)
     
     # Simulate repository exception
     conversation_postgres_repository_mock.get_conversation.side_effect = Exception("Conversation not found")
@@ -38,19 +39,17 @@ def test_get_conversation_not_found(conversation_postgres_adapter: ConversationP
 # Test get_conversations
 
 def test_get_conversations_valid(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
-   
     conversations = [
-        ConversationModel(id=1, title="Conversation 1"),
-        ConversationModel(id=2, title="Conversation 2"),
+        ConversationModel(id=1, title="Conversation 1", user_id=1),
+        ConversationModel(id=2, title="Conversation 2", user_id=1),
     ]
     
-    # Suppose conversation are conversation of user_id = 1
     user_id = 1
 
     # Mock repository response
     conversation_postgres_repository_mock.get_conversations.return_value = conversations
 
-    result = conversation_postgres_adapter.get_conversations(user_id)
+    result = conversation_postgres_adapter.get_conversations(ConversationModel(id=None, title=None, user_id=user_id))
     
     assert len(result) == 2
     assert result[0].get_title() == "Conversation 1"
@@ -60,32 +59,27 @@ def test_get_conversations_empty(conversation_postgres_adapter: ConversationPost
     # Mock repository response with no conversations
     conversation_postgres_repository_mock.get_conversations.return_value = []
 
-    # Suppose conversation are conversation of user_id = 1
     user_id = 1
 
-    result = conversation_postgres_adapter.get_conversations(user_id)
+    result = conversation_postgres_adapter.get_conversations(ConversationModel(id=None, title=None, user_id=user_id))
     
     assert result == []
 
 # Test save_conversation_title
 
 def test_save_conversation_title_valid(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
-    conversation_model = ConversationModel(id=1, title="Updated Title")
-    conversation_entity = ConversationEntity(
-        id=conversation_model.get_id(),
-        title=conversation_model.get_title()
-    )
+    conversation_model = ConversationModel(id=1, title="Updated Title", user_id=1)
     
     # Mock repository response
-    conversation_postgres_repository_mock.save_conversation_title.return_value = True
+    conversation_postgres_repository_mock.save_conversation_title.return_value = 1  # Assume returning the conversation ID
 
     result = conversation_postgres_adapter.save_conversation_title(conversation_model)
     
     conversation_postgres_repository_mock.save_conversation_title.assert_called_once_with(ANY)
-    assert result is not None  
+    assert isinstance(result, int)  # Ensure it returns an integer (conversation ID)
 
 def test_save_conversation_title_failure(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
-    conversation_model = ConversationModel(id=1, title="Updated Title")
+    conversation_model = ConversationModel(id=1, title="Updated Title", user_id=1)
     
     # Simulate repository exception
     conversation_postgres_repository_mock.save_conversation_title.side_effect = Exception("Failed to save title")
@@ -93,13 +87,12 @@ def test_save_conversation_title_failure(conversation_postgres_adapter: Conversa
     with pytest.raises(Exception, match="Failed to save title"):
         conversation_postgres_adapter.save_conversation_title(conversation_model)
 
+# Test get_conversations with exception
 
 def test_get_conversations_exception(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
-    # Simulate repository exception
     conversation_postgres_repository_mock.get_conversations.side_effect = Exception("Database error")
 
-    # Suppose conversation are conversation of user_id = 1
     user_id = 1
 
     with pytest.raises(Exception, match="Database error"):
-        conversation_postgres_adapter.get_conversations(user_id)
+        conversation_postgres_adapter.get_conversations(ConversationModel(id=None, title=None, user_id=user_id))

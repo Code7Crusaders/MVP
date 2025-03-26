@@ -13,11 +13,12 @@ def get_message_use_case_mock():
 def get_message_controller(get_message_use_case_mock):
     return GetMessageController(get_message_use_case_mock)
 
-def test_get_message_valid(get_message_controller, get_message_use_case_mock):
-    message_dto = MessageDTO(id="1", text="Hello", user_id="123", conversation_id="456", rating=5, created_at="2024-01-01")
-    message_model = MessageModel(id="1", text="Hello", user_id="123", conversation_id="456", rating=5, created_at="2024-01-01")
+# Test get_message
 
-    # Simula il comportamento dell'use case
+def test_get_message_valid(get_message_controller, get_message_use_case_mock):
+    message_dto = MessageDTO(id="1", text="Hello", is_bot=False, conversation_id="456", rating=5, created_at="2024-01-01")
+    message_model = MessageModel(id="1", text="Hello", is_bot=False, conversation_id="456", rating=5, created_at="2024-01-01")
+
     get_message_use_case_mock.get_message.return_value = message_model
 
     result = get_message_controller.get_message(message_dto)
@@ -25,7 +26,7 @@ def test_get_message_valid(get_message_controller, get_message_use_case_mock):
     assert result is not None
     assert result.get_id() == "1"
     assert result.get_text() == "Hello"
-    assert result.get_user_id() == "123"
+    assert result.get_is_bot() == False
     assert result.get_conversation_id() == "456"
     assert result.get_rating() == 5
     assert result.get_created_at() == "2024-01-01"
@@ -33,9 +34,8 @@ def test_get_message_valid(get_message_controller, get_message_use_case_mock):
     get_message_use_case_mock.get_message.assert_called_once()
 
 def test_get_message_not_found(get_message_controller, get_message_use_case_mock):
-    message_dto = MessageDTO(id="1", text="Hello", user_id="123", conversation_id="456", rating=5, created_at="2024-01-01")
+    message_dto = MessageDTO(id="1", text="Hello", is_bot=False, conversation_id="456", rating=5, created_at="2024-01-01")
 
-    # Simula il caso in cui il messaggio non viene trovato
     get_message_use_case_mock.get_message.return_value = None
 
     result = get_message_controller.get_message(message_dto)
@@ -44,9 +44,8 @@ def test_get_message_not_found(get_message_controller, get_message_use_case_mock
     get_message_use_case_mock.get_message.assert_called_once()
 
 def test_get_message_exception(get_message_controller, get_message_use_case_mock):
-    message_dto = MessageDTO(id="1", text="Hello", user_id="123", conversation_id="456", rating=5, created_at="2024-01-01")
+    message_dto = MessageDTO(id="1", text="Hello", is_bot=False, conversation_id="456", rating=5, created_at="2024-01-01")
 
-    # Simula un'eccezione generata dall'use case
     get_message_use_case_mock.get_message.side_effect = Exception("Errore nel recupero del messaggio")
 
     with pytest.raises(Exception) as exc_info:

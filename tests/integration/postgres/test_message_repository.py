@@ -39,7 +39,6 @@ def test_get_message(repository):
     assert isinstance(result_message, MessageEntity)
     assert result_message.get_id() == 1
     assert result_message.get_text() is not None
-    assert result_message.get_user_id() is None or isinstance(result_message.get_user_id(), int)
     assert result_message.get_rating() is None or isinstance(result_message.get_rating(), bool)
     assert result_message.get_conversation_id() is not None
     assert result_message.get_created_at() is not None
@@ -64,7 +63,6 @@ def test_get_messages_by_conversation(repository):
         assert message.get_conversation_id() == conversation.get_conversation_id()
         assert message.get_text() is not None
         assert message.get_created_at() is not None
-        assert message.get_user_id() is None or isinstance(message.get_user_id(), int)
         assert message.get_rating() is None or isinstance(message.get_rating(), bool)
 
 
@@ -101,7 +99,6 @@ def test_save_delete_message(repository):
         assert saved_message is not None, "Saved message not found in database"
         assert saved_message.get_text() == text, "Text mismatch"
         assert saved_message.get_created_at() == created_at, "Created at mismatch"
-        assert saved_message.get_user_id() == user_id, "User ID mismatch"
         assert saved_message.get_rating() == rating, "Rating mismatch"
         assert saved_message.get_id() == saved_id, "ID mismatch"  # Ensure get_id() is called correctly
 
