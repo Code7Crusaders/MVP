@@ -40,7 +40,7 @@ class GetMessagesByConversationController:
                 MessageDTO(
                     id=model.get_id(),
                     text=model.get_text(),
-                    is_bot=conversation_dto.get_is_bot(),
+                    is_bot=model.get_is_bot(),
                     conversation_id=model.get_conversation_id(),
                     rating=model.get_rating(),
                     created_at=model.get_created_at()

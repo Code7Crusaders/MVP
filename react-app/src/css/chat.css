@@ -1,5 +1,5 @@
-.chat{
-    flex:2;
+.chat {
+    flex: 2;
     border-left: 1px solid #dddddd35;
     border-right: 1px solid #dddddd35;
     display: flex;
@@ -7,30 +7,30 @@
     height: 100%;
     width: 100%;
 
-    .top{
+    .top {
         padding: 0 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #dddddd35;
 
-        .title{
+        .title {
             display: flex;
             align-items: center;
             gap: 20px;
             flex-direction: row;
 
-            p{
+            p {
                 font-size: 20px;
                 font-weight: 600;
             }
         }
 
-        .icons{
+        .icons {
             display: flex;
             gap: 18px;
 
-            .btnsTop{
+            .btnsTop {
                 padding: 7px;
                 border-radius: 5px;
                 cursor: pointer;
@@ -40,23 +40,25 @@
     }
 
 
-    .center{
+    .center {
         padding: 16px;
         flex: 1;
-        overflow:  scroll;
+        overflow: scroll;
         display: flex;
         flex-direction: column;
         gap: 10px;
         margin-bottom: 30px;
 
-        .message{
+        .message {
             max-width: 70%;
             display: flex;
             gap: 10px;
             color: white;
             position: relative;
-            
-            &.own{
+            flex-direction: column;
+            margin: 10px 0;
+
+            &.own {
                 align-self: flex-end;
             
                 .texts{
@@ -66,7 +68,7 @@
                     }
                 }
 
-                span{
+                span {
                     align-self: flex-end;
                 }
             }
@@ -79,18 +81,18 @@
                 border: 2px solid slateblue;
             }
 
-            .texts{
-                flex:1;
+            .texts {
+                flex: 1;
                 display: flex;
                 flex-direction: column;
-            
-                p{
+
+                p {
                     padding: 0.8em;
                     background-color: slateblue;
                     border-radius: 10px;
                 }
 
-                span{
+                span {
                     font-size: 13px;
                 }
             }
@@ -100,40 +102,50 @@
                 bottom: 15px;
                 right: 0;
                 display: flex;
-                gap: 3px;                
-                button{
+                gap: 3px;
+
+                button {
                     border: none;
                     border-radius: 5px;
                     cursor: pointer;
                 }
-                
+
+                display: flex;
+                gap: 5px;
+                margin-top: 5px;
             }
-            
+
+            .feedbackButton {
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+
         }
     }
 
-    .bottom{
+    .bottom {
         padding: 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-top: 1px solid #dddddd35;
         gap: 20px;
-        position:sticky;
+        position: sticky;
         bottom: 0;
 
-        .icons{
+        .icons {
             display: flex;
             gap: 20px;
         }
 
-        img{
+        img {
             width: 40px;
             height: 40px;
             cursor: pointer;
         }
 
-        input{
+        input {
             flex: 1;
             outline: none;
             color: white;
@@ -143,9 +155,9 @@
             border: 0.5px solid #464646;
         }
 
-        
 
-        .sendButton{
+
+        .sendButton {
             padding: 14px;
             border: none;
             border-radius: 5px;
@@ -154,6 +166,5 @@
         }
     }
 
-    
-}
 
+}

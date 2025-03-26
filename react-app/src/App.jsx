@@ -6,12 +6,11 @@ import { createTheme } from '@mui/material/styles';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
-import Chatbot from './components/Chatbot'; 
+import Chatbot from './components/Chatbot';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import ForumIcon from '@mui/icons-material/Forum';
 import ChatIcon from '@mui/icons-material/Chat';
 import MuccaSenzaSfondoIcon from './assets/muccasenzasfondo.png';
-import 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import RichiestaSupporto from './components/RichiestaSupporto';
 import Metriche from './components/Metriche';
@@ -21,62 +20,6 @@ import Templates from './components/Templates';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { logout } from './utils/auth';
-
-
-const NAVIGATION = [
-  {
-    segment: 'chatbot',
-    title: 'Chatbot',
-    icon: <AddCommentIcon />,
-  },
-  {
-    segment: 'recent',
-    title: 'Conversazioni salvate',
-    icon: <ForumIcon />,
-    children: [
-      {
-        segment: 'chat1',
-        title: 'Chat 1',
-        icon: <ChatIcon />,
-      },
-      {
-        segment: 'chat2',
-        title: 'Chat 2',
-        icon: <ChatIcon />,
-      },
-    ],
-  },
-  {
-    kind: 'divider',
-  },
-  {
-    segment: 'support',
-    title: 'Richiesta Supporto',
-    icon: <ContactSupportIcon />,
-  },
-  {
-    kind: 'divider',
-  },
-  {
-    kind: 'header',
-    title: 'Admin',
-  },
-  {
-    segment: 'metrics',
-    title: 'Visualizza Metriche',
-    icon: <EqualizerIcon />,
-  },
-  {
-    segment: 'templates',
-    title: 'Gestione Templates',
-    icon: <AutoAwesomeMosaicIcon />,
-  },
-  {
-    segment: 'assistenza',
-    title: 'Assistenza clienti',
-    icon: <SupportAgentIcon />,
-  },
-];
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -102,80 +45,69 @@ function DashboardContent() {
   );
 }
 
-function OrdersContent() {
-  return (
-    <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-      <Typography>Manage your orders here</Typography>
-      <Chatbot />
-    </Box>
-  );
+function SupportContent() {
+  return <RichiestaSupporto />;
 }
 
-function Chat1Content() {
-  return (
-    <Chatbot chatId="chat1" />
-  );
+function MetricheContent() {
+  return <Metriche />;
 }
 
-function Chat2Content() {
-  return (
-      <Chatbot chatId="chat2" /> 
-  );
+function TemplatesContent() {
+  return <Templates />;
 }
 
-function SupportContent(){
-  return (
-    <RichiestaSupporto/>
-  );
+function AssistenzaContent() {
+  return <p>Assistenza</p>;
 }
 
-function MetricheContent(){
-  return (
-    <Metriche/>
-  );
-}
-
-function TemplatesContent(){
-  return (
-    <Templates/>
-  );
-}
-
-function AssistenzaContent(){
-  return (
-    <p>Assistenza</p>
-  );
-}
-
-function DemoPageContent({ pathname }) {
+function DemoPageContent({ pathname, conversations }) {
   if (pathname === '/chatbot') {
     return <DashboardContent />;
-  } else if (pathname === '/recent') {
-    return <OrdersContent />;
-  } else if (pathname === '/recent/chat1') {
-    return <Chat1Content />;
-  } else if (pathname === '/recent/chat2') {
-    return <Chat2Content />;
-  } else if (pathname === '/support'){
-    return <SupportContent/>;
-  } else if (pathname === '/metrics'){
-    return <MetricheContent/>
-  } else if (pathname === '/templates'){
-    return <TemplatesContent/>
-  } else if (pathname === '/assistenza'){
-    return <AssistenzaContent/>
+  } else if (pathname.startsWith('/recent/chat-')) {
+    const chatId = pathname.split('/recent/chat-')[1];
+    console.log('Extracted chatId:', chatId); // Debugging log
+    console.log('Conversations:', conversations); // Debugging log
+
+    const conversation = conversations.find((conv) => String(conv.id) === chatId);
+
+    if (!conversation) {
+      console.error(`Chat with ID ${chatId} not found in conversations.`);
+    }
+
+    return conversation ? (
+      <Chatbot chatId={chatId} />
+    ) : (
+      <Typography>Chat not found</Typography>
+    );
+  } else if (pathname === '/support') {
+    return <SupportContent />;
+  } else if (pathname === '/metrics') {
+    return <MetricheContent />;
+  } else if (pathname === '/templates') {
+    return <TemplatesContent />;
+  } else if (pathname === '/assistenza') {
+    return <AssistenzaContent />;
   }
 
   return (
-    <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+    <Box
+      sx={{
+        py: 4,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
+      }}
+    >
       <Typography>Page not found</Typography>
     </Box>
   );
 }
 
-
 DemoPageContent.propTypes = {
   pathname: PropTypes.string.isRequired,
+  conversations: PropTypes.array.isRequired,
 };
 
 function DashboardLayoutBranding(props) {
@@ -187,34 +119,113 @@ function DashboardLayoutBranding(props) {
       user: {
         name: storedUser ? JSON.parse(storedUser).name : 'User DiProva',
         email: storedUser ? JSON.parse(storedUser).email : 'email@example.com',
-        image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
       },
     };
   });
-  
-  const navigate = useNavigate();
 
-  const authentication = React.useMemo(() => ({
-    signIn: () => {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        const userData = JSON.parse(storedUser);
-        setSession({
-          user: {
-            email: userData.email,
+  const [conversations, setConversations] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://127.0.0.1:5000/conversation/get_all', {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
         });
+        const data = await response.json();
+        console.log('Fetched conversations:', data); // Debugging log
+        setConversations(data);
+      } catch (error) {
+        console.error('Failed to fetch conversations:', error);
+      } finally {
+        setLoading(false);
       }
-    },
-    signOut: () => {
-      setSession(null);
-      logout();
-      navigate('/login');
-    },
-  }), []);
+    };
+
+    fetchConversations();
+  }, []);
+
+  const navigate = useNavigate();
+
+  const authentication = React.useMemo(
+    () => ({
+      signIn: () => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          setSession({
+            user: {
+              email: userData.email,
+            },
+          });
+        }
+      },
+      signOut: () => {
+        setSession(null);
+        logout();
+        navigate('/login');
+      },
+    }),
+    [navigate]
+  );
 
   const router = useDemoRouter('/chatbot');
   const demoWindow = window !== undefined ? window() : undefined;
+
+  const NAVIGATION = [
+    {
+      segment: 'chatbot',
+      title: 'Chatbot',
+      icon: <AddCommentIcon />,
+    },
+    {
+      segment: 'recent',
+      title: 'Conversazioni salvate',
+      icon: <ForumIcon />,
+      children: conversations.map((conv) => ({
+        segment: `chat-${conv.id}`,
+        title: conv.title,
+        icon: <ChatIcon />,
+      })),
+    },
+    {
+      kind: 'divider',
+    },
+    {
+      segment: 'support',
+      title: 'Richiesta Supporto',
+      icon: <ContactSupportIcon />,
+    },
+    {
+      kind: 'divider',
+    },
+    {
+      kind: 'header',
+      title: 'Admin',
+    },
+    {
+      segment: 'metrics',
+      title: 'Visualizza Metriche',
+      icon: <EqualizerIcon />,
+    },
+    {
+      segment: 'templates',
+      title: 'Gestione Templates',
+      icon: <AutoAwesomeMosaicIcon />,
+    },
+    {
+      segment: 'assistenza',
+      title: 'Assistenza clienti',
+      icon: <SupportAgentIcon />,
+    },
+  ];
+
+  if (loading) {
+    return <Typography>Loading...</Typography>;
+  }
 
   return (
     <AppProvider
@@ -222,20 +233,24 @@ function DashboardLayoutBranding(props) {
       authentication={authentication}
       navigation={NAVIGATION}
       branding={{
-        logo: <img src={MuccaSenzaSfondoIcon} alt="logo originale del Team di Sviluppo Code7Crusaders" />,
+        logo: <img src={MuccaSenzaSfondoIcon} alt="Team Code7Crusaders Logo" />,
         title: 'Giorgione',
         homeUrl: '/chatbot',
-        userDisplay: session?.user ? `${session.user.displayName} (${session.user.email})` : 'Guest', 
+        userDisplay: session?.user ? `${session.user.name} (${session.user.email})` : 'Guest',
       }}
       router={router}
       theme={demoTheme}
       window={demoWindow}
     >
       <DashboardLayout>
-        <DemoPageContent pathname={router.pathname} />
+        <DemoPageContent pathname={router.pathname} conversations={conversations} />
       </DashboardLayout>
     </AppProvider>
   );
 }
+
+DashboardLayoutBranding.propTypes = {
+  window: PropTypes.func,
+};
 
 export default DashboardLayoutBranding;
