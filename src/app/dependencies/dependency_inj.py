@@ -149,7 +149,7 @@ def initialize_langchain() -> LangChainAdapter:
             model="gpt-4o-mini", 
             max_tokens=2000, 
             temperature=0.5, 
-            request_timeout=10
+            request_timeout=15
         )
 
         langchain_repository = LangChainRepository(model)

@@ -24,6 +24,17 @@ export const fetchMessages = async (chatId) => {
 // Save a new message to the database
 export const saveMessage = async (messageData) => {
   const token = localStorage.getItem('token');
+
+  if (!token) {
+    console.error('Error: No token found in localStorage');
+    throw new Error('Authentication token is missing');
+  }
+
+  if (!messageData || typeof messageData !== 'object') {
+    console.error('Error: Invalid message data provided', messageData);
+    throw new Error('Invalid message data');
+  }
+
   try {
     const response = await fetch('http://127.0.0.1:5000/message/save', {
       method: 'POST',
@@ -35,7 +46,9 @@ export const saveMessage = async (messageData) => {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to save message');
+      const errorData = await response.json();
+      console.error('Error response from server:', errorData);
+      throw new Error(errorData.error || 'Failed to save message');
     }
 
     const data = await response.json();
@@ -66,6 +79,33 @@ export const fetchConversations = async () => {
     return data;
   } catch (error) {
     console.error('Error fetching conversations:', error);
+    throw error;
+  }
+};
+
+// Interact with the chat endpoint
+export const chatInteract = async (question) => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await fetch('http://127.0.0.1:5000/api/chat_interact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ question }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to interact with chat');
+    }
+
+    const data = await response.json();
+    console.log('Chat interaction response:', data); // Debugging log
+    return data;
+  } catch (error) {
+    console.error('Error interacting with chat:', error);
     throw error;
   }
 };

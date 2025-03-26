@@ -60,9 +60,9 @@
 
             &.own {
                 align-self: flex-end;
-            
-                .texts{
-                    p{
+
+                .texts {
+                    p {
                         background-color: #5183fe;
                         border: none;
                     }
@@ -73,7 +73,7 @@
                 }
             }
 
-            img{
+            img {
                 width: 55px;
                 height: 55px;
                 border-radius: 50%;
@@ -167,4 +167,51 @@
     }
 
 
+}
+
+/* Style for Markdown content inside bot messages */
+.markdown-content {
+    padding: 0.8em;
+    background-color: slateblue;
+    /* Match the bot message background */
+    border-radius: 10px;
+    color: white;
+    /* Ensure text color is consistent */
+    font-size: 14px;
+    /* Adjust font size if needed */
+    line-height: 1.5;
+    /* Improve readability */
+}
+
+/* Override default styles for Markdown elements */
+.markdown-content p {
+    margin: 0;
+    /* Remove default margins for <p> tags */
+}
+
+.markdown-content ul {
+    margin: 0;
+    padding-left: 20px;
+    /* Add padding for lists */
+}
+
+.markdown-content li {
+    margin-bottom: 5px;
+    /* Add spacing between list items */
+}
+
+.markdown-content a {
+    color: #add8e6;
+    /* Light blue for links */
+    text-decoration: underline;
+}
+
+.markdown-content strong {
+    font-weight: bold;
+    /* Bold text for strong elements */
+}
+
+.markdown-content em {
+    font-style: italic;
+    /* Italic text for emphasis */
 }

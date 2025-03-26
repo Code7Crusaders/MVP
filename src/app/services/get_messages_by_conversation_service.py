@@ -16,9 +16,11 @@ class GetMessagesByConversationService(GetMessagesByConversationUseCase):
         Args:
             conversation (MessageModel): The conversation object containing the ID to retrieve messages for.
         Returns:
-            list[MessageModel]: A list of retrieved messages.
+            list[MessageModel]: A list of retrieved messages, ordered by creation time.
         """
         try:
-            return self.get_messages_by_conversation_port.get_messages_by_conversation(conversation)
+            messages = self.get_messages_by_conversation_port.get_messages_by_conversation(conversation)
+            # Sort messages by the created_at attribute
+            return sorted(messages, key=lambda message: message.get_created_at())
         except Exception as e:
             raise e

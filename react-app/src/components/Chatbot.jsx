@@ -9,7 +9,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
-import { fetchMessages, saveMessage } from '../utils/api'; // Import API functions
+import { fetchMessages, saveMessage, chatInteract } from '../utils/api'; // Import API functions
+import ReactMarkdown from 'react-markdown'; // Importa react-markdown
 
 function Chatbot({ chatId }) {
   const [messages, setMessages] = useState([]);
@@ -62,11 +63,32 @@ function Chatbot({ chatId }) {
     };
 
     try {
-      const savedMessage = await saveMessage(newMessage); // Save message using API function
-      setMessages((prevMessages) => [...prevMessages, { ...newMessage, id: savedMessage.id, created_at: new Date() }]);
+      // Save the user's message
+      const savedMessage = await saveMessage(newMessage);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...newMessage, id: savedMessage.id, created_at: new Date() },
+      ]);
       setInputValue('');
+
+      // Call chatInteract to get the bot's response
+      const botResponse = await chatInteract(inputValue);
+
+      // Save the bot's response as a message
+      const botMessage = {
+        text: botResponse.answer,
+        conversation_id: chatId,
+        rating: null,
+        is_bot: true,
+      };
+
+      const savedBotMessage = await saveMessage(botMessage);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...botMessage, id: savedBotMessage.id, created_at: new Date() },
+      ]);
     } catch (error) {
-      console.error('Failed to send message:', error);
+      console.error('Failed to send or process message:', error);
     }
   };
 
@@ -99,7 +121,15 @@ function Chatbot({ chatId }) {
         {messages.map((message, index) => (
           <div key={message.id || `message-${index}`} className={`message ${message.is_bot ? 'bot' : 'own'}`}>
             <div className="texts">
-              <p>{message.text}</p>
+              {message.is_bot ? (
+                // Wrap ReactMarkdown in a container with a specific class
+                <div className="markdown-content">
+                  <ReactMarkdown>{message.text}</ReactMarkdown>
+                </div>
+              ) : (
+                // Show normal text for user messages
+                <p>{message.text}</p>
+              )}
               <span style={timeSpan}>{new Date(message.created_at).toLocaleString()}</span>
               {message.is_bot && (
                 <div className="feedback">

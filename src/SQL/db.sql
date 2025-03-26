@@ -21,7 +21,7 @@ CREATE TABLE Conversations (
 -- Creazione della tabella Messages
 CREATE TABLE Messages (
     id SERIAL PRIMARY KEY,
-    text VARCHAR(1024) NOT NULL,
+    text VARCHAR NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     conversation_id INTEGER NOT NULL,
     rating BOOLEAN,
