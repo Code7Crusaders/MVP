@@ -43,7 +43,6 @@ def test_save_message(mock_save_message, message_repo):
         id=None,
         text="Hello World",
         created_at=datetime.now(),
-        user_id=1,
         conversation_id=1,
         rating=False
     )
