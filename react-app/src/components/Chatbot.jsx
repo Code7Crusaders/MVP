@@ -9,9 +9,11 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
+import { fetchMessages, saveMessage } from '../utils/api'; // Import API functions
 
 function Chatbot({ chatId }) {
   const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState('');
   const [salvataggioOpen, setSalvataggioOpen] = useState(false);
   const [eliminazioneOpen, setEliminazioneOpen] = useState(false);
 
@@ -33,31 +35,40 @@ function Chatbot({ chatId }) {
   };
 
   useEffect(() => {
-    const fetchMessages = async () => {
+    const loadMessages = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`http://127.0.0.1:5000/message/get_by_conversation/${chatId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch messages');
-        }
-        const data = await response.json();
-        console.log('Fetched messages:', data); // Debugging log
+        const data = await fetchMessages(chatId); // Fetch messages using API function
         setMessages(data);
       } catch (error) {
-        console.error('Error fetching messages:', error);
+        console.error('Error loading messages:', error);
       }
     };
 
-    fetchMessages();
+    loadMessages();
   }, [chatId]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const handleSendMessage = async () => {
+    if (!inputValue.trim()) return;
+
+    const newMessage = {
+      text: inputValue,
+      conversation_id: chatId,
+      rating: null,
+      is_bot: false,
+    };
+
+    try {
+      const savedMessage = await saveMessage(newMessage); // Save message using API function
+      setMessages((prevMessages) => [...prevMessages, { ...newMessage, id: savedMessage.id, created_at: new Date() }]);
+      setInputValue('');
+    } catch (error) {
+      console.error('Failed to send message:', error);
+    }
+  };
 
   return (
     <div className="chat">
@@ -85,8 +96,8 @@ function Chatbot({ chatId }) {
       </div>
 
       <div className="center">
-        {messages.map((message) => (
-          <div key={message.id} className={`message ${message.is_bot ? 'bot' : 'own'}`}>
+        {messages.map((message, index) => (
+          <div key={message.id || `message-${index}`} className={`message ${message.is_bot ? 'bot' : 'own'}`}>
             <div className="texts">
               <p>{message.text}</p>
               <span style={timeSpan}>{new Date(message.created_at).toLocaleString()}</span>
@@ -107,8 +118,14 @@ function Chatbot({ chatId }) {
       </div>
 
       <div className="bottom">
-        <input type="text" placeholder="Scrivi un messaggio..." style={inputChatStyle} />
-        <button className="sendButton" style={buttons}>
+        <input
+          type="text"
+          placeholder="Scrivi un messaggio..."
+          style={inputChatStyle}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <button className="sendButton" style={buttons} onClick={handleSendMessage}>
           <SendIcon />
         </button>
       </div>

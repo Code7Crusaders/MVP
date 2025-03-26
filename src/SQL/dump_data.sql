@@ -2,6 +2,8 @@ INSERT INTO "users" ("id", "username", "password_hash", "email", "phone", "first
 ('1', 'enrico', '$2b$12$t1q5qnR88KacWOlevjWf8e8eKtWB06O40YkNr.c25FYJ/2dtlUPXC', 'enrico.cotticottini@example.com', '1234567890', 'Enrico', 'Cotti Cottini', '0'),
 ('2', 'johnny', '$2b$12$LA3iCLTxw2jC1fOOoXMZiegupARy.2CifCcKZ.IaHIBWR79S1Xplu', 'john@example.com', '1234567890', 'John', 'Doe', '1');
 
+-- Update sequence for Users table
+SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM "users"));
 
 INSERT INTO "conversations" ("id", "title", "user_id") VALUES
 ('1', 'Maple Cinnamon Granola Bars', '1'),
@@ -15,6 +17,8 @@ INSERT INTO "conversations" ("id", "title", "user_id") VALUES
 ('9', 'Key Finder', '1'),
 ('10', 'Chicken Sausage', '2');
 
+-- Update sequence for Conversations table
+SELECT SETVAL('conversations_id_seq', (SELECT MAX(id) FROM "conversations"));
 
 INSERT INTO "messages" ("id", "text", "created_at", "conversation_id", "rating", "is_bot") VALUES
 ('19', '-- Filium morte multavit -- Si sine', '2024-03-24 13:08:25', '6', '0', '0'),
@@ -119,6 +123,9 @@ INSERT INTO "messages" ("id", "text", "created_at", "conversation_id", "rating",
 ('14', 'Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint', '2024-03-24 12:41:51', '9', '1', '0');
 
 
+-- Update sequence for Messages table
+SELECT SETVAL('messages_id_seq', (SELECT MAX(id) FROM "messages"));
+
 INSERT INTO "support" ("id", "user_id", "description", "status", "subject", "created_at") VALUES
 ('1', '1', 'Turbulentaeque sunt, sic ut plura nemini e nostris, qui haec subtilius velint tradere et negent satis esse, quid bonum sit aut quid iudicat, quo aut petat aut fugiat aliquid, praeter voluptatem et dolorem? Sunt autem quidam e nostris, et scribentur fortasse plura.', '1', 'Aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Hanc ego cum teneam sententiam, quid est enim contra Cyrenaicos satis acute, nihil ad iucunde vivendum reperiri posse, quod coniunctione tali sit aptius. Q', '2024-03-24 11:28:56'),
 ('2', '2', 'Et molestia perfruique maximis et animi et molestiam dolor afferat, eorum tamen utrumque et ortum esse e corpore et ad tranquillitatem ferant, quid est cur dubitemus dicere et sapientiam propter voluptates expetendam et insipientiam propter molestias.', '1', 'Enim hanc solam sequimur, quae suavitate aliqua naturam ipsam movet et cum.', '2024-03-24 11:38:27'),
@@ -221,6 +228,8 @@ INSERT INTO "support" ("id", "user_id", "description", "status", "subject", "cre
 ('99', '1', 'Afferat, eorum tamen utrumque et ortum esse e corpore et ad tranquillitatem ferant, quid est cur tam multos legant, quam legendi sunt. Quid enim est una, quae maestitiam pellat ex animis, quae nos a libidinum impetu et a formidinum terrore vindicet et.', '0', 'Et rationibus conquisitis de voluptate et dolore disputandum putant. Sed ut iis bonis erigimur, quae expectamus, sic laetamur iis, quae.', '2024-03-24 20:01:43'),
 ('100', '2', 'Fuisse. -- Torquem detraxit hosti. -- Et quidem se texit, ne interiret. -- At magnum periculum adiit. -- In oculis quidem exercitus. -- Quid ex eo credo quibusdam.', '0', 'Enim negant esse bonum quicquam nisi nescio quam illam umbram, quod appellant honestum.', '2024-03-24 20:06:46');
 
+-- Update sequence for Support table
+SELECT SETVAL('support_id_seq', (SELECT MAX(id) FROM "support"));
 
 INSERT INTO "templates" ("id", "question", "answer", "author", "last_modified") VALUES
 ('1', 'Maximam adipiscuntur praetermittenda voluptate. Idem etiam dolorem saepe perpetiuntur, ne, si amicitiam propter nostram voluptatem expetendam putemus, tota amicitia quasi claudicare videatur. Itaque primos congressus copulationesque et consuetudinum instituendarum voluntates fieri propter voluptatem; cum autem usus progrediens familiaritatem effecerit, tum amorem efflorescere tantum, ut, etiamsi nulla sit utilitas ex amicitia, tamen ipsi amici propter se ipsos.', 'Aristoteli, Theophrasti orationis ornamenta neglexerit. Nam illud quidem adduci vix possum, ut ea, quae sint coniuncta explicabo brevi. Nullus in ipsis error est finibus bonorum et malorum fere a nobis philosophia defensa et collaudata est, cum id, quod his libris quaeritur, qui sit finis, quid extremum, quid ultimum, quo sint omnia bene.', '1', '2024-10-07 22:14:07'),
@@ -323,3 +332,6 @@ INSERT INTO "templates" ("id", "question", "answer", "author", "last_modified") 
 ('98', 'Quoniam autem id est in voluptate est. Extremum autem esse.', 'Cogitavisse? Sed ut perspiciatis, unde omnis iste natus error sit.', '2', '2024-08-18 03:40:40'),
 ('99', 'Istis tantopere pugnare, qui Graeca legere malint, modo legant illa ipsa, ne simulent, et iis quidem non admodum indoctis, totum hoc displicet philosophari. Quidam autem non tam id reprehendunt, si remissius agatur.', 'In musicis, geometria, numeris, astris contereret, quae et splendide dicta sint neque sint conversa de Graecis? Nam si ea sola voluptas esset.', '1', '2024-11-24 06:47:06'),
 ('100', 'Municipem Ponti, Tritani, centurionum, praeclarorum hominum ac primorum signiferumque, maluisti dici. Graece ergo praetor.', 'Ista sua sponte et per se esset et virtus et cognitio rerum, quod.', '2', '2024-08-04 15:33:57');
+
+-- Update sequence for Templates table
+SELECT SETVAL('templates_id_seq', (SELECT MAX(id) FROM "templates"));

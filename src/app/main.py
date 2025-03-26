@@ -272,7 +272,7 @@ def save_message():
     curl -X POST http://127.0.0.1:5000/message/save \
     -H "Content-Type: application/json" \
     -d '{"text": "Message text", "conversation_id": 2, "rating": true, "is_bot": false}' \
-    -H "Authorization: Bearer <your_token>"
+    -H "Authorization: Bearer <your_token>" 
     """
     data = request.get_json()
 
