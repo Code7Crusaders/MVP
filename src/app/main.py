@@ -99,7 +99,7 @@ def login():
     """
     curl -X POST http://127.0.0.1:5000/login \
     -H "Content-Type: application/json" \
-    -d '{"username": "john", "password": "secret"}'
+    -d '{"username": "johnny", "password": "secret"}'
     """
     try:
         data = request.json
@@ -165,13 +165,19 @@ def get_conversations():
     """
     try:
         user_id = int(get_jwt_identity())    
-        conversations = get_conversations_controller.get_conversations(user_id)
+
+        conversation = ConversationDTO(
+            user_id=user_id
+        )
+
+        conversations = get_conversations_controller.get_conversations(conversation)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
     return jsonify([{
         "id": conversation.get_id(),
-        "title": conversation.get_title()
+        "title": conversation.get_title(),
+        "user_id": conversation.get_user_id()
     } for conversation in conversations]), 200
 
 
@@ -186,13 +192,14 @@ def save_conversation_title():
     -d '{"title": "New Conversation Title"}' 
 
     """
-    data = request.get_json()
-
-    conversation = ConversationDTO(
-        title=data.get("title")
-    )
-
     try:
+        data = request.get_json()
+        user = int(get_jwt_identity())  
+
+        conversation = ConversationDTO(
+            title=data.get("title"),
+            user_id=user
+        )
         saved_id = save_conversation_title_controller.save_conversation_title(conversation)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -222,7 +229,7 @@ def get_message(message_id):
     return jsonify({
         "id": message_result.get_id(),
         "text": message_result.get_text(),
-        "user_id": message_result.get_user_id(),
+        "is_bot": message_result.get_is_bot(),
         "conversation_id": message_result.get_conversation_id(),
         "rating": message_result.get_rating(),
         "created_at": message_result.get_created_at()
@@ -250,7 +257,7 @@ def get_messages_by_conversation(conversation_id):
     return jsonify([{
         "id": message.get_id(),
         "text": message.get_text(),
-        "user_id": message.get_user_id(),
+        "is_bot": message.get_is_bot(),
         "conversation_id": message.get_conversation_id(),
         "rating": message.get_rating(),
         "created_at": message.get_created_at()
@@ -264,18 +271,17 @@ def save_message():
     # To test this endpoint with curl:
     curl -X POST http://127.0.0.1:5000/message/save \
     -H "Content-Type: application/json" \
-    -d '{"text": "Message text", "conversation_id": 2, "rating": true}' \
+    -d '{"text": "Message text", "conversation_id": 2, "rating": true, "is_bot": false}' \
     -H "Authorization: Bearer <your_token>"
     """
     data = request.get_json()
-    user_id = int(get_jwt_identity())
 
     # Create DTO
     message = MessageDTO(
         text=data.get("text"),
-        user_id=user_id,
         conversation_id=data.get("conversation_id"),
         rating=data.get("rating"),
+        is_bot=data.get("is_bot"),
         created_at=datetime.now(italy_tz)
     )
 

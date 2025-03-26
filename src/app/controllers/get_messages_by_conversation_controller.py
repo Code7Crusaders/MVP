@@ -25,7 +25,7 @@ class GetMessagesByConversationController:
             conversation_model = MessageDTO(
                 id=conversation_dto.get_id(),
                 text=conversation_dto.get_text(),
-                user_id=conversation_dto.get_user_id(),
+                is_bot=conversation_dto.get_is_bot(),
                 conversation_id=conversation_dto.get_conversation_id(),
                 rating=conversation_dto.get_rating(),
                 created_at=conversation_dto.get_created_at()
@@ -40,7 +40,7 @@ class GetMessagesByConversationController:
                 MessageDTO(
                     id=model.get_id(),
                     text=model.get_text(),
-                    user_id=model.get_user_id(),
+                    is_bot=conversation_dto.get_is_bot(),
                     conversation_id=model.get_conversation_id(),
                     rating=model.get_rating(),
                     created_at=model.get_created_at()

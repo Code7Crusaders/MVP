@@ -14,6 +14,8 @@ CREATE TABLE Users (
 CREATE TABLE Conversations (
     id SERIAL PRIMARY KEY,
     title VARCHAR(256) NOT NULL
+    user_id INTEGER,
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
 -- Creazione della tabella Messages
@@ -21,10 +23,9 @@ CREATE TABLE Messages (
     id SERIAL PRIMARY KEY,
     text VARCHAR(1024) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    user_id INTEGER,
     conversation_id INTEGER NOT NULL,
     rating BOOLEAN,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
+    is_bot BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (conversation_id) REFERENCES Conversations(id) ON DELETE CASCADE
 );
 

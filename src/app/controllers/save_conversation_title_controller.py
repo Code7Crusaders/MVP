@@ -18,7 +18,8 @@ class SaveConversationTitleController:
         try:
             conversation_model = ConversationModel(
                 id=conversation_dto.get_id(),
-                title=conversation_dto.get_title()
+                title=conversation_dto.get_title(),
+                user_id=conversation_dto.get_user_id()
             )
 
             return self.save_conversation_title_usecase.save_conversation_title(conversation_model)

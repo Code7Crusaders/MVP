@@ -21,7 +21,6 @@ import Templates from './components/Templates';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { logout } from './utils/auth';
-import { Account } from '@toolpad/core/Account';
 
 const NAVIGATION = [
   {

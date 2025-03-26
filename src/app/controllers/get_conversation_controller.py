@@ -18,14 +18,16 @@ class GetConversationController:
         try:
             conversation_model = ConversationModel(
                 id=conversation_dto.get_id(),
-                title=conversation_dto.get_title()
+                title=conversation_dto.get_title(),
+                user_id=conversation_dto.get_user_id()
             )
 
             conversation_result = self.get_conversation_use_case.get_conversation(conversation_model)
 
             return ConversationDTO(
                 id=conversation_result.get_id(),
-                title=conversation_result.get_title()
+                title=conversation_result.get_title(),
+                user_id=conversation_result.get_user_id()
             )
 
         except Exception as e:

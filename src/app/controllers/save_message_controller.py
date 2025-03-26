@@ -24,7 +24,7 @@ class SaveMessageController:
             message_model = MessageModel(
                 id=message_dto.get_id(),
                 text=message_dto.get_text(),
-                user_id=message_dto.get_user_id(),
+                is_bot=message_dto.get_is_bot(),
                 conversation_id=message_dto.get_conversation_id(),
                 rating=message_dto.get_rating(),
                 created_at=message_dto.get_created_at()

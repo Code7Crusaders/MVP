@@ -25,7 +25,7 @@ class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConve
                 id=message.get_id(),
                 text=message.get_text(),
                 created_at=message.get_created_at(),
-                user_id=message.get_user_id(),
+                is_bot=message.get_is_bot(),
                 conversation_id=message.get_conversation_id(),
                 rating=message.get_rating()
             )
@@ -36,7 +36,7 @@ class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConve
                 id=message.get_id(),
                 text=message.get_text(),
                 created_at=message.get_created_at(),
-                user_id=message.get_user_id(),
+                is_bot=message.get_is_bot(),
                 conversation_id=message.get_conversation_id(),
                 rating=message.get_rating()
             )
@@ -65,7 +65,7 @@ class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConve
                     id=message.get_id(),
                     text=message.get_text(),
                     created_at=message.get_created_at(),
-                    user_id=message.get_user_id(),
+                    is_bot=message.get_is_bot(),
                     conversation_id=message.get_conversation_id(),
                     rating=message.get_rating()
                 )
@@ -88,7 +88,7 @@ class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConve
                 id=message.get_id(),
                 text=message.get_text(),
                 created_at=message.get_created_at(),
-                user_id=message.get_user_id(),
+                is_bot=message.get_is_bot(),
                 conversation_id=message.get_conversation_id(),
                 rating=message.get_rating()
             )

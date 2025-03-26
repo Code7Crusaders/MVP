@@ -30,21 +30,20 @@ class ConversationPostgresRepository:
         '''
         id = conversation.get_id()
 
-        
-        query = "SELECT id, title FROM Conversations WHERE id = %s;"
+        query = "SELECT id, title, user_id FROM Conversations WHERE id = %s;"
         with self.__connect() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(query, (id,))
                 result = cursor.fetchone()
                 if result:
-                    return ConversationEntity(id=result[0], title=result[1])
+                    return ConversationEntity(id=result[0], title=result[1], user_id=result[2])
                 else:
-                    raise ValueError(f"Conversation with ID {id} not found.")
+                    return None
         
         
-    def get_conversations(self, user_id : int) -> list[ConversationEntity]:
+    def get_conversations(self, conversation: ConversationEntity) -> list[ConversationEntity]:
         '''
-        Retrieves all distinct conversations associated with a specific user from the PostgreSQL database.
+        Retrieves all conversations associated with a specific user from the PostgreSQL database.
         Args:
             user_id (int): The ID of the user whose conversations are to be retrieved.
         Returns:
@@ -54,32 +53,35 @@ class ConversationPostgresRepository:
         '''
         
         query = """
-        SELECT DISTINCT c.id, c.title
-        FROM Conversations c
-        JOIN Messages m ON c.id = m.conversation_id
-        WHERE m.user_id = %s;
+        SELECT id, title, user_id
+        FROM Conversations
+        WHERE user_id = %s;
         """
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(query, (user_id,))
+                cursor.execute(query, (conversation.get_user_id(),))
                 results = cursor.fetchall()
-                return [ConversationEntity(id=row[0], title=row[1]) for row in results]
+                return [ConversationEntity(id=row[0], title=row[1], user_id=row[2]) for row in results]
 
     def save_conversation_title(self, conversation: ConversationEntity) -> int:
         '''
         Saves the title of a conversation in the PostgreSQL database.
         If the conversation does not exist, it creates a new one.
         Args:
-            conversation (ConversationEntity): The conversation entity containing the ID and title.
+            conversation (ConversationEntity): The conversation entity containing the user ID and title.
         Returns:
             int: The ID of the saved conversation.
         Raises:
             psycopg2.Error: If an error occurs while saving the conversation title in the PostgreSQL database.
         '''
-        insert_query = "INSERT INTO Conversations (title) VALUES (%s) RETURNING id;"
+        insert_query = """
+        INSERT INTO Conversations (title, user_id) 
+        VALUES (%s, %s) 
+        RETURNING id;
+        """
         with self.__connect() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(insert_query, (conversation.get_title(),)) 
+                cursor.execute(insert_query, (conversation.get_title(), conversation.get_user_id()))
                 saved_id = cursor.fetchone()[0]
                 conn.commit()
                 return saved_id

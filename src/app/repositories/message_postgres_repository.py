@@ -31,7 +31,7 @@ class MessagePostgresRepository:
         '''
         
         select_message_query = """
-        SELECT id, text, created_at, user_id, conversation_id, rating
+        SELECT id, text, created_at, is_bot, conversation_id, rating
         FROM Messages
         WHERE id = %s;
         """
@@ -44,7 +44,7 @@ class MessagePostgresRepository:
                         id=result[0],
                         text=result[1],
                         created_at=result[2],
-                        user_id=result[3],
+                        is_bot=result[3],
                         conversation_id=result[4],
                         rating=result[5]
                     )
@@ -64,7 +64,7 @@ class MessagePostgresRepository:
         '''
         
         select_messages_query = """
-        SELECT id, text, created_at, user_id, conversation_id, rating, is_bot
+        SELECT id, text, created_at, is_bot, conversation_id, rating
         FROM Messages
         WHERE conversation_id = %s;
         """
@@ -78,7 +78,7 @@ class MessagePostgresRepository:
                         id=row[0],
                         text=row[1],
                         created_at=row[2],
-                        user_id=row[3],
+                        is_bot=row[3],
                         conversation_id=row[4],
                         rating=row[5]
                     ) for row in rows
@@ -98,11 +98,11 @@ class MessagePostgresRepository:
         '''
         
         insert_message_query = """
-        INSERT INTO Messages (text, created_at, user_id, conversation_id, rating)
+        INSERT INTO Messages (text, created_at, is_bot, conversation_id, rating)
         VALUES (%s, %s, %s, %s, %s)
         RETURNING id;
         """
-        params = (message.get_text(), message.get_created_at(), message.get_user_id(), message.get_conversation_id(), message.get_rating())
+        params = (message.get_text(), message.get_created_at(), message.get_is_bot(), message.get_conversation_id(), message.get_rating())
         with self.__connect() as connection:  
             with connection.cursor() as cursor:
                 cursor.execute(insert_message_query, params)

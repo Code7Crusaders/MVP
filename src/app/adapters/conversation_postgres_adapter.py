@@ -25,6 +25,7 @@ class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, Sav
             conversation_entity = ConversationEntity(
                 id=conversation.get_id(),
                 title=conversation.get_title(),
+                user_id=conversation.get_user_id()
             ) 
 
             conversation = self.conversation_postgres_repository.get_conversation(conversation_entity)
@@ -32,12 +33,13 @@ class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, Sav
             return ConversationModel(
                 id=conversation.get_id(),
                 title=conversation.get_title(),
+                user_id=conversation.get_user_id()
             )
         
         except Exception as e:
             raise e
 
-    def get_conversations(self, user_id : int) -> list[ConversationModel]:
+    def get_conversations(self, conversation : ConversationModel) -> list[ConversationModel]:
         """
         Retrieve all conversations.
         Returns:
@@ -45,12 +47,19 @@ class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, Sav
         """
         try:
 
-            conversations = self.conversation_postgres_repository.get_conversations(user_id)
+            conversation_entity = ConversationEntity(
+                id=conversation.get_id(),
+                title=conversation.get_title(),
+                user_id=conversation.get_user_id()
+            )
+
+            conversations = self.conversation_postgres_repository.get_conversations(conversation_entity)
 
             return [
                 ConversationModel(
                     id=conversation.get_id(),
                     title=conversation.get_title(),
+                    user_id=conversation.get_user_id()
                 )
                 for conversation in conversations
             ]
@@ -71,6 +80,7 @@ class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, Sav
             conversation_entity = ConversationEntity(
                 id=conversation.get_id(),
                 title=conversation.get_title(),
+                user_id=conversation.get_user_id()
             )
 
             return self.conversation_postgres_repository.save_conversation_title(conversation_entity)

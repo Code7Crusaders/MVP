@@ -7,7 +7,7 @@ class GetConversationsPort(ABC):
     """
 
     @abstractmethod
-    def get_conversations(self, user_id : int) -> list[ConversationModel]:
+    def get_conversations(self, conversation : ConversationModel) -> list[ConversationModel]:
         """
         Get all conversations.
         Returns:
