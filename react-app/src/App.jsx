@@ -22,6 +22,7 @@ import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { logout } from './utils/auth';
 
+
 const NAVIGATION = [
   {
     segment: 'chatbot',
@@ -176,27 +177,21 @@ function DemoPageContent({ pathname }) {
 DemoPageContent.propTypes = {
   pathname: PropTypes.string.isRequired,
 };
+
 function DashboardLayoutBranding(props) {
   const { window } = props;
 
   const [session, setSession] = React.useState(() => {
     const storedUser = localStorage.getItem('user');
-    return storedUser
-      ? {
-          user: {
-            email: JSON.parse(storedUser).email,
-            image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
-          },
-        }
-      : {
-          user: {
-            email: 'userdiprova@gmail.com',
-            image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
-          },
-        };
+    return {
+      user: {
+        name: storedUser ? JSON.parse(storedUser).name : 'User DiProva',
+        email: storedUser ? JSON.parse(storedUser).email : 'email@example.com',
+        image: 'https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg',
+      },
+    };
   });
   
-
   const navigate = useNavigate();
 
   const authentication = React.useMemo(() => ({
@@ -217,7 +212,9 @@ function DashboardLayoutBranding(props) {
       navigate('/login');
     },
   }), []);
-  
+
+  const router = useDemoRouter('/chatbot');
+  const demoWindow = window !== undefined ? window() : undefined;
 
   return (
     <AppProvider
@@ -230,10 +227,12 @@ function DashboardLayoutBranding(props) {
         homeUrl: '/chatbot',
         userDisplay: session?.user ? `${session.user.displayName} (${session.user.email})` : 'Guest', 
       }}
+      router={router}
       theme={demoTheme}
+      window={demoWindow}
     >
       <DashboardLayout>
-        <DemoPageContent pathname={useDemoRouter('/chatbot').pathname} />
+        <DemoPageContent pathname={router.pathname} />
       </DashboardLayout>
     </AppProvider>
   );
