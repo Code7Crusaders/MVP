@@ -123,3 +123,12 @@ tests/
       "message": "Invalid request body"
     }
     ```
+    ## Running with Docker
+
+    To run the application using Docker, ensure you have Docker and Docker Compose installed on your system. Then, execute the following command:
+
+    ```bash
+    docker-compose up --build
+    ```
+
+    This will build the Docker images and start the containers as defined in the `docker-compose.yml` file. Once the containers are running, the Flask app will be accessible at `http://127.0.0.1:5000`.
