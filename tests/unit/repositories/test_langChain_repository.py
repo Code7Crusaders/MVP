@@ -138,7 +138,7 @@ def test_split_file_empty_content(langChain_repository):
 
 def test_split_file_large_content(langChain_repository):
     
-    file_content = "a" * 15000
+    file_content = "a" * 15001
     file_metadata = "name.txt"
     file = FileEntity(file_metadata, file_content)
     result = langChain_repository.split_file(file)

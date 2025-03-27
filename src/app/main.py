@@ -63,7 +63,7 @@ authentication_controller = dependencies["authentication_controller"]
 @app.route("/register", methods=["POST"])
 def register():
     """
-    curl -X POST http://127.0.0.1:5000/register \
+    curl -X POST http://127.0.0.1:5001/register \
     -H "Content-Type: application/json" \
     -d '{"username": "john", "password": "secret", "email": "john@example.com", "phone": "1234567890", "first_name": "John", "last_name": "Doe"}'
     """
@@ -97,7 +97,7 @@ def register():
 @app.route("/login", methods=["POST"])
 def login():
     """
-    curl -X POST http://127.0.0.1:5000/login \
+    curl -X POST http://127.0.0.1:5001/login \
     -H "Content-Type: application/json" \
     -d '{"username": "johnny", "password": "secret"}'
     """
@@ -136,7 +136,7 @@ def login():
 def get_conversation(conversation_id):
     """
     # To test this endpoint with curl:
-    curl -X GET http://127.0.0.1:5000/conversation/get/<conversation_id> \
+    curl -X GET http://127.0.0.1:5001/conversation/get/<conversation_id> \
     -H "Authorization: Bearer <your_token>"
     
     """
@@ -160,7 +160,7 @@ def get_conversation(conversation_id):
 def get_conversations():
     """
     # To test this endpoint with curl:
-    curl -X GET http://127.0.0.1:5000/conversation/get_all \
+    curl -X GET http://127.0.0.1:5001/conversation/get_all \
     -H "Authorization: Bearer <your_token>"
     """
     try:
@@ -186,7 +186,7 @@ def get_conversations():
 def save_conversation_title():
     """
     # To test this endpoint with curl:
-    curl -X POST http://127.0.0.1:5000/conversation/save_title \
+    curl -X POST http://127.0.0.1:5001/conversation/save_title \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer <your_token>" \
     -d '{"title": "New Conversation Title"}' 
@@ -213,7 +213,7 @@ def save_conversation_title():
 def get_message(message_id):
     """
     # To test this endpoint with curl:
-    curl -X GET http://127.0.0.1:5000/message/get/<message_id> \
+    curl -X GET http://127.0.0.1:5001/message/get/<message_id> \
     -H "Authorization: Bearer <your_token>"
     """
 
@@ -241,7 +241,7 @@ def get_message(message_id):
 def get_messages_by_conversation(conversation_id):
     """
     # To test this endpoint with curl:
-    curl -X GET http://127.0.0.1:5000/message/get_by_conversation/<conversation_id> \
+    curl -X GET http://127.0.0.1:5001/message/get_by_conversation/<conversation_id> \
     -H "Authorization: Bearer <your_token>"
     """
 
@@ -269,7 +269,7 @@ def get_messages_by_conversation(conversation_id):
 def save_message():
     """
     # To test this endpoint with curl:
-    curl -X POST http://127.0.0.1:5000/message/save \
+    curl -X POST http://127.0.0.1:5001/message/save \
     -H "Content-Type: application/json" \
     -d '{"text": "Message text", "conversation_id": 2, "rating": true, "is_bot": false}' \
     -H "Authorization: Bearer <your_token>" 
@@ -299,7 +299,7 @@ def save_message():
 def get_support_message(support_message_id):
     """
     # To test this endpoint with curl:
-    curl -X GET http://127.0.0.1:5000/support_message/get/<support_message_id> \
+    curl -X GET http://127.0.0.1:5001/support_message/get/<support_message_id> \
     -H "Authorization: Bearer <your_token>"
     """
 
@@ -327,7 +327,7 @@ def get_support_message(support_message_id):
 def get_support_messages():
     """
     # To test this endpoint with curl:
-    curl -X GET http://127.0.0.1:5000/support_message/get_all \
+    curl -X GET http://127.0.0.1:5001/support_message/get_all \
     -H "Authorization: Bearer <your_token>"
     """
     try:
@@ -350,7 +350,7 @@ def get_support_messages():
 def save_support_message():
     """
     # To test this endpoint with curl:
-    curl -X POST http://127.0.0.1:5000/support_message/save \
+    curl -X POST http://127.0.0.1:5001/support_message/save \
     -H "Content-Type: application/json" \
     -d '{"description": "Support message description", "status": "true", "subject": "Support subject"}' \
     -H "Authorization: Bearer <your_token>"
@@ -381,7 +381,7 @@ def save_support_message():
 def delete_template(template_id):
     """
     # To test this endpoint with curl:
-    curl -X DELETE http://127.0.0.1:5000/template/delete/<template_id> \
+    curl -X DELETE http://127.0.0.1:5001/template/delete/<template_id> \
     -H "Authorization: Bearer <your_token>"
     """
     template_dto = TemplateDTO(
@@ -404,7 +404,7 @@ def delete_template(template_id):
 def get_template(template_id):
     """
     # To test this endpoint with curl:
-    curl -X GET http://127.0.0.1:5000/template/get/<template_id> \
+    curl -X GET http://127.0.0.1:5001/template/get/<template_id> \
     -H "Authorization: Bearer <your_token>"
     """
 
@@ -431,7 +431,7 @@ def get_template(template_id):
 def get_template_list():
     """
     # To test this endpoint with curl:
-    curl -X GET http://127.0.0.1:5000/template/get_list \
+    curl -X GET http://127.0.0.1:5001/template/get_list \
     -H "Authorization: Bearer <your_token>"
     """
     try:
@@ -453,7 +453,7 @@ def get_template_list():
 def save_template():
     """
     # To test this endpoint with curl:
-    curl -X POST http://127.0.0.1:5000/template/save \
+    curl -X POST http://127.0.0.1:5001/template/save \
     -H "Content-Type: application/json" \
     -d '{"question": "Sample question", "answer": "Sample answer"}' \
     -H "Authorization: Bearer <your_token>"
@@ -481,7 +481,7 @@ def save_template():
 @admin_required
 def add_file():
     """Endpoint to upload a PDF or TXT file.
-    curl -X POST http://127.0.0.1:5000/api/add_file \
+    curl -X POST http://127.0.0.1:5001/api/add_file \
     -H "Authorization: Bearer <your_token>" \
     -F "file=@/path/to/your/file.pdf"
 
@@ -548,7 +548,7 @@ def add_file():
 @jwt_required()
 def chat():
     """Chat endpoint to receive a question and return an answer.
-    curl -X POST http://localhost:5000/api/chat_interact \
+    curl -X POST http://localhost:5001/api/chat_interact \
     -H "Content-Type: application/json" \
     -d "{\"question\": \"parlami dell'olio che hai?\"}" \
     -H "Authorization: Bearer <your_token>"
@@ -599,4 +599,4 @@ def bad_request(error):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)

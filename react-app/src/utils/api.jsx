@@ -2,7 +2,7 @@
 export const fetchMessages = async (chatId) => {
   const token = localStorage.getItem('token');
   try {
-    const response = await fetch(`http://127.0.0.1:5000/message/get_by_conversation/${chatId}`, {
+    const response = await fetch(`http://127.0.0.1:5001/message/get_by_conversation/${chatId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -36,7 +36,7 @@ export const saveMessage = async (messageData) => {
   }
 
   try {
-    const response = await fetch('http://127.0.0.1:5000/message/save', {
+    const response = await fetch('http://127.0.0.1:5001/message/save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const saveMessage = async (messageData) => {
 export const fetchConversations = async () => {
   const token = localStorage.getItem('token');
   try {
-    const response = await fetch('http://127.0.0.1:5000/conversation/get_all', {
+    const response = await fetch('http://127.0.0.1:5001/conversation/get_all', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -87,7 +87,7 @@ export const fetchConversations = async () => {
 export const chatInteract = async (question) => {
   const token = localStorage.getItem('token');
   try {
-    const response = await fetch('http://127.0.0.1:5000/api/chat_interact', {
+    const response = await fetch('http://127.0.0.1:5001/api/chat_interact', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

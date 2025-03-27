@@ -67,7 +67,7 @@ tests/
     python src/app/main.py
     ```
 
-    The app will run at `http://127.0.0.1:5000`. You can test it by visiting this URL in your browser or using an API client like Postman or cURL.
+    The app will run at `http://127.0.0.1:5001`. You can test it by visiting this URL in your browser or using an API client like Postman or cURL.
 
 5. **Running Tests**
 
@@ -131,4 +131,4 @@ tests/
     docker-compose up --build
     ```
 
-    This will build the Docker images and start the containers as defined in the `docker-compose.yml` file. Once the containers are running, the Flask app will be accessible at `http://127.0.0.1:5000`.
+    This will build the Docker images and start the containers as defined in the `docker-compose.yml` file. Once the containers are running, the Flask app will be accessible at `http://127.0.0.1:5001`.
