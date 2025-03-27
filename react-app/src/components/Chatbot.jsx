@@ -15,13 +15,16 @@ import {
   saveNewMessage,
   handleFeedback,
   interactWithChat,
-} from '../utils/MessageHandler'; // Import message handlers
+} from '../utils/MessageHandler'; 
+import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Alert } from '@mui/material';
+import {Button} from '@mui/material';
+
 
 function Chatbot({ chatId }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const [salvataggioOpen, setSalvataggioOpen] = useState(false);
-  const [eliminazioneOpen, setEliminazioneOpen] = useState(false);
+  const [Eliminazione, setEliminazioneOpen] = useState(false);
+  
 
   const theme = useTheme();
   const endRef = useRef(null);
@@ -39,6 +42,18 @@ function Chatbot({ chatId }) {
   const timeSpan = {
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
   };
+
+  // DIALOG per l'eliminazione della Chat
+    const chiudiDialogEliminazione = () => {
+        setEliminazioneOpen(false); 
+    };
+    const EliminaChat = () => {
+        // Eliminazione della chat
+        setEliminazioneOpen(false); 
+    };
+    const apriDialogEliminazione = () => {
+        setEliminazioneOpen(true); 
+    };
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -98,13 +113,8 @@ function Chatbot({ chatId }) {
               <QuickreplyIcon />
             </button>
           </Tooltip>
-          <Tooltip title="Salva Chat" placement="bottom">
-            <button className="btnsTop" style={buttons} onClick={() => setSalvataggioOpen(true)}>
-              <SaveIcon />
-            </button>
-          </Tooltip>
           <Tooltip title="Elimina Chat" placement="bottom">
-            <button className="btnsTop" style={buttons} onClick={() => setEliminazioneOpen(true)}>
+            <button className="btnsTop" style={buttons} onClick={apriDialogEliminazione}>
               <DeleteForeverIcon />
             </button>
           </Tooltip>
@@ -157,6 +167,17 @@ function Chatbot({ chatId }) {
           <SendIcon />
         </button>
       </div>
+
+      {/* DIALOG per l'eliminazione della chat */}
+    <Dialog open={Eliminazione} onClose={chiudiDialogEliminazione}>
+      <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>Titolo Chat</DialogContentText>
+      <DialogContentText style={{ ...{ fontSize: '16px', margin:'6px 24px 0 24px',}, ...timeSpan }}>Sei sicuro di voler eliminare questa conversazione?</DialogContentText>
+        <DialogActions style={{margin: '10px 16px 20px 0'}}>
+          <Button onClick={chiudiDialogEliminazione} style={buttons}>Annulla</Button>
+          <Button onClick={EliminaChat} style={buttons}>Elimina Chat</Button>
+        </DialogActions>
+      </Dialog>
+
     </div>
   );
 }
