@@ -14,14 +14,12 @@ class GetMessagesByConversationController:
     def get_messages_by_conversation(self, conversation_dto: MessageDTO) -> List[MessageDTO]:
         """
         Retrieve messages from the database by conversation DTO.
-        
-        Args:
-            conversation_dto (MessageDTO): The DTO containing details of the conversation to retrieve messages for.
-
-        Returns:
-            List[MessageDTO]: A list of data transfer objects containing message details.
         """
         try:
+            # Validazione sull'input
+            if not conversation_dto.get_conversation_id():
+                raise ValueError("Invalid conversation ID")
+
             conversation_model = MessageDTO(
                 id=conversation_dto.get_id(),
                 text=conversation_dto.get_text(),
@@ -32,10 +30,7 @@ class GetMessagesByConversationController:
             ) 
 
             result_models = self.get_messages_by_conversation_usecase.get_messages_by_conversation(conversation_model)
-            
-            if not result_models:
-                return None
-            
+
             return [
                 MessageDTO(
                     id=model.get_id(),

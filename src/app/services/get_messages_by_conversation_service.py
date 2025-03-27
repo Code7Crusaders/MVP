@@ -21,6 +21,6 @@ class GetMessagesByConversationService(GetMessagesByConversationUseCase):
         try:
             messages = self.get_messages_by_conversation_port.get_messages_by_conversation(conversation)
             # Sort messages by the created_at attribute
-            return sorted(messages, key=lambda message: message.get_created_at())
+            return sorted(messages, key=lambda message: message.get_created_at() or "")
         except Exception as e:
             raise e

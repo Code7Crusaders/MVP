@@ -42,4 +42,14 @@ def test_get_messages_by_conversation_exception(get_messages_by_conversation_con
         get_messages_by_conversation_controller.get_messages_by_conversation(conversation_dto)
 
     assert "Errore nel recupero dei messaggi" in str(exc_info.value)
+
     get_messages_by_conversation_use_case_mock.get_messages_by_conversation.assert_called_once()
+    
+def test_get_messages_by_conversation_empty_dto(get_messages_by_conversation_controller, get_messages_by_conversation_use_case_mock):
+    """Test per un DTO vuoto che verifica la gestione degli input non validi."""
+    conversation_dto = MessageDTO(id=None, text=None, is_bot=None, conversation_id=None, rating=None, created_at=None)
+
+    with pytest.raises(ValueError, match="Invalid conversation ID"):
+        get_messages_by_conversation_controller.get_messages_by_conversation(conversation_dto)
+
+    get_messages_by_conversation_use_case_mock.get_messages_by_conversation.assert_not_called()

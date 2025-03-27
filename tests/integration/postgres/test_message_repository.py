@@ -77,14 +77,12 @@ def test_save_delete_message(repository):
     try:
         text = "Test message"
         created_at = datetime.now(italy_tz)
-        user_id = 1  # Replace with a valid user ID in your database
         conversation_id = 1  # Replace with a valid conversation ID in your database
         rating = True  # Assuming rating is stored as a boolean in the database
 
         message_entity = MessageEntity(
             text=text,
             created_at=created_at,
-            user_id=user_id,
             conversation_id=conversation_id,
             rating=rating
         )
@@ -92,15 +90,14 @@ def test_save_delete_message(repository):
         # Save the message
         saved_id = repository.save_message(message_entity)
         assert saved_id is not None, "Failed to save message"
-        message_entity = MessageEntity(id=saved_id)  # get only needs the id
 
         # Verify the saved message by retrieving it
-        saved_message = repository.get_message(message_entity)  # Pass the instance with the correct id
+        saved_message = repository.get_message(MessageEntity(id=saved_id))
         assert saved_message is not None, "Saved message not found in database"
         assert saved_message.get_text() == text, "Text mismatch"
         assert saved_message.get_created_at() == created_at, "Created at mismatch"
         assert saved_message.get_rating() == rating, "Rating mismatch"
-        assert saved_message.get_id() == saved_id, "ID mismatch"  # Ensure get_id() is called correctly
+        assert saved_message.get_id() == saved_id, "ID mismatch"
 
     except Exception as e:
         pytest.fail(f"Saving message failed: {e}")
@@ -113,7 +110,7 @@ def test_save_delete_message(repository):
 
         # Verify the message is deleted
         with pytest.raises(ValueError):
-            deleted_message = repository.get_message(delete_message)  # Pass the instance with the correct id
+            repository.get_message(delete_message)
 
     except Exception as e:
         pytest.fail(f"Deleting message failed: {e}")
