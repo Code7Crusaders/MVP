@@ -45,6 +45,7 @@ save_conversation_title_controller = dependencies["save_conversation_title_contr
 get_message_controller = dependencies["get_message_controller"]
 get_messages_by_conversation_controller = dependencies["get_messages_by_conversation_controller"]
 save_message_controller = dependencies["save_message_controller"]
+delete_conversation_controller = dependencies["delete_conversation_controller"]
 
 get_support_message_controller = dependencies["get_support_message_controller"]
 get_support_messages_controller = dependencies["get_support_messages_controller"]
@@ -206,6 +207,44 @@ def save_conversation_title():
 
     return jsonify({"message": f"Conversation title saved with id: {saved_id}"}), 200
 
+
+@app.route("/conversation/delete/<int:conversation_id>", methods=["DELETE"])
+@jwt_required()
+def delete_conversation(conversation_id):
+    """
+    Endpoint to delete a conversation by its ID.
+    curl -X DELETE http://127.0.0.1:5001/conversation/delete/<conversation_id> \
+    -H "Authorization: Bearer <your_token>"
+
+    API Call:
+    - Method: DELETE
+    - URL: /conversation/delete/<conversation_id>
+    - Requires JWT Authorization.
+
+    Possible Responses:
+    - 200 OK: {"message": "Conversation deleted successfully"}
+    - 500 Internal Server Error: {"error": "<error message>"} (if an internal error occurs)
+
+    Functionality:
+    - Validates the conversation ID.
+    - Calls the controller to delete the conversation.
+    - Returns a success message or an error in case of issues.
+    """
+    try:
+        user_id = int(get_jwt_identity())  # Get the user ID from the JWT token
+
+        # Create a DTO for the conversation
+        conversation = ConversationDTO(
+            id=conversation_id,
+            user_id=user_id
+        )
+
+        # Call the controller to delete the conversation
+        delete_conversation_controller.delete_conversation(conversation)
+
+        return jsonify({"message": "Conversation deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # ---- Message Routes ----
 @app.route("/message/get/<int:message_id>", methods=["GET"])
