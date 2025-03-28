@@ -4,10 +4,11 @@ from models.conversation_model import ConversationModel
 from ports.save_conversation_title_port import SaveConversationTitlePort
 from ports.get_conversations_port import GetConversationsPort
 from ports.get_conversation_port import GetConversationPort
+from ports.delete_conversation_port import DeleteConversationPort
 
 from entities.conversation_entity import ConversationEntity
 
-class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, SaveConversationTitlePort):
+class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, SaveConversationTitlePort, DeleteConversationPort):
 
     def __init__(self, conversation_postgres_repository: ConversationPostgresRepository):
         self.conversation_postgres_repository = conversation_postgres_repository
@@ -89,4 +90,24 @@ class ConversationPostgresAdapter(GetConversationPort, GetConversationsPort, Sav
         except Exception as e:
             raise e
 
+    def delete_conversation_title(self, conversation: ConversationModel) -> bool:
+        """
+        Delete a conversation title.
+        Args:
+            conversation (ConversationModel): The conversation object containing the ID to delete.
+        Returns:
+            int: The ID of the deleted conversation.
+        """
+        try:
 
+            conversation_entity = ConversationEntity(
+                id=conversation.get_id(),
+                title=conversation.get_title(),
+                user_id=conversation.get_user_id()
+            )
+
+            return self.conversation_postgres_repository.delete_conversation(conversation_entity)
+
+        
+        except Exception as e:
+            raise e
