@@ -1,0 +1,66 @@
+import * as React from 'react';
+import '../css/Assistenza.css';
+
+const inputChatStyle = {
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
+    color: theme.palette.mode === 'dark' ? 'white' : 'black',
+    '&::placeholder': {
+      color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
+  };
+
+const SupportRequests = () => {
+  const [requests] = useState([
+    {
+      id: 1,
+      title: "Problema di accesso",
+      date: "2023-03-15",
+      username: "user",
+      status: "red",
+      description: "Utente non riesce ad accedere al portale"
+    },
+    {
+      id: 2,
+      title: "Aggiornamento software",
+      date: "2023-03-14",
+      username: "jhonny",
+      status: "green",
+      description: "Richiesta aggiornamento versione 2.3.5"
+    },
+    {
+      id: 3,
+      title: "Configurazione email",
+      date: "2023-03-13",
+      username: "Cristiano Ronaldo",
+      status: "red",
+      description: "Assistenza configurazione client di posta"
+    }
+  ]);
+
+  return (
+    <div className="support-container">
+      <h1>Richieste di Assistenza</h1>
+      
+      <div className="request-list">
+        {requests.map((request) => (
+          <div key={request.id} className="request-item">
+            <div className={`status-dot ${request.status}`} />
+            <div className="request-info">
+              <div className="request-header">
+                <span className="request-title">{request.title}</span>
+                <span className="separator">|</span>
+                <span className="request-category">{request.username}</span>
+                <span className="separator">|</span>
+                <span className="request-date">{request.date}</span>
+              </div>
+              <div className="request-description">
+                {request.description}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default SupportRequests;

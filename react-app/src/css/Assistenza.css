@@ -1,0 +1,66 @@
+
+.support-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 8px;
+}
+  
+.request-list {
+    list-style: none;
+    padding: 0;
+}
+  
+.request-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: slateblue;
+    border-radius: 4px;
+    border: 1px solid #333;
+}
+  
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+  
+.status-dot.red {
+    background-color: #ff4444;
+}
+  
+.status-dot.green {
+    background-color: #00c851;
+}
+  
+.request-title {
+    font-weight: bold;
+    margin-right: 10px;
+}
+  
+.request-info {
+    flex-grow: 1;
+}
+  
+.separator {
+    color: #999;
+    margin: 0 10px;
+  }
+  
+  .request-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  
+  .request-date {
+    font-size: 0.9em;
+  }
+  
+  .request-description {
+    font-size: 0.9em;
+  }
