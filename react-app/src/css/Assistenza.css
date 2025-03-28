@@ -62,6 +62,13 @@
     font-size: 0.9em;
 }
 
+.icons > button{
+    flex-direction: flex-end;
+    float: right;
+    margin: 5px;
+    border-radius: 5px;
+}
+
 @media (max-width: 768px) {
     .request-item {
         padding: 5px;

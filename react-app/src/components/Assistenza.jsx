@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import '../css/chat.css';
 import { useTheme } from '@mui/material/styles';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import ReplyIcon from '@mui/icons-material/Reply';
 import '../css/Assistenza.css';
 
 const SupportRequests = () => {
@@ -12,6 +14,10 @@ const SupportRequests = () => {
         '&::placeholder': {
           color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
       };
+      const buttons = {
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgb(233, 233, 233)' : '#333',
+        color: theme.palette.mode === 'dark' ? '#333' : 'white', 
+      }
 
   const [requests] = useState([
     {
@@ -59,6 +65,10 @@ const SupportRequests = () => {
               <div className="request-description">
                 {request.description}
               </div>
+                <div className='icons'>
+                    <button alt="Elimina richiesta assistenza" title='Elimina richiesta assistenza' style={buttons}><DeleteForeverIcon/></button>
+                    <button al="Rispondi alla richiesta di assistenza" title="Rispondi alla richiesta" style={buttons}><ReplyIcon/></button>
+                </div>
             </div>
           </div>
         ))}
