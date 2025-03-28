@@ -134,3 +134,18 @@ def test_save_message_fail(repository):
     except Exception:
         # Expected behavior: an exception should be raised
         pass
+
+def test_update_message_rating(repository):
+    """Test updating the rating of a message."""
+    message_entity = MessageEntity(id=19, rating=True)  # Replace with valid ID and initial rating in your database
+    
+    result = repository.update_message_rating(message_entity)
+    assert result is True, "Failed to update message rating"
+    
+    updated_message = repository.get_message(message_entity)
+    assert updated_message.get_rating() == message_entity.get_rating(), "Rating mismatch after update"
+
+    # Test with non-existing message ID
+    invalid_message = MessageEntity(id=-1, rating=False)
+    result_invalid = repository.update_message_rating(invalid_message)
+    assert result_invalid is False, "Updating non-existent message rating should fail"

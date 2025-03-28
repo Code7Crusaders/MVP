@@ -130,3 +130,27 @@ class MessagePostgresRepository:
                 cursor.execute(delete_message_query, (message.get_id(),))
                 conn.commit()
                 return cursor.rowcount > 0
+            
+
+    def update_message_rating(self, message: MessageEntity) -> bool:
+        '''
+        Updates the rating of a message in the PostgreSQL database by its ID.
+        Args:
+            message (MessageEntity): The message entity containing the ID and the new rating value.
+        Returns:
+            bool: True if the rating was successfully updated, False otherwise.
+        Raises:
+            psycopg2.Error: If an error occurs while updating the rating in the PostgreSQL database.
+        '''
+        
+        update_rating_query = """
+        UPDATE Messages
+        SET rating = %s
+        WHERE id = %s;
+        """
+        params = (message.get_rating(), message.get_id())
+        with self.__connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(update_rating_query, params)
+                connection.commit()
+                return cursor.rowcount > 0
