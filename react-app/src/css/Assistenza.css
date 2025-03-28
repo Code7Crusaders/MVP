@@ -1,9 +1,8 @@
-
 .support-container {
-    max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
     padding: 30px;
     border-radius: 8px;
+    margin:  auto;
 }
   
 .request-list {
@@ -16,7 +15,6 @@
     align-items: center;
     padding: 15px;
     margin: 10px 0;
-    background-color: slateblue;
     border-radius: 4px;
     border: 1px solid #333;
 }
@@ -48,19 +46,38 @@
 .separator {
     color: #999;
     margin: 0 10px;
-  }
+}
   
-  .request-header {
+.request-header {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
-  }
+}  
   
-  
-  .request-date {
+.request-date {
     font-size: 0.9em;
-  }
+}
   
-  .request-description {
+.request-description {
     font-size: 0.9em;
-  }
+}
+
+@media (max-width: 768px) {
+    .request-item {
+        padding: 5px;
+    }
+
+    .request-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .request-date {
+        text-align: left;
+        margin-top: 0;
+    }
+
+    .separator{
+        display: none;
+    }
+}

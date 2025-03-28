@@ -1,14 +1,18 @@
-import * as React from 'react';
+import { useEffect, useState, useRef } from 'react';
+import '../css/chat.css';
+import { useTheme } from '@mui/material/styles';
 import '../css/Assistenza.css';
 
-const inputChatStyle = {
-    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
-    color: theme.palette.mode === 'dark' ? 'white' : 'black',
-    '&::placeholder': {
-      color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
-  };
-
 const SupportRequests = () => {
+    const theme = useTheme();
+
+    const inputChatStyle = {
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
+        color: theme.palette.mode === 'dark' ? 'white' : 'black',
+        '&::placeholder': {
+          color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
+      };
+
   const [requests] = useState([
     {
       id: 1,
@@ -42,7 +46,7 @@ const SupportRequests = () => {
       
       <div className="request-list">
         {requests.map((request) => (
-          <div key={request.id} className="request-item">
+          <div key={request.id} className="request-item" style={inputChatStyle}>
             <div className={`status-dot ${request.status}`} />
             <div className="request-info">
               <div className="request-header">
