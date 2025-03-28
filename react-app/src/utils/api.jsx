@@ -109,3 +109,29 @@ export const chatInteract = async (question) => {
     throw error;
   }
 };
+
+
+// Delete a specific conversation
+export const deleteConversation = async (conversationId) => {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await fetch(`http://127.0.0.1:5001/conversation/delete/${conversationId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to delete conversation');
+    }
+
+    const data = await response.json();
+    console.log('Conversation deleted:', data); // Debugging log
+    return data;
+  } catch (error) {
+    console.error('Error deleting conversation:', error);
+    throw error;
+  }
+};
