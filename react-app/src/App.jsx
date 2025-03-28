@@ -20,6 +20,7 @@ import Templates from './components/Templates';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { logout } from './utils/auth';
+import LoadChat from './components/LoadChat';
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -39,9 +40,7 @@ const demoTheme = createTheme({
 
 function DashboardContent() {
   return (
-    <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-      <Typography>Chatbot</Typography>
-    </Box>
+    <LoadChat />
   );
 }
 
