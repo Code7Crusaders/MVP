@@ -98,3 +98,21 @@ class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConve
         except Exception as e:
             raise e 
 
+    def update_message_rating(self, message: MessageModel) -> bool:
+        """
+        Update the rating of a message.
+        Args:
+            message (MessageModel): The message containing the ID and the new rating value.
+        Returns:
+            bool: True if the rating was successfully updated, False otherwise.
+        """
+        try:
+            message_entity = MessageEntity(
+                id=message.get_id(),
+                rating=message.get_rating()
+            )
+
+            return self.message_postgres_repository.update_message_rating(message_entity)
+        
+        except Exception as e:
+            raise e
