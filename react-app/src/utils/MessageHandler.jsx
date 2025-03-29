@@ -1,4 +1,4 @@
-import { fetchMessages, saveMessage, chatInteract } from './api';
+import { fetchMessages, saveMessage, chatInteract, updateMessageRating } from './api';
 
 // Fetch messages for a specific conversation
 export const loadMessages = async (chatId) => {
@@ -35,6 +35,17 @@ export const handleFeedback = (messages, messageId, isPositive) => {
             : message
     );
 };
+
+// Update the rating in the database
+export const updateFeedback = async (messageId, isPositive) => {
+    try {
+        await updateMessageRating(messageId, isPositive);
+    } catch (error) {
+        console.error('Error updating message rating:', error);
+        throw error;
+    }
+};
+
 
 // Interact with the chat endpoint and save the bot's response
 export const interactWithChat = async (inputValue, chatId) => {

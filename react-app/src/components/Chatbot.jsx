@@ -15,6 +15,7 @@ import {
   saveNewMessage,
   handleFeedback,
   interactWithChat,
+  updateFeedback,
 } from '../utils/MessageHandler'; 
 import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Alert } from '@mui/material';
 import {Button} from '@mui/material';
@@ -96,10 +97,23 @@ function Chatbot({ chatId }) {
     }
   };
 
-  const handleFeedbackClick = (messageId, isPositive) => {
-    const updatedMessages = handleFeedback(messages, messageId, isPositive);
-    setMessages(updatedMessages);
-  };
+  const handleFeedbackClick = async (messageId, isPositive) => {
+    try {
+        // Aggiorna la valutazione nel database chiamando updateFeedback
+        await updateFeedback(messageId, isPositive);
+
+        // Aggiorna lo stato locale dei messaggi
+        setMessages((prevMessages) =>
+            prevMessages.map((msg) =>
+                msg.id === messageId ? { ...msg, selectedRating: isPositive } : msg
+            )
+        );
+
+    } catch (error) {
+        console.error('Errore durante il click sul feedback:', error);
+    }
+};
+
 
   return (
     <div className="chat">
@@ -135,19 +149,32 @@ function Chatbot({ chatId }) {
               <span style={timeSpan}>{new Date(message.created_at).toLocaleString()}</span>
               {message.is_bot && (
                 <div className="feedback">
-                  <button
-                    className={`feedbackButton ${message.selectedRating === true ? 'selected thumbs-up' : ''}`}
-                    onClick={() => handleFeedbackClick(message.id, true)}
-                  >
-                    <ThumbUpIcon />
-                  </button>
-                  <button
-                    className={`feedbackButton ${message.selectedRating === false ? 'selected thumbs-down' : ''}`}
-                    onClick={() => handleFeedbackClick(message.id, false)}
-                  >
-                    <ThumbDownIcon />
-                  </button>
-                </div>
+                <button
+                  className={`feedbackButton ${message.selectedRating === true ? 'selected thumbs-up' : ''}`}
+                  onClick={async () => {
+                    try {
+                      await handleFeedbackClick(message.id, true);
+                    } catch (error) {
+                      console.error('Error handling thumbs-up feedback:', error);
+                    }
+                  }}
+                >
+                  <ThumbUpIcon />
+                </button>
+                <button
+                  className={`feedbackButton ${message.selectedRating === false ? 'selected thumbs-down' : ''}`}
+                  onClick={async () => {
+                    try {
+                      await handleFeedbackClick(message.id, false);
+                    } catch (error) {
+                      console.error('Error handling thumbs-down feedback:', error);
+                    }
+                  }}
+                >
+                  <ThumbDownIcon />
+                </button>
+              </div>
+              
               )}
             </div>
           </div>

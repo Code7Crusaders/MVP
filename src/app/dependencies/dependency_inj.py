@@ -27,6 +27,7 @@ from controllers.get_template_list_controller import GetTemplateListController
 from controllers.save_conversation_title_controller import SaveConversationTitleController
 from controllers.delete_conversation_controller import DeleteConversationController
 from controllers.save_message_controller import SaveMessageController
+from controllers.update_message_rating_controller import UpdateMessageRatingController
 from controllers.save_support_message_controller import SaveSupportMessageController
 from controllers.save_template_controller import SaveTemplateController
 from controllers.registration_controller import RegistrationController
@@ -50,6 +51,7 @@ from services.get_template_service import GetTemplateService
 from services.save_conversation_title_service import SaveConversationTitleService
 from services.delete_conversation_service import DeleteConversationService
 from services.save_message_service import SaveMessageService
+from services.update_message_rating_service import UpdateMessageRatingService
 from services.save_support_message_service import SaveSupportMessageService
 from services.save_template_service import SaveTemplateService 
 from services.registration_service import RegistrationService
@@ -301,6 +303,7 @@ def dependency_injection(app : Flask) -> dict[str, object]:
         get_message_service = GetMessageService(message_postgres_adapter)
         get_messages_by_conversation_service = GetMessagesByConversationService(message_postgres_adapter) 
         save_message_service = SaveMessageService(message_postgres_adapter)
+        update_message_rating_service = UpdateMessageRatingService(message_postgres_adapter)
 
         get_support_message_service = GetSupportMessageService(support_message_postgres_adapter)
         get_support_messages_service = GetSupportMessagesService(support_message_postgres_adapter)
@@ -332,6 +335,7 @@ def dependency_injection(app : Flask) -> dict[str, object]:
         get_support_message_controller = GetSupportMessageController(get_support_message_service)
         get_support_messages_controller = GetSupportMessagesController(get_support_messages_service)
         save_support_message_controller = SaveSupportMessageController(save_support_message_service)
+        update_message_rating_controller = UpdateMessageRatingController(update_message_rating_service)
 
         delete_template_controller = DeleteTemplateController(delete_template_service)
         get_template_controller = GetTemplateController(get_template_service)
@@ -350,6 +354,7 @@ def dependency_injection(app : Flask) -> dict[str, object]:
             "get_message_controller": get_message_controller,
             "get_messages_by_conversation_controller": get_messages_by_conversation_controller,
             "save_message_controller": save_message_controller,
+            "update_message_rating_controller": update_message_rating_controller,
             "get_support_message_controller": get_support_message_controller,
             "get_support_messages_controller": get_support_messages_controller,
             "save_support_message_controller": save_support_message_controller,

@@ -135,3 +135,33 @@ export const deleteConversation = async (conversationId) => {
     throw error;
   }
 };
+
+export const updateMessageRating = async (messageId, rating) => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch('http://127.0.0.1:5001/message/update_rating', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: messageId,
+          rating: rating,
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to update message rating');
+      }
+  
+      const data = await response.json();
+      console.log('Message rating updated:', data); // Debugging log
+      return data;
+    } catch (error) {
+      console.error('Error updating message rating:', error);
+      throw error;
+    }
+  };
+  

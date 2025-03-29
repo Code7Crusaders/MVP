@@ -50,6 +50,7 @@ delete_conversation_controller = dependencies["delete_conversation_controller"]
 get_support_message_controller = dependencies["get_support_message_controller"]
 get_support_messages_controller = dependencies["get_support_messages_controller"]
 save_support_message_controller = dependencies["save_support_message_controller"]
+update_message_rating_controller = dependencies["update_message_rating_controller"]
 
 delete_template_controller = dependencies["delete_template_controller"]
 get_template_controller = dependencies["get_template_controller"]
@@ -330,6 +331,23 @@ def save_message():
         return jsonify({"error": str(e)}), 500
 
     return jsonify({"message": f"Message saved with id: {saved_id}"}), 200
+
+@app.route("/message/update_rating", methods=["POST"])
+@jwt_required()
+def update_message_rating():
+    data = request.get_json()
+
+    message = MessageDTO(
+        id=data.get("id"),
+        rating=data.get("rating")
+    )
+
+    try:
+        result = update_message_rating_controller.update_message_rating(message)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    return jsonify({"message": f"Message rating updated with id: {message.get_id()}"}), 200
 
 
 # ---- Support Message Routes ----
