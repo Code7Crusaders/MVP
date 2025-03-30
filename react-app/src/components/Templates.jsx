@@ -14,7 +14,6 @@ import styled from '@mui/material/styles/styled';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { AccordionActions, Tooltip } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Alert } from '@mui/material';
 
@@ -22,7 +21,6 @@ import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Ale
 function Templates() {
     const [AggiuntaTemplate, setAggTemplateOpen] = useState(false); // Stato per gestire il DIALOG dell'aggiunta di un Template
     const [Modifica, setModificaOpen] = useState(false); // Stato per gestire il DIALOG della modifica di una domanda
-    const [AggiuntaDomanda, setAggDomandaOpen] = useState(false); // Stato per gestire il DIALOG dell'aggiunta di una domanda
     const [Eliminazione, setEliminazioneOpen] = useState(false); // Stato per gestire il DIALOG dell'eliminazione
 
     const theme = useTheme();
@@ -44,8 +42,10 @@ function Templates() {
     const inputChatStyle = {
         backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
         color: theme.palette.mode === 'dark' ? 'white' : 'black',
+        fontFamily: theme.typography.fontFamily,
         '&::placeholder': {
           color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',} 
+        
     }
 
     const VisuallyHiddenInput = styled('input')({
@@ -85,20 +85,6 @@ function Templates() {
     const apriDialogModifica = () => {
         setModificaOpen(true); 
     };
-
-    // DIALOG per l'aggiunta di una domanda
-    const chiudiDialogAggiuntaDomanda = () => {
-        setAggDomandaOpen(false); 
-    };
-    const AggiungiDomanda = () => {
-        //controllare che non sia vuota
-        // Aggiunta domanda
-        setAggDomandaOpen(false); 
-    };
-    const apriDialogAggiuntaDomanda = () => {
-        setAggDomandaOpen(true); 
-    };
-
 
     // DIALOG per l'eliminazione del Template
     const chiudiDialogEliminazione = () => {
@@ -143,22 +129,20 @@ function Templates() {
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          <Typography component="span" style={{fontSize: '20px', fontWeight: '550'}}>Template 1</Typography>
+          <Typography component="span" style={{fontSize: '22px', fontWeight: '600'}}>Template 1</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails className='contenuto'>
             <div className="domanda">
-                <h3>Domanda<br/></h3>
-                <p></p>
+                <h3>Domanda:</h3>
                 <p>Prova di una domanda di un template?</p>
             </div>
             <div className="domanda">
-                <h3>Risposta<br/></h3>
-                <p></p>
-                <p>Prova di un'altra domanda nello stesso template?</p>
+                <h3>Risposta:</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi totam dignissimos eaque, exercitationem eius vel harum alias velit! Omnis exercitationem nobis quidem distinctio reprehenderit labore officia recusandae pariatur maiores. Quae. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum, praesentium illum. Eaque eum id nobis, pariatur illum sed consequuntur, aperiam at impedit consectetur minima. Similique blanditiis ratione tempora corrupti ipsa.</p>
             </div>
         </AccordionDetails>
         <AccordionActions>
-            <Tooltip title='Aggiungi domanda' placement='top'><Button style={buttons} onClick={apriDialogAggiuntaDomanda}><MapsUgcIcon /></Button></Tooltip>
+            <Tooltip title='Modifica Template' placement='top'><Button style={buttons} onClick={apriDialogModifica}><EditIcon /></Button></Tooltip>
             <Tooltip title='Elimina Template' placement='top'><Button style={buttons} onClick={apriDialogEliminazione}><DeleteForeverIcon /></Button></Tooltip>
         </AccordionActions>
     </Accordion>
@@ -167,26 +151,50 @@ function Templates() {
     {/* DIALOG per l'aggiunta di un Template */}
     <Dialog open={AggiuntaTemplate} onClose={chiudiDialogAggiuntaTemplate} fullWidth>
         <DialogContentText style={{ ...{ fontSize: '30px', margin: '16px 24px 0 24px', fontWeight: 'bold', }, ...textStyle }}>Aggiunta Template</DialogContentText>
-        <DialogContentText style={{...{fontSize: '16px', marginLeft:'24px',}, ...textStyle }}>Inserisci il nome del Template</DialogContentText>
+        <DialogContentText style={{...{fontSize: '16px', marginLeft:'24px',}, ...textStyle }}>Completa i campi seguenti per aggiungere il nuovo Template</DialogContentText>
         <DialogContent>
           <TextField style={{ ...{borderRadius: '8px'}, ...inputChatStyle}}
             placeholder="Nome Template"
             fullWidth
+            required
+          />
+          <TextField style={{ ...{borderRadius: '8px', marginTop: '20px',}, ...inputChatStyle}}
+            placeholder="Domanda"
+            fullWidth
+            required
+          />
+          <textarea
+            id="description"
+            name="description"
+            required
+            rows="5"
+            placeholder='Risposta'
+            style={{ ...{marginTop: '20px',}, ...inputChatStyle}}
           />
         </DialogContent>
         <DialogActions style={{marginBottom: '25px', marginRight: '24px'}}>
           <Button onClick={chiudiDialogAggiuntaTemplate} style={buttons}>Annulla</Button>
-          <Button onClick={AggiungiTemplate} style={buttons}>Aggiungi</Button>
+          <Button onClick={AggiungiTemplate} style={buttons}>Aggiungi Template</Button>
         </DialogActions>
     </Dialog>
 
     {/* DIALOG per la modifica di una domanda */}
     <Dialog open={Modifica} onClose={chiudiDialogModifica} fullWidth>
-        <DialogContentText style={{ ...{ fontSize: '20px', margin: '20px 24px 0 24px', fontWeight: '500', }, ...textStyle }}>Modifica domanda</DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...textStyle }}>Modifica Template</DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '16px', margin:'6px 24px 0 24px',}, ...textStyle }}>Template n</DialogContentText>
         <DialogContent style={{paddingTop: '10px', paddingBottom: '10px'}}>
           <TextField style={{ ...{borderRadius: '8px'}, ...inputChatStyle}}
             placeholder="Domanda"
             fullWidth
+            required
+          />
+          <textarea
+            id="description"
+            name="description"
+            required
+            rows="5"
+            placeholder='Risposta'
+            style={{ ...{marginTop: '20px',}, ...inputChatStyle}}
           />
         </DialogContent>
         <DialogActions style={{marginBottom: '20px', marginRight: '24px'}}>
@@ -195,23 +203,7 @@ function Templates() {
         </DialogActions>
     </Dialog>
 
-    {/* DIALOG per l'aggiunta di una domanda */}
-    <Dialog open={AggiuntaDomanda} onClose={chiudiDialogAggiuntaDomanda} fullWidth>
-        <DialogContentText style={{ ...{ fontSize: '30px', margin: '16px 24px 0 24px', fontWeight: 'bold', }, ...textStyle }}>Template n</DialogContentText>
-        <DialogContentText style={{...{fontSize: '16px', marginLeft:'24px',}, ...textStyle }}>Inserisci la domanda da aggiungere</DialogContentText>
-        <DialogContent>
-          <TextField style={{ ...{borderRadius: '8px'}, ...inputChatStyle}}
-            placeholder="Domanda"
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions style={{marginBottom: '25px', marginRight: '24px'}}>
-          <Button onClick={chiudiDialogAggiuntaDomanda} style={buttons}>Annulla</Button>
-          <Button onClick={AggiungiDomanda} style={buttons}>Aggiungi</Button>
-        </DialogActions>
-    </Dialog>
-
-    {/* DIALOG per l'eliminazione della chat */}
+    {/* DIALOG per l'eliminazione del Template */}
     <Dialog open={Eliminazione} onClose={chiudiDialogEliminazione}>
       <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...textStyle }}>Template n</DialogContentText>
       <DialogContentText style={{ ...{ fontSize: '16px', margin:'6px 24px 0 24px',}, ...textStyle }}>Sei sicuro di voler eliminare questo Template?</DialogContentText>

@@ -34,7 +34,7 @@ return (
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                 />
-                <Button className='button' endIcon={<SendIcon />} style={buttons}>Inizia la conversazione</Button>
+                <Button className='button' endIcon={<SendIcon />} style={buttons}>Inizia la conversazione </Button>
             </div>
         </div>
     </>

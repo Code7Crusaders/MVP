@@ -65,6 +65,7 @@
                     p {
                         background-color: #5183fe;
                         border: none;
+                        border-bottom-right-radius: 0;
                     }
                 }
 
@@ -90,10 +91,12 @@
                     padding: 0.8em;
                     background-color: slateblue;
                     border-radius: 10px;
+                    margin: 0;
                 }
 
                 span {
                     font-size: 13px;
+                    margin-top: 8px;
                 }
             }
 
@@ -174,7 +177,8 @@
     padding: 0.8em;
     background-color: slateblue;
     /* Match the bot message background */
-    border-radius: 10px;
+    border-radius: 12px;
+    border-bottom-left-radius: 0;
     color: white;
     /* Ensure text color is consistent */
     font-size: 14px;
