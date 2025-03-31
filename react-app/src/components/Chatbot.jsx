@@ -26,6 +26,7 @@ import { Button } from '@mui/material';
 function Chatbot({ chatId, chatTitle }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [loading, setLoading] = useState(false); // Stato per il caricamento
   const [Eliminazione, setEliminazioneOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -90,16 +91,23 @@ function Chatbot({ chatId, chatTitle }) {
     };
 
     try {
-      // Save the user's message
+      // Aggiungi il messaggio dell'utente
       const savedMessage = await saveNewMessage(newMessage);
       setMessages((prevMessages) => [...prevMessages, savedMessage]);
       setInputValue('');
 
-      // Interact with the chat and save the bot's response
+      // Imposta lo stato di caricamento
+      setLoading(true);
+
+      // Interagisci con il chatbot e salva la risposta
       const botMessage = await interactWithChat(inputValue, chatId);
       setMessages((prevMessages) => [...prevMessages, botMessage]);
+
     } catch (error) {
       console.error('Failed to send or process message:', error);
+    } finally {
+      // Rimuovi lo stato di caricamento
+      setLoading(false);
     }
   };
 
@@ -185,6 +193,16 @@ function Chatbot({ chatId, chatTitle }) {
             </div>
           </div>
         ))}
+
+        {/* Indicatore di caricamento */}
+        {loading && (
+          <div className="message bot">
+            <div className="texts">
+              <p>In elaborazione...</p>
+            </div>
+          </div>
+        )}
+
         <div ref={endRef}></div>
       </div>
 
