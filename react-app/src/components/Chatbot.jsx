@@ -195,6 +195,11 @@ function Chatbot({ chatId, chatTitle }) {
           style={inputChatStyle}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSendMessage();
+            }
+          }}
         />
         <button className="sendButton" style={buttons} onClick={handleSendMessage}>
           <SendIcon />
