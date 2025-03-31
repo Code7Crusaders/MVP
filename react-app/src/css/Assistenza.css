@@ -1,6 +1,6 @@
 .support-container {
-    width: 80%;
-    padding: 30px;
+    width: 90%;
+    padding: 25px;
     border-radius: 8px;
     margin:  auto;
 }
@@ -20,8 +20,8 @@
 }
   
 .status-dot {
-    width: 12px;
-    height: 12px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
     margin-right: 15px;
 }

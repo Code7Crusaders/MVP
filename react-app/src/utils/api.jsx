@@ -231,3 +231,32 @@ export const saveSupportMessage = async (supportMessageData) => {
     throw error;
   }
 };
+
+export const fetchSupportMessages = async () => {
+  const token = localStorage.getItem('token'); // Recupera il token di autenticazione
+
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+
+  try {
+    const response = await fetch('http://127.0.0.1:5001/support_message/get_all', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`, // Aggiunge il token nell'header
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to fetch support messages');
+    }
+
+    const data = await response.json();
+    console.log('Fetched support messages:', data); // Log per debugging
+    return data;
+  } catch (error) {
+    console.error('Error fetching support messages:', error); // Log per debugging
+    throw error;
+  }
+};
