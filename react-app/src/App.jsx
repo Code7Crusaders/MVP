@@ -75,7 +75,7 @@ function DemoPageContent({ pathname, conversations }) {
     }
 
     return conversation ? (
-      <Chatbot chatId={chatId} />
+      <Chatbot chatId={chatId} chatTitle={conversation.title} />
     ) : (
       <Typography>Chat not found</Typography>
     );

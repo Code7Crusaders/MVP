@@ -18,17 +18,17 @@ import {
   interactWithChat,
   updateFeedback,
   deleteChat,
-} from '../utils/MessageHandler'; 
+} from '../utils/MessageHandler';
 import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Alert } from '@mui/material';
-import {Button} from '@mui/material';
+import { Button } from '@mui/material';
 
 
-function Chatbot({ chatId }) {
+function Chatbot({ chatId, chatTitle }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [Eliminazione, setEliminazioneOpen] = useState(false);
   const navigate = useNavigate();
-  
+
 
   const theme = useTheme();
   const endRef = useRef(null);
@@ -48,19 +48,19 @@ function Chatbot({ chatId }) {
   };
 
   // DIALOG per l'eliminazione della Chat
-    const chiudiDialogEliminazione = () => {
-        setEliminazioneOpen(false); 
-    };
+  const chiudiDialogEliminazione = () => {
+    setEliminazioneOpen(false);
+  };
 
-    const EliminaChat = () => {
-        deleteChat(chatId); 
-        setEliminazioneOpen(false); 
-        navigate('/App'); //non funziona
-    };
+  const EliminaChat = () => {
+    deleteChat(chatId);
+    setEliminazioneOpen(false);
+    window.location.reload();
+  };
 
-    const apriDialogEliminazione = () => {
-        setEliminazioneOpen(true); 
-    };
+  const apriDialogEliminazione = () => {
+    setEliminazioneOpen(true);
+  };
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -105,27 +105,27 @@ function Chatbot({ chatId }) {
 
   const handleFeedbackClick = async (messageId, isPositive) => {
     try {
-        // Aggiorna la valutazione nel database chiamando updateFeedback
-        await updateFeedback(messageId, isPositive);
+      // Aggiorna la valutazione nel database chiamando updateFeedback
+      await updateFeedback(messageId, isPositive);
 
-        // Aggiorna lo stato locale dei messaggi
-        setMessages((prevMessages) =>
-            prevMessages.map((msg) =>
-                msg.id === messageId ? { ...msg, selectedRating: isPositive } : msg
-            )
-        );
+      // Aggiorna lo stato locale dei messaggi
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg.id === messageId ? { ...msg, selectedRating: isPositive } : msg
+        )
+      );
 
     } catch (error) {
-        console.error('Errore durante il click sul feedback:', error);
+      console.error('Errore durante il click sul feedback:', error);
     }
-};
+  };
 
 
   return (
     <div className="chat">
       <div className="top">
         <div className="title">
-          <p>Chat ID: {chatId}</p>
+          <p>{chatTitle || 'Chat'}</p> {/* Display the chat title */}
         </div>
         <div className="icons">
           <Tooltip title="Templates" placement="bottom">
@@ -155,32 +155,32 @@ function Chatbot({ chatId }) {
               <span style={timeSpan}>{new Date(message.created_at).toLocaleString()}</span>
               {message.is_bot && (
                 <div className="feedback">
-                <button
-                  className={`feedbackButton ${message.selectedRating === true ? 'selected thumbs-up' : ''}`}
-                  onClick={async () => {
-                    try {
-                      await handleFeedbackClick(message.id, true);
-                    } catch (error) {
-                      console.error('Error handling thumbs-up feedback:', error);
-                    }
-                  }}
-                >
-                  <ThumbUpIcon />
-                </button>
-                <button
-                  className={`feedbackButton ${message.selectedRating === false ? 'selected thumbs-down' : ''}`}
-                  onClick={async () => {
-                    try {
-                      await handleFeedbackClick(message.id, false);
-                    } catch (error) {
-                      console.error('Error handling thumbs-down feedback:', error);
-                    }
-                  }}
-                >
-                  <ThumbDownIcon />
-                </button>
-              </div>
-              
+                  <button
+                    className={`feedbackButton ${message.selectedRating === true ? 'selected thumbs-up' : ''}`}
+                    onClick={async () => {
+                      try {
+                        await handleFeedbackClick(message.id, true);
+                      } catch (error) {
+                        console.error('Error handling thumbs-up feedback:', error);
+                      }
+                    }}
+                  >
+                    <ThumbUpIcon />
+                  </button>
+                  <button
+                    className={`feedbackButton ${message.selectedRating === false ? 'selected thumbs-down' : ''}`}
+                    onClick={async () => {
+                      try {
+                        await handleFeedbackClick(message.id, false);
+                      } catch (error) {
+                        console.error('Error handling thumbs-down feedback:', error);
+                      }
+                    }}
+                  >
+                    <ThumbDownIcon />
+                  </button>
+                </div>
+
               )}
             </div>
           </div>
@@ -202,10 +202,10 @@ function Chatbot({ chatId }) {
       </div>
 
       {/* DIALOG per l'eliminazione della chat */}
-    <Dialog open={Eliminazione} onClose={chiudiDialogEliminazione}>
-      <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>TITOLO CHAT</DialogContentText>
-      <DialogContentText style={{ ...{ fontSize: '16px', margin:'6px 24px 0 24px',}, ...timeSpan }}>Sei sicuro di voler eliminare questa conversazione?</DialogContentText>
-        <DialogActions style={{margin: '10px 16px 20px 0'}}>
+      <Dialog open={Eliminazione} onClose={chiudiDialogEliminazione}>
+        <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>TITOLO CHAT</DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '16px', margin: '6px 24px 0 24px', }, ...timeSpan }}>Sei sicuro di voler eliminare questa conversazione?</DialogContentText>
+        <DialogActions style={{ margin: '10px 16px 20px 0' }}>
           <Button onClick={chiudiDialogEliminazione} style={buttons}>Annulla</Button>
           <Button onClick={EliminaChat} style={buttons}>Elimina Chat</Button>
         </DialogActions>
@@ -217,6 +217,7 @@ function Chatbot({ chatId }) {
 
 Chatbot.propTypes = {
   chatId: PropTypes.string.isRequired,
+  chatTitle: PropTypes.string.isRequired, // Add prop type for chatTitle
 };
 
 export default Chatbot;

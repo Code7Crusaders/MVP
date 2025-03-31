@@ -84,7 +84,7 @@ class MessagePostgresRepository:
                     ) for row in rows
                     ]
                 else:
-                    raise ValueError(f"No messages found for conversation ID {conversation.get_conversation_id()}.")
+                    return []
     
     def save_message(self, message: MessageEntity) -> int:
         '''

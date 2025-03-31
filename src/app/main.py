@@ -186,17 +186,11 @@ def get_conversations():
 @app.route("/conversation/save_title", methods=["POST"])
 @jwt_required()
 def save_conversation_title():
-    """
-    # To test this endpoint with curl:
-    curl -X POST http://127.0.0.1:5001/conversation/save_title \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer <your_token>" \
-    -d '{"title": "New Conversation Title"}' 
-
-    """
     try:
         data = request.get_json()
-        user = int(get_jwt_identity())  
+        # print("Received data:", data)  # Debugging log
+        user = int(get_jwt_identity())
+        # print("User ID:", user)  # Debugging log
 
         conversation = ConversationDTO(
             title=data.get("title"),
@@ -204,6 +198,7 @@ def save_conversation_title():
         )
         saved_id = save_conversation_title_controller.save_conversation_title(conversation)
     except Exception as e:
+        # print("Error:", str(e))  # Debugging log
         return jsonify({"error": str(e)}), 500
 
     return jsonify({"message": f"Conversation title saved with id: {saved_id}"}), 200
@@ -291,6 +286,7 @@ def get_messages_by_conversation(conversation_id):
 
     try:
         messages_result = get_messages_by_conversation_controller.get_messages_by_conversation(message)
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
