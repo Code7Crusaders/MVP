@@ -21,6 +21,62 @@ import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { logout } from './utils/auth';
 import LoadChat from './components/LoadChat';
+import Assistenza from './components/Assistenza';
+
+const NAVIGATION = [
+  {
+    segment: 'chatbot',
+    title: 'Chatbot',
+    icon: <AddCommentIcon />,
+  },
+  {
+    segment: 'recent',
+    title: 'Conversazioni salvate',
+    icon: <ForumIcon />,
+    children: [
+      {
+        segment: 'chat1',
+        title: 'Chat 1',
+        icon: <ChatIcon />,
+      },
+      {
+        segment: 'chat2',
+        title: 'Chat 2',
+        icon: <ChatIcon />,
+      },
+    ],
+  },
+  {
+    kind: 'divider',
+  },
+  {
+    segment: 'support',
+    title: 'Richiesta Supporto',
+    icon: <ContactSupportIcon />,
+  },
+  {
+    kind: 'divider',
+  },
+  {
+    kind: 'header',
+    title: 'Admin',
+  },
+  {
+    segment: 'metrics',
+    title: 'Visualizza Metriche',
+    icon: <EqualizerIcon />,
+  },
+  {
+    segment: 'templates',
+    title: 'Gestione Templates',
+    icon: <AutoAwesomeMosaicIcon />,
+  },
+  {
+    segment: 'assistenza',
+    title: 'Assistenza clienti',
+    icon: <SupportAgentIcon />,
+  },
+];
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -60,7 +116,25 @@ function AssistenzaContent() {
   return <p>Assistenza</p>;
 }
 
-function DemoPageContent({ pathname, conversations }) {
+function MetricheContent(){
+  return (
+    <Metriche/>
+  );
+}
+
+function TemplatesContent(){
+  return (
+    <Templates/>
+  );
+}
+
+function AssistenzaContent(){
+  return (
+    <Assistenza/>
+  );
+}
+
+function DemoPageContent({ pathname }) {
   if (pathname === '/chatbot') {
     return <DashboardContent />;
   } else if (pathname.startsWith('/recent/chat-')) {
