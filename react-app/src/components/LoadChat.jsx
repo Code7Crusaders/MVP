@@ -22,8 +22,12 @@ function LoadChat() {
     };
 
     const handleCreateChat = () => {
-        createChat(inputValue); // Call createChat with the inputValue
-        window.location.reload(); 
+        if (!inputValue.trim()) { 
+            // implement
+            return;
+        }
+        createChat(inputValue); 
+        window.location.reload();
     };
 
     return (
@@ -33,6 +37,7 @@ function LoadChat() {
                 <div className="start">
                     <p className='scope'>Inizia una nuova conversazione</p>
                     <input
+
                         className='input'
                         type="text"
                         placeholder="Titolo Chat"
