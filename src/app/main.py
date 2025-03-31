@@ -142,10 +142,7 @@ def is_admin():
     try:
         claims = get_jwt()
         is_admin = claims.get("is_admin", False)
-        if is_admin:
-            return jsonify({"role": "admin"}), 200
-        else:
-            return jsonify({"role": "no"}), 200
+        return jsonify({"is_admin": is_admin}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

@@ -22,65 +22,7 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { logout } from './utils/auth';
 import LoadChat from './components/LoadChat';
 import Assistenza from './components/Assistenza';
-
-const NAVIGATION = [
-  {
-    segment: 'chatbot',
-    title: 'Chatbot',
-    icon: <AddCommentIcon />,
-  },
-  {
-    segment: 'recent',
-    title: 'Conversazioni salvate',
-    icon: <ForumIcon />,
-    children: [
-      {
-        segment: 'chat1',
-        title: 'Chat 1',
-        icon: <ChatIcon />,
-      },
-      {
-        segment: 'chat2',
-        title: 'Chat 2',
-        icon: <ChatIcon />,
-      },
-    ],
-  },
-  {
-    kind: 'divider',
-  },
-  {
-    segment: 'support',
-    title: 'Richiesta Supporto',
-    icon: <ContactSupportIcon />,
-  },
-  {
-    kind: 'divider',
-  },
-  ...(localStorage.getItem('role') === 'admin' // Controlla se il ruolo è admin
-    ? [
-      {
-        kind: 'header',
-        title: 'Admin',
-      },
-      {
-        segment: 'metrics',
-        title: 'Visualizza Metriche',
-        icon: <EqualizerIcon />,
-      },
-      {
-        segment: 'templates',
-        title: 'Gestione Templates',
-        icon: <AutoAwesomeMosaicIcon />,
-      },
-      {
-        segment: 'assistenza',
-        title: 'Assistenza clienti',
-        icon: <SupportAgentIcon />,
-      },
-    ]
-    : []), // Se non è admin, non aggiungere queste voci
-];
+import {jwtDecode} from 'jwt-decode'; // npm install jwt-decode
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -190,6 +132,7 @@ function DashboardLayoutBranding(props) {
 
   const [conversations, setConversations] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [isAdmin, setIsAdmin] = React.useState(false); // Stato per verificare se l'utente è admin
 
   React.useEffect(() => {
     const fetchConversations = async () => {
@@ -211,6 +154,31 @@ function DashboardLayoutBranding(props) {
     };
 
     fetchConversations();
+  }, []);
+
+  React.useEffect(() => {
+    const fetchAdminStatus = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://127.0.0.1:5001/is_admin', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setIsAdmin(data.is_admin); // Aggiorna lo stato in base alla risposta
+        } else {
+          console.error('Failed to fetch admin status:', data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching admin status:', error);
+      }
+    };
+
+    fetchAdminStatus();
   }, []);
 
   const navigate = useNavigate();
@@ -267,7 +235,7 @@ function DashboardLayoutBranding(props) {
     {
       kind: 'divider',
     },
-    ...(localStorage.getItem('role') === 'admin' // Controlla se il ruolo è admin
+    ...(isAdmin // Mostra le voci admin solo se l'utente è amministratore
       ? [
         {
           kind: 'header',
@@ -289,7 +257,7 @@ function DashboardLayoutBranding(props) {
           icon: <SupportAgentIcon />,
         },
       ]
-      : []), // Se non è admin, non aggiungere queste voci
+      : []),
   ];
 
   if (loading) {
