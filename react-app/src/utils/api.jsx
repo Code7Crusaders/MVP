@@ -194,3 +194,40 @@ export const updateMessageRating = async (messageId, rating) => {
     throw error;
   }
 };
+
+export const saveSupportMessage = async (supportMessageData) => {
+  const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
+
+  if (!token) {
+    console.error('Error: No token found in localStorage'); // Debugging log
+    throw new Error('Authentication token is missing');
+  }
+
+  console.log('Support message data to save:', supportMessageData); // Debugging log
+
+  try {
+    const response = await fetch('http://127.0.0.1:5001/support_message/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, // Add the Authorization header with the token
+      },
+      body: JSON.stringify(supportMessageData), // Send the support message data as JSON
+    });
+
+    console.log('Response status:', response.status); // Debugging log
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error response from server:', errorData); // Debugging log
+      throw new Error(errorData.error || 'Failed to save support message');
+    }
+
+    const data = await response.json();
+    console.log('Support message saved:', data); // Debugging log
+    return data;
+  } catch (error) {
+    console.error('Error saving support message:', error); // Debugging log
+    throw error;
+  }
+};

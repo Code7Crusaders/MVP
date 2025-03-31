@@ -415,7 +415,7 @@ def save_support_message():
     support_message = SupportMessageDTO(
         user_id=user_id,
         description=data.get("description"),
-        status=data.get("status"),
+        status=False,
         subject=data.get("subject"),
         created_at=datetime.now(italy_tz)
     )

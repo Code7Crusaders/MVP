@@ -1,9 +1,23 @@
 import { useState } from 'react';
 import '../css/RichiestaSupporto.css';
 import { useTheme } from '@mui/material/styles';
+import { sendSupportRequest } from '../utils/SupportMessageHandler'; // Import the utility function
+import { saveSupportMessage } from '../utils/api';
+
+const saveSupportRequest = async (formData) => {
+  try {
+    const response = await sendSupportRequest(formData); // Use the utility function
+    if (!response.ok) {
+      throw new Error('Errore durante l\'invio della richiesta');
+    }
+    return response;
+  } catch (error) {
+    console.error('Errore durante il salvataggio della richiesta di supporto:', error);
+    throw error;
+  }
+};
 
 const RichiestaSupporto = () => {
-
   const theme = useTheme();
 
   const inputChatStyle = {
@@ -15,11 +29,11 @@ const RichiestaSupporto = () => {
   const buttons = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgb(233, 233, 233)' : '#333',
     color: theme.palette.mode === 'dark' ? '#333' : 'white',
-  }
+  };
 
   const timeSpan = {
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
-  }
+  };
 
   const [formData, setFormData] = useState({
     user_id: '',
@@ -34,23 +48,15 @@ const RichiestaSupporto = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
+    const supportMessageData = {
+      description: formData.description,
+      subject: formData.subject,
+    };
+
     try {
-      const response = await fetch('/api/support', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          user_id: Number(formData.user_id), // Converti in numero
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Errore durante l\'invio della richiesta');
-      }
-
+      const response = await saveSupportMessage(supportMessageData);
+      console.log('Response:', response);
       setSuccess(true);
       setFormData({ user_id: '', subject: '', description: '' });
     } catch (err) {
@@ -69,12 +75,13 @@ const RichiestaSupporto = () => {
 
   return (
     <div className="support-form-container">
-      <h1 style={{paddingBottom: '5px', borderBottom: '1px solid grey', marginBottom: '30px'}}>Contatta l'assistenza</h1>
+      <h1 style={{ paddingBottom: '5px', borderBottom: '1px solid grey', marginBottom: '30px' }}>
+        Contatta l'assistenza
+      </h1>
       {success && <div className="success-message">Richiesta inviata con successo!</div>}
       {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit}>
-
         <div className="form-group">
           <label style={timeSpan} htmlFor="subject">Oggetto:</label>
           <input
@@ -99,13 +106,13 @@ const RichiestaSupporto = () => {
             onChange={handleChange}
             required
             rows="5"
-            placeholder='Inserisci il contenuto della tua richiesta di supporto'
+            placeholder="Inserisci il contenuto della tua richiesta di supporto"
             style={inputChatStyle}
           />
         </div>
 
-        <button style={buttons} className='bottoneSupporto' type="submit" disabled={loading}>
-          {loading ? 'Invio in corso...' : 'Invia richiesta'}
+        <button style={buttons} className="bottoneSupporto" type="submit" disabled={loading}>
+          {loading ? 'Invio...' : 'Invia'}
         </button>
       </form>
     </div>

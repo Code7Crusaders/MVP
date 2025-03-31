@@ -104,18 +104,6 @@ function SupportContent() {
   return <RichiestaSupporto />;
 }
 
-function MetricheContent() {
-  return <Metriche />;
-}
-
-function TemplatesContent() {
-  return <Templates />;
-}
-
-function AssistenzaContent() {
-  return <p>Assistenza</p>;
-}
-
 function MetricheContent(){
   return (
     <Metriche/>
@@ -134,7 +122,7 @@ function AssistenzaContent(){
   );
 }
 
-function DemoPageContent({ pathname }) {
+function DemoPageContent({ pathname, conversations }) {
   if (pathname === '/chatbot') {
     return <DashboardContent />;
   } else if (pathname.startsWith('/recent/chat-')) {
