@@ -22,47 +22,51 @@ import {
 import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Alert } from '@mui/material';
 import { Button } from '@mui/material';
 
-
 function Chatbot({ chatId, chatTitle }) {
-  const [messages, setMessages] = useState([]);
-  const [inputValue, setInputValue] = useState('');
-  const [loading, setLoading] = useState(false); // Stato per il caricamento
-  const [Eliminazione, setEliminazioneOpen] = useState(false);
+  const [messages, setMessages] = useState([]); // State to store chat messages
+  const [inputValue, setInputValue] = useState(''); // State for the input field value
+  const [loading, setLoading] = useState(false); // State for loading indicator
+  const [Eliminazione, setEliminazioneOpen] = useState(false); // State for delete confirmation dialog
   const navigate = useNavigate();
 
+  const theme = useTheme(); // Access the current theme
+  const endRef = useRef(null); // Reference to scroll to the bottom of the chat
 
-  const theme = useTheme();
-  const endRef = useRef(null);
-
+  // Styles for the input field
   const inputChatStyle = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
   };
 
+  // Styles for buttons
   const buttons = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgb(233, 233, 233)' : '#333',
     color: theme.palette.mode === 'dark' ? '#333' : 'white',
   };
 
+  // Styles for timestamps
   const timeSpan = {
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
   };
 
-  // DIALOG per l'eliminazione della Chat
+  // Close the delete confirmation dialog
   const chiudiDialogEliminazione = () => {
     setEliminazioneOpen(false);
   };
 
+  // Delete the chat and reload the page
   const EliminaChat = () => {
     deleteChat(chatId);
     setEliminazioneOpen(false);
     window.location.reload();
   };
 
+  // Open the delete confirmation dialog
   const apriDialogEliminazione = () => {
     setEliminazioneOpen(true);
   };
 
+  // Fetch messages when the component mounts or chatId changes
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -76,10 +80,12 @@ function Chatbot({ chatId, chatTitle }) {
     fetchMessages();
   }, [chatId]);
 
+  // Scroll to the bottom of the chat when messages change
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Handle sending a new message
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
@@ -91,32 +97,33 @@ function Chatbot({ chatId, chatTitle }) {
     };
 
     try {
-      // Aggiungi il messaggio dell'utente
+      // Add the user's message
       const savedMessage = await saveNewMessage(newMessage);
       setMessages((prevMessages) => [...prevMessages, savedMessage]);
       setInputValue('');
 
-      // Imposta lo stato di caricamento
+      // Set loading state
       setLoading(true);
 
-      // Interagisci con il chatbot e salva la risposta
+      // Interact with the chatbot and save the response
       const botMessage = await interactWithChat(inputValue, chatId);
       setMessages((prevMessages) => [...prevMessages, botMessage]);
 
     } catch (error) {
       console.error('Failed to send or process message:', error);
     } finally {
-      // Rimuovi lo stato di caricamento
+      // Remove loading state
       setLoading(false);
     }
   };
 
+  // Handle feedback click (thumbs up or down)
   const handleFeedbackClick = async (messageId, isPositive) => {
     try {
-      // Aggiorna la valutazione nel database chiamando updateFeedback
+      // Update feedback in the database
       await updateFeedback(messageId, isPositive);
 
-      // Aggiorna lo stato locale dei messaggi
+      // Update local state of messages
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
           msg.id === messageId ? { ...msg, selectedRating: isPositive } : msg
@@ -124,10 +131,9 @@ function Chatbot({ chatId, chatTitle }) {
       );
 
     } catch (error) {
-      console.error('Errore durante il click sul feedback:', error);
+      console.error('Error handling feedback click:', error);
     }
   };
-
 
   return (
     <div className="chat">
@@ -136,12 +142,7 @@ function Chatbot({ chatId, chatTitle }) {
           <p>{chatTitle || 'Chat'}</p> {/* Display the chat title */}
         </div>
         <div className="icons">
-          <Tooltip title="Templates" placement="bottom">
-            <button className="btnsTop" style={buttons}>
-              <QuickreplyIcon />
-            </button>
-          </Tooltip>
-          <Tooltip title="Elimina Chat" placement="bottom">
+          <Tooltip title="Delete Chat" placement="bottom">
             <button className="btnsTop" style={buttons} onClick={apriDialogEliminazione}>
               <DeleteForeverIcon />
             </button>
@@ -188,17 +189,16 @@ function Chatbot({ chatId, chatTitle }) {
                     <ThumbDownIcon />
                   </button>
                 </div>
-
               )}
             </div>
           </div>
         ))}
 
-        {/* Indicatore di caricamento */}
+        {/* Loading indicator */}
         {loading && (
           <div className="message bot">
             <div className="texts">
-              <p>In elaborazione...</p>
+              <p>Processing...</p>
             </div>
           </div>
         )}
@@ -209,7 +209,7 @@ function Chatbot({ chatId, chatTitle }) {
       <div className="bottom">
         <input
           type="text"
-          placeholder="Scrivi un messaggio..."
+          placeholder="Write a message..."
           style={inputChatStyle}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -224,23 +224,22 @@ function Chatbot({ chatId, chatTitle }) {
         </button>
       </div>
 
-      {/* DIALOG per l'eliminazione della chat */}
+      {/* Dialog for chat deletion */}
       <Dialog open={Eliminazione} onClose={chiudiDialogEliminazione}>
-        <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>TITOLO CHAT</DialogContentText>
-        <DialogContentText style={{ ...{ fontSize: '16px', margin: '6px 24px 0 24px', }, ...timeSpan }}>Sei sicuro di voler eliminare questa conversazione?</DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>CHAT TITLE</DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '16px', margin: '6px 24px 0 24px', }, ...timeSpan }}>Are you sure you want to delete this conversation?</DialogContentText>
         <DialogActions style={{ margin: '10px 16px 20px 0' }}>
-          <Button onClick={chiudiDialogEliminazione} style={buttons}>Annulla</Button>
-          <Button onClick={EliminaChat} style={buttons}>Elimina Chat</Button>
+          <Button onClick={chiudiDialogEliminazione} style={buttons}>Cancel</Button>
+          <Button onClick={EliminaChat} style={buttons}>Delete Chat</Button>
         </DialogActions>
       </Dialog>
-
     </div>
   );
 }
 
 Chatbot.propTypes = {
-  chatId: PropTypes.string.isRequired,
-  chatTitle: PropTypes.string.isRequired, // Add prop type for chatTitle
+  chatId: PropTypes.string.isRequired, // Chat ID is required
+  chatTitle: PropTypes.string.isRequired, // Chat title is required
 };
 
 export default Chatbot;
