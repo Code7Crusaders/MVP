@@ -1,4 +1,4 @@
-import { fetchMessages, saveMessage, chatInteract, updateMessageRating } from './api';
+import { fetchMessages, saveMessage, chatInteract, updateMessageRating, deleteConversation } from './api';
 
 // Fetch messages for a specific conversation
 export const loadMessages = async (chatId) => {
@@ -67,3 +67,13 @@ export const interactWithChat = async (inputValue, chatId) => {
         throw error;
     }
 };
+
+
+export const deleteChat = async (chatID) => {
+    try {
+        await deleteConversation(chatID);
+    } catch (error) {
+        console.error('Error deleting chat:', error);
+        throw error;
+    }
+}

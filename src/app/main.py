@@ -41,11 +41,11 @@ add_file_controller = dependencies["add_file_controller"]
 get_conversation_controller = dependencies["get_conversation_controller"]
 get_conversations_controller = dependencies["get_conversations_controller"]
 save_conversation_title_controller = dependencies["save_conversation_title_controller"]
+delete_conversation_controller = dependencies["delete_conversation_controller"]
 
 get_message_controller = dependencies["get_message_controller"]
 get_messages_by_conversation_controller = dependencies["get_messages_by_conversation_controller"]
 save_message_controller = dependencies["save_message_controller"]
-delete_conversation_controller = dependencies["delete_conversation_controller"]
 
 get_support_message_controller = dependencies["get_support_message_controller"]
 get_support_messages_controller = dependencies["get_support_messages_controller"]

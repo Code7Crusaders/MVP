@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/chat.css';
 import { useTheme } from '@mui/material/styles';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -16,6 +17,7 @@ import {
   handleFeedback,
   interactWithChat,
   updateFeedback,
+  deleteChat,
 } from '../utils/MessageHandler'; 
 import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Alert } from '@mui/material';
 import {Button} from '@mui/material';
@@ -25,6 +27,7 @@ function Chatbot({ chatId }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [Eliminazione, setEliminazioneOpen] = useState(false);
+  const navigate = useNavigate();
   
 
   const theme = useTheme();
@@ -48,10 +51,13 @@ function Chatbot({ chatId }) {
     const chiudiDialogEliminazione = () => {
         setEliminazioneOpen(false); 
     };
+
     const EliminaChat = () => {
-        // Eliminazione della chat
+        deleteChat(chatId); 
         setEliminazioneOpen(false); 
+        navigate('/App'); //non funziona
     };
+
     const apriDialogEliminazione = () => {
         setEliminazioneOpen(true); 
     };
@@ -197,7 +203,7 @@ function Chatbot({ chatId }) {
 
       {/* DIALOG per l'eliminazione della chat */}
     <Dialog open={Eliminazione} onClose={chiudiDialogEliminazione}>
-      <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>Titolo Chat</DialogContentText>
+      <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>TITOLO CHAT</DialogContentText>
       <DialogContentText style={{ ...{ fontSize: '16px', margin:'6px 24px 0 24px',}, ...timeSpan }}>Sei sicuro di voler eliminare questa conversazione?</DialogContentText>
         <DialogActions style={{margin: '10px 16px 20px 0'}}>
           <Button onClick={chiudiDialogEliminazione} style={buttons}>Annulla</Button>
