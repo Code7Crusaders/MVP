@@ -26,6 +26,22 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem('token', data.access_token); // Store JWT in localStorage
         localStorage.setItem('user', JSON.stringify(data.user)); // Store user details
+
+        // Check if the user is admin
+        const adminResponse = await fetch('http://127.0.0.1:5001/is_admin', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${data.access_token}`, // Pass the token in the header
+          },
+        });
+
+        const adminData = await adminResponse.json();
+        if (adminResponse.ok) {
+          localStorage.setItem('role', adminData.role); // Save the role (admin or no) in localStorage
+        } else {
+          console.error('Failed to fetch admin status:', adminData.error);
+        }
+
         navigate('/App'); // Redirect to another page
       } else {
         setError(data.error || 'Credenziali errate');

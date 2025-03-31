@@ -131,6 +131,23 @@ def login():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/is_admin", methods=["GET"])
+@jwt_required()
+def is_admin():
+    """
+    Endpoint to check if the user associated with the provided token is an admin.
+    curl -X GET http://127.0.0.1:5001/is_admin \
+    -H "Authorization: Bearer <your_token>"
+    """
+    try:
+        claims = get_jwt()
+        is_admin = claims.get("is_admin", False)
+        if is_admin:
+            return jsonify({"role": "admin"}), 200
+        else:
+            return jsonify({"role": "no"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # ---- Conversation Routes ----
 @app.route("/conversation/get/<int:conversation_id>", methods=["GET"])

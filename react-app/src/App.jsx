@@ -57,25 +57,29 @@ const NAVIGATION = [
   {
     kind: 'divider',
   },
-  {
-    kind: 'header',
-    title: 'Admin',
-  },
-  {
-    segment: 'metrics',
-    title: 'Visualizza Metriche',
-    icon: <EqualizerIcon />,
-  },
-  {
-    segment: 'templates',
-    title: 'Gestione Templates',
-    icon: <AutoAwesomeMosaicIcon />,
-  },
-  {
-    segment: 'assistenza',
-    title: 'Assistenza clienti',
-    icon: <SupportAgentIcon />,
-  },
+  ...(localStorage.getItem('role') === 'admin' // Controlla se il ruolo è admin
+    ? [
+      {
+        kind: 'header',
+        title: 'Admin',
+      },
+      {
+        segment: 'metrics',
+        title: 'Visualizza Metriche',
+        icon: <EqualizerIcon />,
+      },
+      {
+        segment: 'templates',
+        title: 'Gestione Templates',
+        icon: <AutoAwesomeMosaicIcon />,
+      },
+      {
+        segment: 'assistenza',
+        title: 'Assistenza clienti',
+        icon: <SupportAgentIcon />,
+      },
+    ]
+    : []), // Se non è admin, non aggiungere queste voci
 ];
 
 const demoTheme = createTheme({
@@ -104,21 +108,21 @@ function SupportContent() {
   return <RichiestaSupporto />;
 }
 
-function MetricheContent(){
+function MetricheContent() {
   return (
-    <Metriche/>
+    <Metriche />
   );
 }
 
-function TemplatesContent(){
+function TemplatesContent() {
   return (
-    <Templates/>
+    <Templates />
   );
 }
 
-function AssistenzaContent(){
+function AssistenzaContent() {
   return (
-    <Assistenza/>
+    <Assistenza />
   );
 }
 
@@ -263,25 +267,29 @@ function DashboardLayoutBranding(props) {
     {
       kind: 'divider',
     },
-    {
-      kind: 'header',
-      title: 'Admin',
-    },
-    {
-      segment: 'metrics',
-      title: 'Visualizza Metriche',
-      icon: <EqualizerIcon />,
-    },
-    {
-      segment: 'templates',
-      title: 'Gestione Templates',
-      icon: <AutoAwesomeMosaicIcon />,
-    },
-    {
-      segment: 'assistenza',
-      title: 'Assistenza clienti',
-      icon: <SupportAgentIcon />,
-    },
+    ...(localStorage.getItem('role') === 'admin' // Controlla se il ruolo è admin
+      ? [
+        {
+          kind: 'header',
+          title: 'Admin',
+        },
+        {
+          segment: 'metrics',
+          title: 'Visualizza Metriche',
+          icon: <EqualizerIcon />,
+        },
+        {
+          segment: 'templates',
+          title: 'Gestione Templates',
+          icon: <AutoAwesomeMosaicIcon />,
+        },
+        {
+          segment: 'assistenza',
+          title: 'Assistenza clienti',
+          icon: <SupportAgentIcon />,
+        },
+      ]
+      : []), // Se non è admin, non aggiungere queste voci
   ];
 
   if (loading) {
