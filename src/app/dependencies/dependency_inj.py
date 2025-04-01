@@ -22,6 +22,7 @@ from controllers.get_message_controller import GetMessageController
 from controllers.get_messages_by_conversation_controller import GetMessagesByConversationController
 from controllers.get_support_message_controller import GetSupportMessageController
 from controllers.get_support_messages_controller import GetSupportMessagesController
+from controllers.mark_done_support_message_contoller import MarkDoneSupportMessagesController
 from controllers.get_template_controller import GetTemplateController
 from controllers.get_template_list_controller import GetTemplateListController
 from controllers.save_conversation_title_controller import SaveConversationTitleController
@@ -46,6 +47,7 @@ from services.get_message_service import GetMessageService
 from services.get_messages_by_conversation_service import GetMessagesByConversationService 
 from services.get_support_message_service import GetSupportMessageService
 from services.get_support_messages_service import GetSupportMessagesService
+from services.mark_done_support_message_services import MarkDoneSupportMessagesService
 from services.get_template_list_service import GetTemplateListService
 from services.get_template_service import GetTemplateService
 from services.save_conversation_title_service import SaveConversationTitleService
@@ -308,6 +310,7 @@ def dependency_injection(app : Flask) -> dict[str, object]:
         get_support_message_service = GetSupportMessageService(support_message_postgres_adapter)
         get_support_messages_service = GetSupportMessagesService(support_message_postgres_adapter)
         save_support_message_service = SaveSupportMessageService(support_message_postgres_adapter)
+        mark_done_support_messages_services = MarkDoneSupportMessagesService(support_message_postgres_adapter)
 
         delete_template_service = DeleteTemplateService(template_postgres_adapter)
         get_template_service = GetTemplateService(template_postgres_adapter)
@@ -326,17 +329,18 @@ def dependency_injection(app : Flask) -> dict[str, object]:
         get_conversation_controller = GetConversationController(get_conversation_service)
         get_conversations_controller = GetConversationsController(get_conversations_service)
         save_conversation_title_controller = SaveConversationTitleController(save_conversation_title_service)
+        delete_conversation_controller = DeleteConversationController(delete_conversation_service)
 
         get_message_controller = GetMessageController(get_message_service)
         get_messages_by_conversation_controller = GetMessagesByConversationController(get_messages_by_conversation_service)
         save_message_controller = SaveMessageController(save_message_service)
-        delete_conversation_controller = DeleteConversationController(delete_conversation_service)
+        update_message_rating_controller = UpdateMessageRatingController(update_message_rating_service)
 
         get_support_message_controller = GetSupportMessageController(get_support_message_service)
         get_support_messages_controller = GetSupportMessagesController(get_support_messages_service)
         save_support_message_controller = SaveSupportMessageController(save_support_message_service)
-        update_message_rating_controller = UpdateMessageRatingController(update_message_rating_service)
-
+        mark_done_support_message_controller = MarkDoneSupportMessagesController(mark_done_support_messages_services)
+        
         delete_template_controller = DeleteTemplateController(delete_template_service)
         get_template_controller = GetTemplateController(get_template_service)
         get_template_list_controller = GetTemplateListController(get_template_list_service)
@@ -364,7 +368,8 @@ def dependency_injection(app : Flask) -> dict[str, object]:
             "save_template_controller": save_template_controller,
             "registration_controller": registration_controller,
             "authentication_controller": authentication_controller,
-            "delete_conversation_controller": delete_conversation_controller
+            "delete_conversation_controller": delete_conversation_controller,
+            "mark_done_support_message_controller": mark_done_support_message_controller
         }
 
         return dependencies

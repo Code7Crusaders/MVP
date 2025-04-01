@@ -115,4 +115,29 @@ class SupportMessagePostgresRepository:
                 cursor.execute(query, (support_message.get_id(),))
                 conn.commit()
                 return cursor.rowcount > 0
+            
+
+    def mark_done_support_messages(self, support_message_model: SupportMessageEntity)-> int:
+        '''
+        Marks a support message as done in the PostgreSQL database.
+        Args:
+            support_message_model (SupportMessageEntity): The support message entity to mark as done.
+        Returns:
+            int: The ID of the marked support message.
+        Raises:
+            psycopg2.Error: If an error occurs while marking the support message as done in the PostgreSQL database.
+        '''
+        
+        query = """
+            UPDATE Support
+            SET status = %s::boolean
+            WHERE id = %s
+            RETURNING id;
+        """
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query, (support_message_model.get_status(), support_message_model.get_id()))
+                conn.commit()
+                return cursor.fetchone()[0]
+
         

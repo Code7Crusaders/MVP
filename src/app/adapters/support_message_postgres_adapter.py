@@ -3,10 +3,11 @@ from models.support_message_model import SupportMessageModel
 from ports.get_support_message_port import GetSupportMessagePort
 from ports.get_support_messages_port import GetSupportMessagesPort
 from ports.save_support_message_port import SaveSupportMessagePort
+from ports.mark_done_support_messages_port import MarkDoneSupportMessagesPort
 
 from entities.support_message_entity import SupportMessageEntity
 
-class SupportMessagePostgresAdapter(GetSupportMessagePort, GetSupportMessagesPort, SaveSupportMessagePort):
+class SupportMessagePostgresAdapter(GetSupportMessagePort, GetSupportMessagesPort, SaveSupportMessagePort, MarkDoneSupportMessagesPort):
 
     def __init__(self, support_message_postgres_repository: SupportMessagePostgresRepository):
         self.support_message_postgres_repository = support_message_postgres_repository
@@ -93,6 +94,23 @@ class SupportMessagePostgresAdapter(GetSupportMessagePort, GetSupportMessagesPor
 
             return self.support_message_postgres_repository.save_support_message(support_message_entity)
 
+        
+        except Exception as e:
+            raise e
+
+    def mark_done_support_messages(self, support_message_model: SupportMessageModel)-> int:
+        """
+        Mark a support message as done.
+        Args:
+            message (SupportMessageModel): The support message to mark as done.
+        """
+        try:
+            support_message_entity = SupportMessageEntity(
+                id=support_message_model.get_id(),
+                status=support_message_model.get_status()
+            )
+
+            return self.support_message_postgres_repository.mark_done_support_messages(support_message_entity)
         
         except Exception as e:
             raise e

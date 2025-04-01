@@ -50,6 +50,7 @@ save_message_controller = dependencies["save_message_controller"]
 get_support_message_controller = dependencies["get_support_message_controller"]
 get_support_messages_controller = dependencies["get_support_messages_controller"]
 save_support_message_controller = dependencies["save_support_message_controller"]
+mark_done_support_message_controller = dependencies["mark_done_support_message_controller"]
 update_message_rating_controller = dependencies["update_message_rating_controller"]
 
 delete_template_controller = dependencies["delete_template_controller"]
@@ -442,6 +443,28 @@ def save_support_message():
 
     return jsonify({"message": f"Support message saved with id: {saved_id}"}), 200
 
+@app.route("/support_message/mark_done/<int:support_message_id>", methods=["POST"])
+@admin_required
+def mark_support_message_done(support_message_id):
+    """
+    Endpoint to mark a support message as done.
+    curl -X POST http://127.0.0.1:5001/support_message/mark_done/<support_message_id> \
+    -H "Authorization: Bearer <your_token>"
+    """
+    try:
+        # Create DTO with the support message ID and status set to True
+        support_message_dto = SupportMessageDTO(
+            id=support_message_id,
+            status=True
+        )
+        # Call the controller to update the status
+        result = mark_done_support_message_controller.mark_done_support_messages(support_message_dto)
+        if result:
+            return jsonify({"message": f"Support message with id {result} marked as done"}), 200
+        else:
+            return jsonify({"error": f"Failed to mark support message with id {result} as done"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # ---- Template Routes ----
 @app.route("/template/delete/<int:template_id>", methods=["DELETE"])
