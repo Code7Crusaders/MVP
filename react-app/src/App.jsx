@@ -23,6 +23,8 @@ import { logout } from './utils/auth';
 import LoadChat from './components/LoadChat';
 import Assistenza from './components/Assistenza';
 import {jwtDecode} from 'jwt-decode'; // npm install jwt-decode
+import Documenti from './components/Documenti';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -68,6 +70,12 @@ function AssistenzaContent() {
   );
 }
 
+function DocumentiContent() {
+  return (
+    <Documenti />
+  );
+}
+
 function DemoPageContent({ pathname, conversations }) {
   if (pathname === '/chatbot') {
     return <DashboardContent />;
@@ -95,6 +103,8 @@ function DemoPageContent({ pathname, conversations }) {
     return <TemplatesContent />;
   } else if (pathname === '/assistenza') {
     return <AssistenzaContent />;
+  } else if (pathname === '/documenti') {
+    return <DocumentiContent />;
   }
 
   return (
@@ -255,6 +265,11 @@ function DashboardLayoutBranding(props) {
           segment: 'assistenza',
           title: 'Assistenza clienti',
           icon: <SupportAgentIcon />,
+        },
+        {
+          segment: 'documenti',
+          title: 'Gestione documenti',
+          icon: <InsertDriveFileIcon />,
         },
       ]
       : []),

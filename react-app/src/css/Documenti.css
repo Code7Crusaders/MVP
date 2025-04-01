@@ -1,0 +1,31 @@
+  .all {
+    margin: 10%;
+  }
+
+  .uploadBox {
+    margin: 20px 0;
+    border: 0.2px solid #434343;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 120px;
+    height: 300px; 
+  }
+
+  .uploadBox p {
+    margin-top: auto; 
+    text-align: center; 
+    font-size: 15px;
+    color: grey; 
+  }
+
+  .File{
+    display: flex;
+  }
+
+  .btnBottom{
+    width: 100%;
+  }
+

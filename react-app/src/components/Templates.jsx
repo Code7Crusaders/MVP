@@ -9,7 +9,6 @@ import { useTheme } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import styled from '@mui/material/styles/styled';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { AccordionActions, Tooltip } from '@mui/material';
@@ -48,17 +47,6 @@ function Templates() {
         
     }
 
-    const VisuallyHiddenInput = styled('input')({
-        clip: 'rect(0 0 0 0)',
-        clipPath: 'inset(50%)',
-        height: 1,
-        overflow: 'hidden',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        whiteSpace: 'nowrap',
-        width: 1,
-      });
 
     // DIALOG per l'aggiunta di un Template
     const chiudiDialogAggiuntaTemplate = () => {
@@ -105,21 +93,6 @@ function Templates() {
 
     <div className="btnsTop">
         <Button startIcon={<AddBoxIcon />} style={buttons} onClick={apriDialogAggiuntaTemplate}>Aggiungi template</Button>
-        <Button
-            style={buttons}
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-        >   
-        Upload files
-        <VisuallyHiddenInput
-            type="file"
-            onChange={(event) => console.log(event.target.files)}
-            multiple
-        />
-        </Button>
     </div>
 
 
