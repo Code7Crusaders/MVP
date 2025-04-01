@@ -26,9 +26,9 @@ class GetDashboardMetricsService(GetDashboardMetricsUseCase):
                 rating = message.get_rating()
                 if rating is not None:  
                     rated_messages_count += 1
-                    if rating == 1:
+                    if rating == True:
                         total_likes += 1
-                    elif rating == -1:
+                    elif rating == False:
                         total_dislikes += 1
 
             if rated_messages_count > 0:

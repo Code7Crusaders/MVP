@@ -289,3 +289,33 @@ export const markSupportMessageDone = async (supportMessageId) => {
     throw error;
   }
 };
+
+export const fetchDashboardMetrics = async () => {
+  const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
+
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+
+  try {
+    const response = await fetch('http://127.0.0.1:5001/dashboard/metrics', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the Authorization header with the token
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to fetch dashboard metrics');
+    }
+
+    const data = await response.json();
+    console.log('Fetched dashboard metrics:', data); // Debugging log
+    return data;
+  } catch (error) {
+    console.error('Error fetching dashboard metrics:', error); // Debugging log
+    throw error;
+  }
+};
+

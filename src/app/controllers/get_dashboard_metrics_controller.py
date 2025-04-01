@@ -19,7 +19,7 @@ class GetDashboardMetricsController:
             return MetricsDTO(
                 total_likes=metrics_result.get_total_likes(),
                 total_dislikes=metrics_result.get_total_dislikes(),
-                total_messages=metrics_result.get_total_dislikes(),
+                total_messages=metrics_result.get_total_messages(),
                 positive_rating=metrics_result.get_positive_rating()
             )
 
