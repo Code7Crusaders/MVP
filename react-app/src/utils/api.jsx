@@ -319,3 +319,32 @@ export const fetchDashboardMetrics = async () => {
   }
 };
 
+export const fetchTemplateList = async () => {
+  const token = localStorage.getItem('token'); 
+
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+
+  try {
+    const response = await fetch('http://127.0.0.1:5001/template/get_list', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to fetch template list');
+    }
+
+    const data = await response.json();
+    console.log('Fetched template list:', data); 
+    return data;
+  } catch (error) {
+    console.error('Error fetching template list:', error); 
+    throw error;
+  }
+};
+
