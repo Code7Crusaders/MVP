@@ -3,12 +3,13 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url("../assets/provaSfondo.png");
-  background-size: cover;
+  background: linear-gradient(270deg, slateblue, #5183fe, slateblue);
+  background-size: 400% 400%;
   background-position: center;
   line-height: 1em;
   font-size: 16px;
   font-family: 'Arial', sans-serif;
+  animation: gradientAnimation 10s ease infinite;
 }
 
 .register-form {
