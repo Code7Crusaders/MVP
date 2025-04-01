@@ -348,3 +348,68 @@ export const fetchTemplateList = async () => {
   }
 };
 
+export const deleteTemplate = async (templateId) => {
+  const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
+
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+
+  try {
+    const response = await fetch(`http://127.0.0.1:5001/template/delete/${templateId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the Authorization header with the token
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `Failed to delete template with id ${templateId}`);
+    }
+
+    const data = await response.json();
+    console.log(`Template with id ${templateId} deleted successfully:`, data); // Debugging log
+    return data;
+  } catch (error) {
+    console.error(`Error deleting template with id ${templateId}:`, error); // Debugging log
+    throw error;
+  }
+};
+
+export const saveTemplate = async (templateData) => {
+  const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
+
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+
+  if (!templateData || typeof templateData !== 'object') {
+    console.error('Error: Invalid template data provided', templateData);
+    throw new Error('Invalid template data');
+  }
+
+  try {
+    const response = await fetch('http://127.0.0.1:5001/template/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, // Add the Authorization header with the token
+      },
+      body: JSON.stringify(templateData), // Send the template data as JSON
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error response from server:', errorData); // Debugging log
+      throw new Error(errorData.error || 'Failed to save template');
+    }
+
+    const data = await response.json();
+    console.log('Template saved:', data); // Debugging log
+    return data;
+  } catch (error) {
+    console.error('Error saving template:', error); // Debugging log
+    throw error;
+  }
+};
