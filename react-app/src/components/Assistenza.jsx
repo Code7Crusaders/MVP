@@ -5,6 +5,8 @@ import { useTheme } from '@mui/material/styles';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ReplyIcon from '@mui/icons-material/Reply';
 import '../css/Assistenza.css';
+import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import { Tooltip } from '@mui/material';
 
 const SupportRequests = () => {
   const theme = useTheme();
@@ -55,35 +57,36 @@ const SupportRequests = () => {
       <div className="request-list">
         {supportMessages.map((message) => (
           <div key={message.id} className="request-item" style={inputChatStyle}>
+            <div className="statusContainer">
             <div
               className="status-dot"
               style={{
                 backgroundColor: message.status ? 'green' : 'red',
               }}
             />
+            </div>
+            
             <div className="request-info">
-              <div className="request-header">
-                <span className="request-title">{message.subject}</span>
-                <span className="separator">|</span>
+              <div className="userdate">
                 <span className="request-category">{message.user_id}</span>
                 <span className="separator">|</span>
                 <span className="request-date">{new Date(message.created_at).toLocaleDateString()}</span>
               </div>
+                
+              <div className="request-header">
+                <span className="request-title">{message.subject}</span>
+              </div>
               <div className="request-description">{message.description}</div>
-              <div className="icons">
-                <button
-                  alt="Elimina richiesta assistenza"
-                  title="Elimina richiesta assistenza"
-                  style={buttons}
-                >
-                  <DeleteForeverIcon />
-                </button>
+            </div>
+
+            <div className="buttonsContainer">
+            <div className="icons">
                 <button
                   alt="Rispondi alla richiesta di assistenza"
                   title="Rispondi alla richiesta"
                   style={buttons}
                 >
-                  <ReplyIcon />
+                  <MarkEmailReadIcon />
                 </button>
               </div>
             </div>

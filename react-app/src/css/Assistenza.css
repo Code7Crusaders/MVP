@@ -16,12 +16,16 @@
     padding: 15px;
     margin: 10px 0;
     border-radius: 4px;
-    border: 1px solid #333;
+    border: 0.2px solid #464646;
 }
   
+.statusContainer{
+    margin: 10px;
+}
+
 .status-dot {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     margin-right: 15px;
 }
@@ -34,9 +38,15 @@
     background-color: #00c851;
 }
   
+.userdate{
+    padding: 7px 0; 
+    margin-bottom: 7px;
+}
+
 .request-title {
-    font-weight: bold;
+    font-weight: 500;
     margin-right: 10px;
+    font-size: 18px;
 }
   
 .request-info {
@@ -44,7 +54,8 @@
 }
   
 .separator {
-    color: #999;
+    color: grey;
+    font-size: large;
     margin: 0 10px;
 }
   
@@ -54,12 +65,37 @@
     margin-bottom: 5px;
 }  
   
+.request-category{
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
 .request-date {
-    font-size: 0.9em;
+    font-size: 1em;
+    font-weight: 300;
 }
   
+.request-title{
+    font-size: 1.1em;
+    font-weight: 550;
+}
+
 .request-description {
-    font-size: 0.9em;
+    font-size: 1em;
+    font-weight: 200;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+    padding-left: 40px;
+    margin-right: 25px;
+  }
+  
+button{
+    cursor: pointer;
 }
 
 .icons > button{
