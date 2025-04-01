@@ -31,7 +31,6 @@ const SupportRequests = () => {
     const loadSupportMessages = async () => {
       try {
         const messages = await fetchSupportMessages();
-        // Ordina le richieste: prima quelle con status false (rosse), poi quelle con status true (verdi)
         const sortedMessages = messages.sort((a, b) => a.status - b.status);
         setSupportMessages(sortedMessages);
       } catch (err) {
