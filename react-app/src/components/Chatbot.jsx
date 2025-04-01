@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/chat.css';
@@ -5,8 +6,6 @@ import { useTheme } from '@mui/material/styles';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import SendIcon from '@mui/icons-material/Send';
-import QuickreplyIcon from '@mui/icons-material/Quickreply';
-import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -21,6 +20,9 @@ import {
 } from '../utils/MessageHandler';
 import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Alert } from '@mui/material';
 import { Button } from '@mui/material';
+import CircularProgress, {
+  circularProgressClasses,
+} from '@mui/material/CircularProgress';
 
 function Chatbot({ chatId, chatTitle }) {
   const [messages, setMessages] = useState([]); // State to store chat messages
@@ -196,10 +198,13 @@ function Chatbot({ chatId, chatTitle }) {
 
         {/* Loading indicator */}
         {loading && (
-          <div className="message bot">
-            <div className="texts">
-              <p>Processing...</p>
-            </div>
+          <div className="typing-indicator">
+          <span><b>Giorgione</b> sta scrivendo &nbsp;</span>
+          <div className="dot-container">
+            <div className="dot"></div>
+            <div className="dot"></div>
+            <div className="dot"></div>
+          </div>
           </div>
         )}
 
