@@ -49,10 +49,11 @@ function Chatbot({ chatId, chatTitle }) {
     color: theme.palette.mode === 'dark' ? '#333' : 'white',
   };
 
-  // Styles for timestamps
   const timeSpan = {
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
   };
+
+
 
   // Close the delete confirmation dialog
   const chiudiDialogEliminazione = () => {
@@ -152,6 +153,23 @@ function Chatbot({ chatId, chatTitle }) {
       console.error('Error handling feedback click:', error);
     }
   };
+
+
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const questions = [
+    { id: 1, text: "Cos'è React?" },
+    { id: 2, text: "Come funziona il Virtual DOM?" },
+    { id: 3, text: "Che differenza c'è tra state e props?" },
+    { id: 4, text: "Come si crea un componente in React?" },
+    { id: 5, text: "Cos'è JSX?" },
+    { id: 6, text: "Come si gestiscono gli eventi in React?" },
+    { id: 7, text: "Che cos'è un Hook in React?" },
+    { id: 8, text: "A cosa serve useEffect?" },
+    { id: 9, text: "Come si ottimizza le prestazioni in React?" },
+    { id: 10, text: "Cos'è il Context API?" },
+  ];
+
+
 
   return (
     <div className="chat">
@@ -274,17 +292,29 @@ function Chatbot({ chatId, chatTitle }) {
           horizontal: 'left', // Centrato orizzontalmente
         }}
       >
-        <div className="templatesContainer">
-          <h2>Domande Templates</h2>
-          <div className="scrollView">
-            <button>Domanda 1</button>
-            <button>Domanda 2</button>
-            <button>Domanda 3</button>
-            <button>Domanda 4</button>
-            <button>Domanda 5</button>
-            <button>Domanda 6</button>
+        <div className="questions-container">
+      <h2>Domande Templates</h2>
+      <div className="questions-list">
+        {questions.map((question) => (
+          <div 
+            key={question.id}
+            className={`question-item ${selectedQuestion === question.id ? 'selected' : ''}`}
+          >
+            <span>{question.text}</span>
+            <button 
+              className="action-btn"
+              onClick={(e) => {
+                e.stopPropagation()
+                chiudiTemplates()
+                setInputValue(question.text)
+              }}
+            >
+              Invia
+            </button>
           </div>
-        </div>
+        ))}
+      </div>
+    </div>
       </Popover>
 
     </div>

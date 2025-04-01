@@ -316,47 +316,86 @@
     height: 57px;
     padding: 10px;
     border-radius: 8px;
-    background-color: rgb(195, 195, 195);
-    color: #333;
+    background-color: rgb(165, 165, 165);
+    color: white;
     border: 0.2px solid #9c9c9c;
 }
 
-.templatesContainer {
-    height: 500px;
-    width: 300px;
-    background-color: #bebebe;
-    padding: 20px;
-    margin: 0 auto;
-  }
-  
-  h2 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .scrollView {
-    max-height: 200px; /* Imposta un'altezza fissa per la parte scrollabile */
-    overflow-y: auto; /* Rende la sezione scrollabile */
-    padding: 10px;
-  }
-  
-  .scrollView button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .scrollView button:hover {
-    background-color: #e0e0e0; /* Colore di sfondo al passaggio del mouse */
-  }
-  
-  .scrollView button:focus {
-    outline: none; /* Rimuove il bordo di focus per una visualizzazione più pulita */
-  }
+
+.questions-container {
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: none;
+  background-color: rgb(211, 210, 210);
+}
+
+.questions-container h2 {
+  color: #333;
+  text-align: center;
+  margin: 0 auto 10px;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.questions-list {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Stile della scrollbar */
+.questions-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.questions-list::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 4px;
+}
+
+.questions-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.questions-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.question-item {
+  background-color: #333;
+  color: white;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: default;
+}
+
+.question-item:hover {
+  transform: translateX(5px);
+}
+
+.action-btn {
+    margin-left: 5px;
+  padding: 8px 15px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+  background-color: #1976D2;
+}
+
+
