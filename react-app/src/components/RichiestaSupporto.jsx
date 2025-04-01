@@ -1,8 +1,13 @@
+import React from 'react';
 import { useState } from 'react';
 import '../css/RichiestaSupporto.css';
 import { useTheme } from '@mui/material/styles';
 import { sendSupportRequest } from '../utils/SupportMessageHandler'; // Import the utility function
 import { saveSupportMessage } from '../utils/api';
+import Alert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Collapse from '@mui/material/Collapse';
 
 const saveSupportRequest = async (formData) => {
   try {
@@ -44,6 +49,9 @@ const RichiestaSupporto = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  const [open, setOpen] = React.useState(true);
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -58,6 +66,7 @@ const RichiestaSupporto = () => {
       const response = await saveSupportMessage(supportMessageData);
       console.log('Response:', response);
       setSuccess(true);
+      setOpen(true)
       setFormData({ user_id: '', subject: '', description: '' });
     } catch (err) {
       setError(err.message);
@@ -78,7 +87,27 @@ const RichiestaSupporto = () => {
       <h1 style={{ paddingBottom: '5px', borderBottom: '1px solid grey', marginBottom: '30px' }}>
         Contatta l'assistenza
       </h1>
-      {success && <div className="success-message">Richiesta inviata con successo!</div>}
+      {success && <Collapse in={open}>
+                <Alert
+                    variant="filled" 
+                    severity="success"
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="small"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+                  sx={{ mb: 2 }}
+                >
+                  Richiesta inviata con successo!
+                </Alert>
+              </Collapse>}
       {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit}>
