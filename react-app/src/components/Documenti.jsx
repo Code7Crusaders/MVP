@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../css/Documenti.css';
 import { useTheme } from "@emotion/react";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material"; // Importa CircularProgress
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -9,13 +9,18 @@ import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
+import { uploadFile } from "../utils/api"; 
 
 function Documenti() {
     const theme = useTheme();
 
     const [fileName, setFileName] = useState("Nessuno");
-    const [alertVisible, setAlertVisible] = useState(false); 
+    const [selectedFile, setSelectedFile] = useState(null); 
+    const [alertVisible, setAlertVisible] = useState(false);
     const [open, setOpen] = React.useState(true);
+    const [uploadSuccess, setUploadSuccess] = useState(false); 
+    const [uploadError, setUploadError] = useState(""); 
+    const [isUploading, setIsUploading] = useState(false); 
 
     const inputChatStyle = {
         backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
@@ -48,16 +53,41 @@ function Documenti() {
         if (selectedFile) {
             const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
             if (fileExtension === 'txt' || fileExtension === 'pdf') {
-                setFileName(selectedFile.name); 
-                setAlertVisible(false); 
+                setFileName(selectedFile.name);
+                setSelectedFile(selectedFile); 
+                setAlertVisible(false);
             } else {
                 setFileName("Nessuno");
-                setAlertVisible(true); 
+                setSelectedFile(null); 
+                setAlertVisible(true);
                 setOpen(true);
             }
         } else {
             setFileName("Nessuno");
-            setAlertVisible(false); 
+            setSelectedFile(null);
+            setAlertVisible(false);
+        }
+    };
+
+    const handleUpload = async () => {
+        if (!selectedFile) {
+            setUploadError("Nessun file selezionato per il caricamento.");
+            return;
+        }
+
+        setIsUploading(true); 
+        setUploadSuccess(false);
+        setUploadError("");
+
+        try {
+            const response = await uploadFile(selectedFile);
+            console.log("File caricato con successo:", response);
+            setUploadSuccess(true);
+        } catch (error) {
+            console.error("Errore durante il caricamento del file:", error);
+            setUploadError(error.message || "Errore sconosciuto durante il caricamento.");
+        } finally {
+            setIsUploading(false); 
         }
     };
 
@@ -65,31 +95,41 @@ function Documenti() {
         <div className="all">
             <h1 style={{ paddingBottom: '5px', borderBottom: '1px solid grey' }}>Aggiungi documento</h1>
 
-
             {alertVisible && (
                 <Collapse in={open}>
-                <Alert
-                    variant="filled" 
-                    severity="error"
-                  action={
-                    <IconButton
-                      aria-label="close"
-                      color="inherit"
-                      size="small"
-                      onClick={() => {
-                        setOpen(false);
-                      }}
+                    <Alert
+                        variant="filled"
+                        severity="error"
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setOpen(false);
+                                }}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        sx={{ mb: 2 }}
                     >
-                      <CloseIcon fontSize="inherit" />
-                    </IconButton>
-                  }
-                  sx={{ mb: 2 }}
-                >
-                  Formato non supportato! I file caricati devono essere in formato '.pdf' o '.txt'
-                </Alert>
-              </Collapse>
+                        Formato non supportato! I file caricati devono essere in formato '.pdf' o '.txt'
+                    </Alert>
+                </Collapse>
             )}
 
+            {uploadSuccess && (
+                <Alert severity="success" sx={{ mb: 2 }}>
+                    File caricato con successo!
+                </Alert>
+            )}
+
+            {uploadError && (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                    {uploadError}
+                </Alert>
+            )}
 
             <div className="uploadBox" style={inputChatStyle}>
                 <Button
@@ -104,7 +144,7 @@ function Documenti() {
                     <VisuallyHiddenInput
                         type="file"
                         onChange={handleFileChange}
-                        multiple
+                        multiple={false}
                     />
                 </Button>
 
@@ -114,7 +154,17 @@ function Documenti() {
                 </div>
             </div>
 
-            <Button startIcon={<AddCircleIcon />} className="btnBottom" style={buttons}>
+            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                {isUploading && <CircularProgress />} {}
+            </div>
+
+            <Button
+                startIcon={<AddCircleIcon />}
+                className="btnBottom"
+                style={buttons}
+                onClick={handleUpload} 
+                disabled={isUploading} 
+            >
                 Aggiungi Documento
             </Button>
         </div>

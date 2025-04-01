@@ -320,7 +320,7 @@ export const fetchDashboardMetrics = async () => {
 };
 
 export const fetchTemplateList = async () => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
 
   if (!token) {
     throw new Error('Authentication token is missing');
@@ -330,7 +330,7 @@ export const fetchTemplateList = async () => {
     const response = await fetch('http://127.0.0.1:5001/template/get_list', {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`, 
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -340,10 +340,10 @@ export const fetchTemplateList = async () => {
     }
 
     const data = await response.json();
-    console.log('Fetched template list:', data); 
+    console.log('Fetched template list:', data);
     return data;
   } catch (error) {
-    console.error('Error fetching template list:', error); 
+    console.error('Error fetching template list:', error);
     throw error;
   }
 };
@@ -413,3 +413,41 @@ export const saveTemplate = async (templateData) => {
     throw error;
   }
 };
+
+export const uploadFile = async (file) => {
+  const token = localStorage.getItem('token'); 
+
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+
+  if (!file) {
+    throw new Error('No file provided');
+  }
+
+  const formData = new FormData();
+  formData.append('file', file); 
+
+  try {
+    const response = await fetch('http://127.0.0.1:5001/api/add_file', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+      body: formData, 
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to upload file');
+    }
+
+    const data = await response.json();
+    console.log('File uploaded successfully:', data); 
+    return data;
+  } catch (error) {
+    console.error('Error uploading file:', error); 
+    throw error;
+  }
+};
+

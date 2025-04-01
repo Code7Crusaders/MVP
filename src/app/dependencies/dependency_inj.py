@@ -155,8 +155,8 @@ def initialize_langchain() -> LangChainAdapter:
         
         model = ChatOpenAI(
             model="gpt-4o-mini", 
-            max_tokens=2000, 
-            temperature=0.5, 
+            max_tokens=4000, 
+            temperature=0.7, 
             request_timeout=15
         )
 

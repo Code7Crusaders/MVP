@@ -55,7 +55,7 @@ class LangChainRepository:
             # Trim history if needed
             trimmed_history = trim_messages(
                 history,
-                max_tokens=1000,
+                max_tokens=2000,
                 strategy="last",
                 include_system=True,
                 token_counter=self.model
