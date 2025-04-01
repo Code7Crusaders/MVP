@@ -97,9 +97,9 @@ function Templates() {
 
     try {
       await saveTemplate(nuovoTemplate);
-      const updatedTemplates = await fetchTemplateList(); 
-      setTemplates(updatedTemplates); 
-      setAggTemplateOpen(false); 
+      const updatedTemplates = await fetchTemplateList();
+      setTemplates(updatedTemplates);
+      setAggTemplateOpen(false);
     } catch (error) {
       console.error('Errore durante il salvataggio del template:', error);
       alert('Errore durante il salvataggio del template.');
@@ -151,8 +151,8 @@ function Templates() {
   };
 
   const apriDialogModifica = (templateId) => {
-    setSelectedTemplateId(templateId); 
-    setModificaOpen(true); 
+    setSelectedTemplateId(templateId);
+    setModificaOpen(true);
   };
 
 
@@ -187,7 +187,9 @@ function Templates() {
               id={`panel${index}-header`}
             >
               <Typography component="span" style={{ fontSize: '22px', fontWeight: '600' }}>
-                {`Template ID: ${template.id}`} { }
+                {template.question.length > 30
+                  ? `${template.question.substring(0, 30)}...`
+                  : template.question}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className='contenuto'>
