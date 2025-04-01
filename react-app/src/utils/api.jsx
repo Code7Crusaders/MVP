@@ -260,3 +260,32 @@ export const fetchSupportMessages = async () => {
     throw error;
   }
 };
+
+export const markSupportMessageDone = async (supportMessageId) => {
+  const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
+
+  if (!token) {
+    throw new Error('Authentication token is missing');
+  }
+
+  try {
+    const response = await fetch(`http://127.0.0.1:5001/support_message/mark_done/${supportMessageId}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the Authorization header with the token
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to mark support message as done');
+    }
+
+    const data = await response.json();
+    console.log('Support message marked as done:', data); // Debugging log
+    return data;
+  } catch (error) {
+    console.error('Error marking support message as done:', error); // Debugging log
+    throw error;
+  }
+};

@@ -443,6 +443,7 @@ def save_support_message():
 
     return jsonify({"message": f"Support message saved with id: {saved_id}"}), 200
 
+
 @app.route("/support_message/mark_done/<int:support_message_id>", methods=["POST"])
 @admin_required
 def mark_support_message_done(support_message_id):

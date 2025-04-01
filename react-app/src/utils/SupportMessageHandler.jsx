@@ -1,4 +1,4 @@
-import { fetchSupportMessages as fetchSupportMessagesAPI } from './api';
+import { fetchSupportMessages as fetchSupportMessagesAPI, markSupportMessageDone as markSupportMessageDoneAPI } from './api';
 
 export const sendSupportRequest = async (formData) => {
     const response = await fetch('/api/support', {
@@ -21,3 +21,14 @@ export const fetchSupportMessages = async () => {
         throw error;
     }
 };
+
+export const markSupportMessageDone = async (supportMessageId) => {
+    try {
+        const result = await markSupportMessageDoneAPI(supportMessageId);
+        return result;
+    } catch (error) {
+        console.error('Error in SupportMessageHandler while marking support message as done:', error);
+        throw error;
+    }
+};
+

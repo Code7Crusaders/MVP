@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchSupportMessages } from '../utils/SupportMessageHandler';
+import { fetchSupportMessages, markSupportMessageDone } from '../utils/SupportMessageHandler';
 import '../css/chat.css';
 import { useTheme } from '@mui/material/styles';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -17,9 +17,6 @@ const SupportRequests = () => {
   const inputChatStyle = {
     backgroundColor: theme.palette.mode === 'dark' ? 'rgba(17, 25, 40, 0.9)' : '#ededed',
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
-    '&::placeholder': {
-      color: theme.palette.mode === 'dark' ? 'lightgray' : 'gray',
-    },
   };
 
   const buttons = {
@@ -31,7 +28,6 @@ const SupportRequests = () => {
     const loadSupportMessages = async () => {
       try {
         const messages = await fetchSupportMessages();
-        // const sortedMessages = messages.sort((a, b) => a.status - b.status);
         setSupportMessages(messages);
       } catch (err) {
         setError(err.message);
@@ -42,6 +38,19 @@ const SupportRequests = () => {
 
     loadSupportMessages();
   }, []);
+
+  const handleMarkAsDone = async (messageId) => {
+    try {
+      await markSupportMessageDone(messageId);
+      setSupportMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message.id === messageId ? { ...message, status: true } : message
+        )
+      );
+    } catch (error) {
+      console.error('Error marking message as done:', error);
+    }
+  };
 
   if (loading) {
     return <div>Caricamento in corso...</div>;
@@ -82,14 +91,17 @@ const SupportRequests = () => {
 
             <div className="buttonsContainer">
               <div className="icons">
-                {!message.status && ( // Mostra il pulsante solo se lo stato è false
+                {!message.status && (
                   <Tooltip title="Rispondi" placement="bottom">
-                    <button
-                      alt="Rispondi alla richiesta di assistenza"
-                      style={buttons}
-                    >
-                      <MarkEmailReadIcon />
-                    </button>
+                    <div>
+                      <button
+                        alt="Rispondi alla richiesta di assistenza"
+                        style={buttons}
+                        onClick={() => handleMarkAsDone(message.id)}
+                      >
+                        <MarkEmailReadIcon />
+                      </button>
+                    </div>
                   </Tooltip>
                 )}
               </div>
