@@ -1,13 +1,20 @@
+import React from 'react';
 import { Button } from '@mui/material';
 import '../css/LoadChat.css';
 import { useTheme } from '@mui/material/styles';
 import SendIcon from '@mui/icons-material/Send';
 import { useState } from 'react';
 import { createChat } from '../utils/MessageHandler';
+import Alert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Collapse from '@mui/material/Collapse';
 
 function LoadChat() {
 
     const [inputValue, setInputValue] = useState('');
+    const [alertVisible, setAlertVisible] = useState(false); 
+    const [open, setOpen] = React.useState(true);
 
     const theme = useTheme();
 
@@ -23,7 +30,8 @@ function LoadChat() {
 
     const handleCreateChat = () => {
         if (!inputValue.trim()) { 
-            // implement
+            setAlertVisible(true)
+            setOpen(true)
             return;
         }
         createChat(inputValue); 
@@ -33,6 +41,36 @@ function LoadChat() {
     return (
         <>
             <div className="container">
+
+            {alertVisible && (
+                <Collapse in={open}>
+                <Alert
+                    style={{
+                        top: '100px',
+                        position: 'fixed', 
+                        transform: 'translateX(-50%)'
+                    }}
+                    variant="filled" 
+                    severity="error"
+                  action={
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      size="small"
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+                  sx={{ mb: 2 }}
+                >
+                  Attenzione! Riempire il campo 'Titolo' richiesto per avviare una nuova Chat
+                </Alert>
+              </Collapse>
+            )}
+
                 <p id='user'>Ciao User</p>
                 <div className="start">
                     <p className='scope'>Inizia una nuova conversazione</p>
