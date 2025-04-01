@@ -3,10 +3,11 @@ from models.message_model import MessageModel
 from ports.get_message_port import GetMessagePort
 from ports.get_messages_by_conversation_port import GetMessagesByConversationPort
 from ports.save_message_port import SaveMessagePort
+from ports.get_all_messages_port import GetAllMessagesPort
 
 from entities.message_entity import MessageEntity
 
-class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConversationPort):
+class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConversationPort, GetAllMessagesPort):
 
     def __init__(self, message_postgres_repository: MessagePostgresRepository):
         self.message_postgres_repository = message_postgres_repository
@@ -113,6 +114,30 @@ class MessagePostgresAdapter(GetMessagePort, SaveMessagePort, GetMessagesByConve
             )
 
             return self.message_postgres_repository.update_message_rating(message_entity)
+        
+        except Exception as e:
+            raise e
+        
+    def fetch_messages(self) -> list[MessageModel]:
+        """
+        Fetch the dashboard metrics data.
+        Returns:
+            list[MessageModel]: A list of MessageModel objects containing the messages data.
+        """
+        try:
+            messages = self.message_postgres_repository.fetch_messages()
+
+            return [
+                MessageModel(
+                    id=message.get_id(),
+                    text=message.get_text(),
+                    created_at=message.get_created_at(),
+                    is_bot=message.get_is_bot(),
+                    conversation_id=message.get_conversation_id(),
+                    rating=message.get_rating()
+                )
+                for message in messages
+            ]
         
         except Exception as e:
             raise e

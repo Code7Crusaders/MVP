@@ -154,3 +154,32 @@ class MessagePostgresRepository:
                 cursor.execute(update_rating_query, params)
                 connection.commit()
                 return cursor.rowcount > 0
+
+    def fetch_messages(self) -> list[MessageEntity]:
+        """
+        Fetch the dashboard metrics data.
+        Returns:
+            list[MessageEntity]: A list of MessageEntity objects containing the messages data.
+        """
+
+        select_messages_query = """
+        SELECT id, text, created_at, is_bot, conversation_id, rating
+        FROM Messages;
+        """
+        with self.__connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(select_messages_query)
+                rows = cursor.fetchall()
+                if rows:
+                    return [
+                        MessageEntity(
+                            id=row[0],
+                            text=row[1],
+                            created_at=row[2],
+                            is_bot=row[3],
+                            conversation_id=row[4],
+                            rating=row[5]
+                        ) for row in rows
+                    ]
+                else:
+                    return []

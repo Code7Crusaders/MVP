@@ -20,6 +20,7 @@ from controllers.get_conversation_controller import GetConversationController
 from controllers.get_conversations_controller import GetConversationsController
 from controllers.get_message_controller import GetMessageController
 from controllers.get_messages_by_conversation_controller import GetMessagesByConversationController
+from controllers.get_dashboard_metrics_controller import GetDashboardMetricsController
 from controllers.get_support_message_controller import GetSupportMessageController
 from controllers.get_support_messages_controller import GetSupportMessagesController
 from controllers.mark_done_support_message_contoller import MarkDoneSupportMessagesController
@@ -45,6 +46,7 @@ from services.get_conversation_service import GetConversationService
 from services.get_conversations_service import GetConversationsService
 from services.get_message_service import GetMessageService
 from services.get_messages_by_conversation_service import GetMessagesByConversationService 
+from services.get_dashboard_metrics_services import GetDashboardMetricsService
 from services.get_support_message_service import GetSupportMessageService
 from services.get_support_messages_service import GetSupportMessagesService
 from services.mark_done_support_message_services import MarkDoneSupportMessagesService
@@ -306,6 +308,7 @@ def dependency_injection(app : Flask) -> dict[str, object]:
         get_messages_by_conversation_service = GetMessagesByConversationService(message_postgres_adapter) 
         save_message_service = SaveMessageService(message_postgres_adapter)
         update_message_rating_service = UpdateMessageRatingService(message_postgres_adapter)
+        get_dashboard_metrics_service = GetDashboardMetricsService(message_postgres_adapter)
 
         get_support_message_service = GetSupportMessageService(support_message_postgres_adapter)
         get_support_messages_service = GetSupportMessagesService(support_message_postgres_adapter)
@@ -335,6 +338,7 @@ def dependency_injection(app : Flask) -> dict[str, object]:
         get_messages_by_conversation_controller = GetMessagesByConversationController(get_messages_by_conversation_service)
         save_message_controller = SaveMessageController(save_message_service)
         update_message_rating_controller = UpdateMessageRatingController(update_message_rating_service)
+        get_dashboard_metrics_controller = GetDashboardMetricsController(get_dashboard_metrics_service)
 
         get_support_message_controller = GetSupportMessageController(get_support_message_service)
         get_support_messages_controller = GetSupportMessagesController(get_support_messages_service)
@@ -369,7 +373,8 @@ def dependency_injection(app : Flask) -> dict[str, object]:
             "registration_controller": registration_controller,
             "authentication_controller": authentication_controller,
             "delete_conversation_controller": delete_conversation_controller,
-            "mark_done_support_message_controller": mark_done_support_message_controller
+            "mark_done_support_message_controller": mark_done_support_message_controller,
+            "get_dashboard_metrics_controller": get_dashboard_metrics_controller
         }
 
         return dependencies
