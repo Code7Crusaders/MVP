@@ -52,6 +52,7 @@ get_support_messages_controller = dependencies["get_support_messages_controller"
 save_support_message_controller = dependencies["save_support_message_controller"]
 mark_done_support_message_controller = dependencies["mark_done_support_message_controller"]
 update_message_rating_controller = dependencies["update_message_rating_controller"]
+get_dashboard_metrics_controller = dependencies["get_dashboard_metrics_controller"]
 
 delete_template_controller = dependencies["delete_template_controller"]
 get_template_controller = dependencies["get_template_controller"]
@@ -359,6 +360,28 @@ def update_message_rating():
         return jsonify({"error": str(e)}), 500
 
     return jsonify({"message": f"Message rating updated with id: {message.get_id()}"}), 200
+
+@app.route("/dashboard/metrics", methods=["GET"])
+@admin_required
+def get_dashboard_metrics():
+    """
+    Endpoint to calculate and return dashboard metrics.
+    curl -X GET http://127.0.0.1:5001/dashboard/metrics \
+    -H "Authorization: Bearer <your_token>"
+    """
+    try:
+        
+        metrics_dto = get_dashboard_metrics_controller.get_dashboard_metrics()
+
+        return jsonify({
+            "total_likes": metrics_dto.get_total_likes(),
+            "total_dislikes": metrics_dto.get_total_dislikes(),
+            "total_messages": metrics_dto.get_total_messages(),
+            "positive_rating": metrics_dto.get_positive_rating()
+        }), 200
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 # ---- Support Message Routes ----
