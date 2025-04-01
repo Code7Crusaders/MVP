@@ -31,7 +31,9 @@ const SupportRequests = () => {
     const loadSupportMessages = async () => {
       try {
         const messages = await fetchSupportMessages();
-        setSupportMessages(messages);
+        // Ordina le richieste: prima quelle con status false (rosse), poi quelle con status true (verdi)
+        const sortedMessages = messages.sort((a, b) => a.status - b.status);
+        setSupportMessages(sortedMessages);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -58,21 +60,21 @@ const SupportRequests = () => {
         {supportMessages.map((message) => (
           <div key={message.id} className="request-item" style={inputChatStyle}>
             <div className="statusContainer">
-            <div
-              className="status-dot"
-              style={{
-                backgroundColor: message.status ? 'green' : 'red',
-              }}
-            />
+              <div
+                className="status-dot"
+                style={{
+                  backgroundColor: message.status ? 'green' : 'red',
+                }}
+              />
             </div>
-            
+
             <div className="request-info">
               <div className="userdate">
                 <span className="request-category">{message.user_id}</span>
                 <span className="separator">|</span>
                 <span className="request-date">{new Date(message.created_at).toLocaleDateString()}</span>
               </div>
-                
+
               <div className="request-header">
                 <span className="request-title">{message.subject}</span>
               </div>
@@ -80,14 +82,18 @@ const SupportRequests = () => {
             </div>
 
             <div className="buttonsContainer">
-            <div className="icons">
-                <Tooltip title="Rispondi" placement="bottom"><button
-                  alt="Rispondi alla richiesta di assistenza"
-                  title="Rispondi alla richiesta"
-                  style={buttons}
-                >
-                  <MarkEmailReadIcon />
-                </button></Tooltip>
+              <div className="icons">
+                {!message.status && ( // Mostra il pulsante solo se lo stato è false
+                  <Tooltip title="Rispondi" placement="bottom">
+                    <button
+                      alt="Rispondi alla richiesta di assistenza"
+                      title="Rispondi alla richiesta"
+                      style={buttons}
+                    >
+                      <MarkEmailReadIcon />
+                    </button>
+                  </Tooltip>
+                )}
               </div>
             </div>
           </div>
