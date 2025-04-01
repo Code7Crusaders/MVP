@@ -81,13 +81,13 @@ const SupportRequests = () => {
 
             <div className="buttonsContainer">
             <div className="icons">
-                <button
+                <Tooltip title="Rispondi" placement="bottom"><button
                   alt="Rispondi alla richiesta di assistenza"
                   title="Rispondi alla richiesta"
                   style={buttons}
                 >
                   <MarkEmailReadIcon />
-                </button>
+                </button></Tooltip>
               </div>
             </div>
           </div>
