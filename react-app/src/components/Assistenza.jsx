@@ -62,7 +62,7 @@ const SupportRequests = () => {
 
   return (
     <div className="support-container">
-      <h1>Richieste di Assistenza</h1>
+      <h1 style={{paddingBottom: '5px', borderBottom: '1px solid grey'}}>Richieste di Assistenza</h1>
 
       <div className="request-list">
         {supportMessages.map((message) => (
