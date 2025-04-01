@@ -144,7 +144,7 @@ function Chatbot({ chatId, chatTitle }) {
           <p>{chatTitle || 'Chat'}</p> {/* Display the chat title */}
         </div>
         <div className="icons">
-          <Tooltip title="Delete Chat" placement="bottom">
+          <Tooltip title="Elimina Chat" placement="bottom">
             <button className="btnsTop" style={buttons} onClick={apriDialogEliminazione}>
               <DeleteForeverIcon />
             </button>
@@ -214,7 +214,7 @@ function Chatbot({ chatId, chatTitle }) {
       <div className="bottom">
         <input
           type="text"
-          placeholder="Write a message..."
+          placeholder="Scrivi un messaggio..."
           style={inputChatStyle}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -231,11 +231,11 @@ function Chatbot({ chatId, chatTitle }) {
 
       {/* Dialog for chat deletion */}
       <Dialog open={Eliminazione} onClose={chiudiDialogEliminazione}>
-        <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>CHAT TITLE</DialogContentText>
-        <DialogContentText style={{ ...{ fontSize: '16px', margin: '6px 24px 0 24px', }, ...timeSpan }}>Are you sure you want to delete this conversation?</DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>{chatTitle || 'Chat'}</DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '16px', margin: '6px 24px 0 24px', }, ...timeSpan }}>Sei sucuro di voler cancellare questa Chat?</DialogContentText>
         <DialogActions style={{ margin: '10px 16px 20px 0' }}>
-          <Button onClick={chiudiDialogEliminazione} style={buttons}>Cancel</Button>
-          <Button onClick={EliminaChat} style={buttons}>Delete Chat</Button>
+          <Button onClick={chiudiDialogEliminazione} style={buttons}>Annulla</Button>
+          <Button onClick={EliminaChat} style={buttons}>Elimina Chat</Button>
         </DialogActions>
       </Dialog>
     </div>
