@@ -24,6 +24,7 @@ class GetSupportMessagesController:
                 SupportMessageDTO(
                     id=model.get_id(),
                     user_id=model.get_user_id(),
+                    user_email=model.get_user_email(),
                     description=model.get_description(),
                     status=model.get_status(),
                     subject=model.get_subject(),

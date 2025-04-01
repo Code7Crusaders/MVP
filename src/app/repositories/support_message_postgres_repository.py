@@ -47,14 +47,18 @@ class SupportMessagePostgresRepository:
 
     def get_support_messages(self) -> list[SupportMessageEntity]:
         '''
-        Retrieves all support messages from the PostgreSQL database.
+        Retrieves all support messages from the PostgreSQL database, including user emails.
         Returns:
-            list[SupportMessageEntity]: A list of all retrieved support messages.
+            list[SupportMessageEntity]: A list of all retrieved support messages with user emails.
         Raises:
             psycopg2.Error: If an error occurs while retrieving the support messages from the PostgreSQL database.
         '''
         
-        query = "SELECT * FROM Support;"
+        query = """
+            SELECT s.id, s.user_id, u.email, s.description, s.status, s.subject, s.created_at
+            FROM Support s
+            LEFT JOIN Users u ON s.user_id = u.id;
+        """
         with self.__connect() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(query)
@@ -63,10 +67,11 @@ class SupportMessagePostgresRepository:
                     SupportMessageEntity(
                         id=row[0],
                         user_id=row[1],
-                        description=row[2],
-                        status=row[3],
-                        subject=row[4],
-                        created_at=row[5]
+                        user_email=row[2],
+                        description=row[3],
+                        status=row[4],
+                        subject=row[5],
+                        created_at=row[6]
                     )
                     for row in results
                 ]

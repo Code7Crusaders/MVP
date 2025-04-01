@@ -405,6 +405,7 @@ def get_support_messages():
     return jsonify([{
         "id": message.get_id(),
         "user_id": message.get_user_id(),
+        "user_email": message.get_user_email(),
         "description": message.get_description(),
         "status": message.get_status(),
         "subject": message.get_subject(),

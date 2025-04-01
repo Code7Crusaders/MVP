@@ -60,6 +60,7 @@ class SupportMessagePostgresAdapter(GetSupportMessagePort, GetSupportMessagesPor
                 SupportMessageModel(
                     id=support_message.id,
                     user_id=support_message.user_id,
+                    user_email=support_message.user_email,
                     description=support_message.description,
                     status=support_message.status,
                     subject=support_message.subject,

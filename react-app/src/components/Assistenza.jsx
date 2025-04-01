@@ -31,8 +31,8 @@ const SupportRequests = () => {
     const loadSupportMessages = async () => {
       try {
         const messages = await fetchSupportMessages();
-        const sortedMessages = messages.sort((a, b) => a.status - b.status);
-        setSupportMessages(sortedMessages);
+        // const sortedMessages = messages.sort((a, b) => a.status - b.status);
+        setSupportMessages(messages);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -69,7 +69,7 @@ const SupportRequests = () => {
 
             <div className="request-info">
               <div className="userdate">
-                <span className="request-category">{message.user_id}</span>
+                <span className="request-category">{message.user_email}</span>
                 <span className="separator">|</span>
                 <span className="request-date">{new Date(message.created_at).toLocaleDateString()}</span>
               </div>
@@ -86,7 +86,6 @@ const SupportRequests = () => {
                   <Tooltip title="Rispondi" placement="bottom">
                     <button
                       alt="Rispondi alla richiesta di assistenza"
-                      title="Rispondi alla richiesta"
                       style={buttons}
                     >
                       <MarkEmailReadIcon />

@@ -11,11 +11,19 @@ class GetSupportMessagesService(GetSupportMessagesUseCase):
     
     def get_support_messages(self) -> list[SupportMessageModel]:
         """
-        Retrieves all support messages.
+        Retrieves all support messages, ordered by status and creation date.
         Returns:
             list[SupportMessageModel]: A list of support messages.
         """
         try:
-            return self.get_support_messages_port.get_support_messages()
+            messages = self.get_support_messages_port.get_support_messages()
+            
+            sorted_messages = sorted(
+                messages,
+                key=lambda msg: (msg.status, -msg.created_at.timestamp())
+            )
+            
+            return sorted_messages
+
         except Exception as e:
             raise e
