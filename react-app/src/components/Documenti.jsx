@@ -87,6 +87,7 @@ function Documenti() {
         try {
             const response = await uploadFile(selectedFile);
             console.log("File caricato con successo:", response);
+            setFileName('Nessuno')
             setUploadSuccess(true);
             setOpenSuccess(true)
         } catch (error) {

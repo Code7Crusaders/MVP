@@ -22,7 +22,7 @@ const Metriche = () => {
           totalLikes: data.total_likes,
           totalDislikes: data.total_dislikes,
           totalMessages: data.total_messages,
-          positiveRating: `${data.positive_rating}%`,
+          positiveRating: `${parseFloat(data.positive_rating).toFixed(2)}%`,
         });
       } catch (error) {
         console.error('Errore durante il caricamento delle metriche:', error);
