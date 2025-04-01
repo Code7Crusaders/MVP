@@ -17,7 +17,9 @@ function Documenti() {
     const [fileName, setFileName] = useState("Nessuno");
     const [selectedFile, setSelectedFile] = useState(null); 
     const [alertVisible, setAlertVisible] = useState(false);
-    const [open, setOpen] = React.useState(true);
+    const [openAlert, setOpenAlert] = React.useState(true);
+    const [openSuccess, setOpenSuccess] = React.useState(true);
+    const [openError, setOpenError] = React.useState(true);
     const [uploadSuccess, setUploadSuccess] = useState(false); 
     const [uploadError, setUploadError] = useState(""); 
     const [isUploading, setIsUploading] = useState(false); 
@@ -56,22 +58,25 @@ function Documenti() {
                 setFileName(selectedFile.name);
                 setSelectedFile(selectedFile); 
                 setAlertVisible(false);
+                setOpenSuccess(true)
             } else {
                 setFileName("Nessuno");
                 setSelectedFile(null); 
                 setAlertVisible(true);
-                setOpen(true);
+                setOpenAlert(true);
             }
         } else {
             setFileName("Nessuno");
             setSelectedFile(null);
             setAlertVisible(false);
+            setOpenError(true)
         }
     };
 
     const handleUpload = async () => {
         if (!selectedFile) {
             setUploadError("Nessun file selezionato per il caricamento.");
+            setOpenError(true)
             return;
         }
 
@@ -83,9 +88,11 @@ function Documenti() {
             const response = await uploadFile(selectedFile);
             console.log("File caricato con successo:", response);
             setUploadSuccess(true);
+            setOpenSuccess(true)
         } catch (error) {
             console.error("Errore durante il caricamento del file:", error);
             setUploadError(error.message || "Errore sconosciuto durante il caricamento.");
+            setOpenError(true)
         } finally {
             setIsUploading(false); 
         }
@@ -96,7 +103,7 @@ function Documenti() {
             <h1 style={{ paddingBottom: '5px', borderBottom: '1px solid grey' }}>Aggiungi documento</h1>
 
             {alertVisible && (
-                <Collapse in={open}>
+                <Collapse in={openAlert}>
                     <Alert
                         variant="filled"
                         severity="error"
@@ -106,7 +113,7 @@ function Documenti() {
                                 color="inherit"
                                 size="small"
                                 onClick={() => {
-                                    setOpen(false);
+                                    setOpenAlert(false);
                                 }}
                             >
                                 <CloseIcon fontSize="inherit" />
@@ -120,15 +127,51 @@ function Documenti() {
             )}
 
             {uploadSuccess && (
-                <Alert severity="success" sx={{ mb: 2 }}>
+                <Collapse in={openSuccess}>
+                <Alert
+                    variant="filled"
+                    severity="success"
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setOpenSuccess(false);
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                >
                     File caricato con successo!
                 </Alert>
+                </Collapse>
             )}
 
             {uploadError && (
-                <Alert severity="error" sx={{ mb: 2 }}>
+                <Collapse in={openError}>
+                <Alert
+                    variant="filled"
+                    severity="error"
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setOpenError(false);
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                >
                     {uploadError}
                 </Alert>
+                </Collapse>
             )}
 
             <div className="uploadBox" style={inputChatStyle}>
