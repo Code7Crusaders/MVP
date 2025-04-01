@@ -261,7 +261,7 @@ def dependency_injection(app : Flask) -> dict[str, object]:
 
         # Secure Secret Key
         app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
-        app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=30)  # Token expires in 30 min
+        app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=100)  # Token expires in 30 min
 
         jwt = JWTManager(app)
         bcrypt = Bcrypt(app)
