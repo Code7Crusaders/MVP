@@ -20,9 +20,7 @@ import {
 } from '../utils/MessageHandler';
 import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Alert } from '@mui/material';
 import { Button } from '@mui/material';
-import CircularProgress, {
-  circularProgressClasses,
-} from '@mui/material/CircularProgress';
+import QuizIcon from '@mui/icons-material/Quiz';
 
 function Chatbot({ chatId, chatTitle }) {
   const [messages, setMessages] = useState([]); // State to store chat messages
@@ -212,6 +210,12 @@ function Chatbot({ chatId, chatTitle }) {
       </div>
 
       <div className="bottom">
+        <Tooltip title="Domande Templates" placement="top-start">
+        <button className="btnTemplate" >
+          <QuizIcon />
+        </button>
+        </Tooltip>
+
         <input
           type="text"
           placeholder="Scrivi un messaggio..."
