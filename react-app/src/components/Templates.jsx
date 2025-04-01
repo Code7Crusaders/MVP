@@ -97,9 +97,9 @@ function Templates() {
 
     try {
       await saveTemplate(nuovoTemplate);
-      const updatedTemplates = await fetchTemplateList(); // Ricarica i template aggiornati
-      setTemplates(updatedTemplates); // Aggiorna lo stato con i nuovi template
-      setAggTemplateOpen(false); // Chiudi il dialog
+      const updatedTemplates = await fetchTemplateList(); 
+      setTemplates(updatedTemplates); 
+      setAggTemplateOpen(false); 
     } catch (error) {
       console.error('Errore durante il salvataggio del template:', error);
       alert('Errore durante il salvataggio del template.');
@@ -114,13 +114,45 @@ function Templates() {
   const chiudiDialogModifica = () => {
     setModificaOpen(false);
   };
-  const ModificaDomanda = () => {
 
+  const ModificaTemplate = async () => {
+    if (!selectedTemplateId) {
+      alert('Errore: Nessun template selezionato per la modifica.');
+      return;
+    }
 
-    setModificaOpen(false);
+    const domanda = document.querySelector('input[placeholder="Domanda"]').value;
+    const risposta = document.querySelector('textarea[placeholder="Risposta"]').value;
+
+    if (!domanda || !risposta) {
+      alert('Compila tutti i campi!');
+      return;
+    }
+
+    const nuovoTemplate = {
+      question: domanda,
+      answer: risposta,
+    };
+
+    try {
+      await deleteTemplate(selectedTemplateId);
+
+      await saveTemplate(nuovoTemplate);
+
+      const updatedTemplates = await fetchTemplateList();
+      setTemplates(updatedTemplates);
+
+      setModificaOpen(false);
+      setSelectedTemplateId(null);
+    } catch (error) {
+      console.error('Errore durante la modifica del template:', error);
+      alert('Errore durante la modifica del template.');
+    }
   };
-  const apriDialogModifica = () => {
-    setModificaOpen(true);
+
+  const apriDialogModifica = (templateId) => {
+    setSelectedTemplateId(templateId); 
+    setModificaOpen(true); 
   };
 
 
@@ -170,7 +202,9 @@ function Templates() {
             </AccordionDetails>
             <AccordionActions>
               <Tooltip title='Modifica Template' placement='top'>
-                <Button style={buttons} onClick={apriDialogModifica}><EditIcon /></Button>
+                <Button style={buttons} onClick={() => apriDialogModifica(template.id)}>
+                  <EditIcon />
+                </Button>
               </Tooltip>
               <Tooltip title='Elimina Template' placement='top'>
                 <Button
@@ -212,8 +246,12 @@ function Templates() {
 
       { }
       <Dialog open={Modifica} onClose={chiudiDialogModifica} fullWidth>
-        <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...textStyle }}>Modifica Template</DialogContentText>
-        <DialogContentText style={{ ...{ fontSize: '16px', margin: '6px 24px 0 24px', }, ...textStyle }}>Template n</DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...textStyle }}>
+          Modifica Template
+        </DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '16px', margin: '6px 24px 0 24px', }, ...textStyle }}>
+          Modifica i campi seguenti per aggiornare il Template
+        </DialogContentText>
         <DialogContent style={{ paddingTop: '10px', paddingBottom: '10px' }}>
           <TextField style={{ ...{ borderRadius: '8px' }, ...inputChatStyle }}
             placeholder="Domanda"
@@ -231,7 +269,7 @@ function Templates() {
         </DialogContent>
         <DialogActions style={{ marginBottom: '20px', marginRight: '24px' }}>
           <Button onClick={chiudiDialogModifica} style={buttons}>Annulla</Button>
-          <Button onClick={ModificaDomanda} style={buttons}>Modifica</Button>
+          <Button onClick={ModificaTemplate} style={buttons}>Modifica</Button>
         </DialogActions>
       </Dialog>
 
