@@ -21,12 +21,17 @@ import {
 import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Alert } from '@mui/material';
 import { Button } from '@mui/material';
 import QuizIcon from '@mui/icons-material/Quiz';
+import Popover from '@mui/material/Popover';
 
 function Chatbot({ chatId, chatTitle }) {
   const [messages, setMessages] = useState([]); // State to store chat messages
   const [inputValue, setInputValue] = useState(''); // State for the input field value
   const [loading, setLoading] = useState(false); // State for loading indicator
   const [Eliminazione, setEliminazioneOpen] = useState(false); // State for delete confirmation dialog
+  const [Templates, setTemplatesOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null);  
+  const btnTemplateRef = useRef(null);
+
   const navigate = useNavigate();
 
   const theme = useTheme(); // Access the current theme
@@ -65,6 +70,19 @@ function Chatbot({ chatId, chatTitle }) {
   const apriDialogEliminazione = () => {
     setEliminazioneOpen(true);
   };
+
+
+
+  const apriTemplates = () => {
+    setTemplatesOpen(true)
+    setAnchorEl(btnTemplateRef.current);
+  };
+
+  const chiudiTemplates = () => {
+    setTemplatesOpen(false)
+    setAnchorEl(null);
+  };
+
 
   // Fetch messages when the component mounts or chatId changes
   useEffect(() => {
@@ -210,11 +228,9 @@ function Chatbot({ chatId, chatTitle }) {
       </div>
 
       <div className="bottom">
-        <Tooltip title="Domande Templates" placement="top-start">
-        <button className="btnTemplate" >
+        <button ref={btnTemplateRef} className="btnTemplate" onClick={apriTemplates} >
           <QuizIcon />
         </button>
-        </Tooltip>
 
         <input
           type="text"
@@ -242,6 +258,35 @@ function Chatbot({ chatId, chatTitle }) {
           <Button onClick={EliminaChat} style={buttons}>Elimina Chat</Button>
         </DialogActions>
       </Dialog>
+
+
+      
+      <Popover
+        open={Templates}
+        onClose={chiudiTemplates}
+        anchorEl={anchorEl} // Passiamo l'elemento ancorato
+        anchorOrigin={{
+          vertical: 'top', // Posiziona il popover sotto il bottone
+          horizontal: 'left', // Centrato orizzontalmente
+        }}
+        transformOrigin={{
+          vertical: 'bottom', // Il popover si apre sopra il bottone
+          horizontal: 'left', // Centrato orizzontalmente
+        }}
+      >
+        <div className="templatesContainer">
+          <h2>Domande Templates</h2>
+          <div className="scrollView">
+            <button>Domanda 1</button>
+            <button>Domanda 2</button>
+            <button>Domanda 3</button>
+            <button>Domanda 4</button>
+            <button>Domanda 5</button>
+            <button>Domanda 6</button>
+          </div>
+        </div>
+      </Popover>
+
     </div>
   );
 }
