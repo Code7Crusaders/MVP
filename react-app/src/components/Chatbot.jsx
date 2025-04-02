@@ -175,6 +175,7 @@ function Chatbot({ chatId, chatTitle }) {
   };
 
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  
   return (
     <div className="chat">
       <div className="top">
