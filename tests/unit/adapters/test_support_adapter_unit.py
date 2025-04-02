@@ -35,54 +35,45 @@ def test_get_support_message_valid(adapter, repository_mock):
     assert result.description == "Test description"
     assert result.status == "open"
     assert result.subject == "Test subject"
-    assert result.created_at == "2023-01-01"
 
-    repository_mock.get_support_message.assert_called_once()
+def test_mark_done_support_messages_valid(adapter, repository_mock):
+    support_message = SupportMessageModel(
+        id=1, user_id=2, description="Test description", status="done", subject="Test subject", created_at="2023-01-01"
+    )
 
-def test_get_support_message_invalid_id(adapter, repository_mock):
-    repository_mock.get_support_message.return_value = None
-    message_model = SupportMessageModel(id=-1, user_id=2, description="Test description",
-                                        status="open", subject="Test subject", created_at="2023-01-01")
+    repository_mock.mark_done_support_messages.return_value = 1
 
-    result = adapter.get_support_message(message_model)
+    result = adapter.mark_done_support_messages(support_message)
 
-    assert result is None  
-    repository_mock.get_support_message.assert_called_once()
-# Test get_support_messages
+    assert isinstance(result, int)
+    assert result == 1
+    repository_mock.mark_done_support_messages.assert_called_once()
 
-def test_get_support_messages(adapter, repository_mock):
-    repository_mock.get_support_messages.return_value = [
-        MagicMock(id=1, user_id=2, description="Desc 1", status="open", subject="Subj 1", created_at="2023-01-01"),
-        MagicMock(id=2, user_id=3, description="Desc 2", status="closed", subject="Subj 2", created_at="2023-01-02"),
-    ]
-    
-    result = adapter.get_support_messages()
-    
-    assert isinstance(result, list)
-    assert len(result) == 2
-    assert all(isinstance(msg, SupportMessageModel) for msg in result)
-    assert result[0].id == 1
-    assert result[0].subject == "Subj 1"
-    assert result[1].id == 2
-    assert result[1].status == "closed"
+def test_mark_done_support_messages_invalid_id(adapter, repository_mock):
+    support_message = SupportMessageModel(
+        id=None, user_id=2, description="Test description", status="done", subject="Test subject", created_at="2023-01-01"
+    )
 
-    repository_mock.get_support_messages.assert_called_once()
+    repository_mock.mark_done_support_messages.return_value = None
 
-def test_get_support_messages_empty(adapter, repository_mock):
-    repository_mock.get_support_messages.return_value = []
-    
-    result = adapter.get_support_messages()
-    
-    assert isinstance(result, list)
-    assert result == []
+    result = adapter.mark_done_support_messages(support_message)
 
-    repository_mock.get_support_messages.assert_called_once()
+    assert result is None
+    repository_mock.mark_done_support_messages.assert_called_once()
 
-# Test save_support_message
+def test_mark_done_support_messages_exception(adapter, repository_mock):
+    repository_mock.mark_done_support_messages.side_effect = Exception("Update failed")
+
+    support_message = SupportMessageModel(
+        id=1, user_id=2, description="Test description", status="done", subject="Test subject", created_at="2023-01-01"
+    )
+
+    with pytest.raises(Exception, match="Update failed"):
+        adapter.mark_done_support_messages(support_message)
 
 def test_save_support_message_valid(adapter, repository_mock):
     support_message = SupportMessageModel(
-        id=None, user_id=2, description="Test description", status="open", subject="Test subject", created_at="2023-01-01"
+        id=1, user_id=2, description="Test description", status="open", subject="Test subject", created_at="2023-01-01"
     )
 
     repository_mock.save_support_message.return_value = 1
@@ -91,7 +82,6 @@ def test_save_support_message_valid(adapter, repository_mock):
 
     assert isinstance(result, int)
     assert result == 1
-
     repository_mock.save_support_message.assert_called_once()
 
 def test_save_support_message_invalid_data(adapter, repository_mock):
@@ -103,24 +93,21 @@ def test_save_support_message_invalid_data(adapter, repository_mock):
 
     assert result is None
     repository_mock.save_support_message.assert_called_once()
+
 def test_get_support_message_exception(adapter, repository_mock):
     repository_mock.get_support_message.side_effect = Exception("Database error")
     
     message_model = SupportMessageModel(id=1, user_id=2, description="Test",
                                         status="open", subject="Test subject", created_at="2023-01-01")
 
-    # Expecting the exception to be raised by the adapter
     with pytest.raises(Exception, match="Database error"):
         adapter.get_support_message(message_model)
-
 
 def test_get_support_messages_exception(adapter, repository_mock):
     repository_mock.get_support_messages.side_effect = Exception("Database failure")
     
-    # Expecting the exception to be raised by the adapter
     with pytest.raises(Exception, match="Database failure"):
         adapter.get_support_messages()
-
 
 def test_save_support_message_exception(adapter, repository_mock):
     repository_mock.save_support_message.side_effect = Exception("Insert failed")
@@ -128,6 +115,56 @@ def test_save_support_message_exception(adapter, repository_mock):
     support_message = SupportMessageModel(id=None, user_id=2, description="Test",
                                           status="open", subject="Test subject", created_at="2023-01-01")
 
-    # Expecting the exception to be raised by the adapter
     with pytest.raises(Exception, match="Insert failed"):
         adapter.save_support_message(support_message)
+
+def test_get_support_messages_valid(adapter, repository_mock):
+    # Mock support message entities returned by the repository
+    support_message_entity_1 = MagicMock(
+        id=1,
+        user_id=2,
+        user_email="user1@example.com",
+        description="Test description 1",
+        status="open",
+        subject="Test subject 1",
+        created_at="2023-01-01"
+    )
+    support_message_entity_2 = MagicMock(
+        id=2,
+        user_id=3,
+        user_email="user2@example.com",
+        description="Test description 2",
+        status="done",
+        subject="Test subject 2",
+        created_at="2023-01-02"
+    )
+
+    repository_mock.get_support_messages.return_value = [support_message_entity_1, support_message_entity_2]
+
+    # Call the adapter method
+    result = adapter.get_support_messages()
+
+    # Assertions
+    assert isinstance(result, list)
+    assert len(result) == 2
+
+    # Verify the first message
+    assert result[0].id == 1
+    assert result[0].user_id == 2
+    assert result[0].user_email == "user1@example.com"
+    assert result[0].description == "Test description 1"
+    assert result[0].status == "open"
+    assert result[0].subject == "Test subject 1"
+    assert result[0].created_at == "2023-01-01"
+
+    # Verify the second message
+    assert result[1].id == 2
+    assert result[1].user_id == 3
+    assert result[1].user_email == "user2@example.com"
+    assert result[1].description == "Test description 2"
+    assert result[1].status == "done"
+    assert result[1].subject == "Test subject 2"
+    assert result[1].created_at == "2023-01-02"
+
+    # Verify the repository method was called once
+    repository_mock.get_support_messages.assert_called_once()

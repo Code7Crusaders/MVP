@@ -1,7 +1,8 @@
 import pytest
-from unittest.mock import MagicMock, call
+from unittest.mock import MagicMock, call, ANY
 from adapters.message_postgres_adapter import MessagePostgresAdapter
 from repositories.message_postgres_repository import MessagePostgresRepository
+from entities.message_entity import MessageEntity
 from models.message_model import MessageModel
 from models.conversation_model import ConversationModel
 
@@ -93,3 +94,52 @@ def test_save_message_invalid_text(message_adapter, message_postgres_repository_
     
     assert str(exc_info.value) == "Invalid message data"
     message_postgres_repository_mock.save_message.assert_called_once()
+
+# Test update_message_rating
+
+def test_update_message_rating_success(message_adapter, message_postgres_repository_mock):
+    message = MessageModel(id=1, text=None, created_at=None, is_bot=None, conversation_id=None, rating=5)
+    
+    # Mock repository response
+    message_postgres_repository_mock.update_message_rating.return_value = True
+
+    result = message_adapter.update_message_rating(message)
+    
+    message_postgres_repository_mock.update_message_rating.assert_called_once_with(ANY)
+    assert result is True
+
+
+def test_update_message_rating_failure(message_adapter, message_postgres_repository_mock):
+    message = MessageModel(id=1, text=None, created_at=None, is_bot=None, conversation_id=None, rating=5)
+    
+    # Simulate repository exception
+    message_postgres_repository_mock.update_message_rating.side_effect = Exception("Failed to update rating")
+    
+    with pytest.raises(Exception, match="Failed to update rating"):
+        message_adapter.update_message_rating(message)
+
+def test_fetch_messages_success(message_adapter, message_postgres_repository_mock):
+    messages = [
+        MessageEntity(id=1, text="Message 1", created_at="2025-04-02", is_bot=False, conversation_id=1, rating=5),
+        MessageEntity(id=2, text="Message 2", created_at="2025-04-02", is_bot=True, conversation_id=1, rating=4),
+    ]
+    
+    # Mock repository response
+    message_postgres_repository_mock.fetch_messages.return_value = messages
+
+    result = message_adapter.fetch_messages()
+    
+    assert len(result) == 2
+    assert result[0].get_text() == "Message 1"
+    assert result[1].get_text() == "Message 2"
+    assert result[0].get_rating() == 5
+    assert result[1].get_rating() == 4
+
+
+def test_fetch_messages_failure(message_adapter, message_postgres_repository_mock):
+    # Simulate repository exception
+    message_postgres_repository_mock.fetch_messages.side_effect = Exception("Failed to fetch messages")
+    
+    with pytest.raises(Exception, match="Failed to fetch messages"):
+        message_adapter.fetch_messages()
+

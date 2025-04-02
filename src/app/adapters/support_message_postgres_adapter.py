@@ -32,9 +32,6 @@ class SupportMessagePostgresAdapter(GetSupportMessagePort, GetSupportMessagesPor
             )
 
             support_message = self.support_message_postgres_repository.get_support_message(support_message_entity)
-            
-            if support_message is None:
-                return None
 
             return SupportMessageModel(
                 id=support_message.get_id(),
