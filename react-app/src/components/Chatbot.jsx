@@ -131,7 +131,6 @@ function Chatbot({ chatId, chatTitle }) {
       setMessages((prevMessages) => [...prevMessages, savedMessage]);
       setInputValue('');
 
-      // Controlla se il messaggio è un template
       const selectedTemplate = templateList.find((template) => template.question === inputValue);
       if (selectedTemplate) {
         // Mostra la risposta del template come messaggio bot
@@ -144,7 +143,6 @@ function Chatbot({ chatId, chatTitle }) {
         };
         setMessages((prevMessages) => [...prevMessages, botMessage]);
       } else {
-        // Se non è un template, chiama il modello LLM
         setLoading(true);
         const botMessage = await interactWithChat(inputValue, chatId);
         setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -175,7 +173,7 @@ function Chatbot({ chatId, chatTitle }) {
   };
 
   const [selectedQuestion, setSelectedQuestion] = useState(null);
-  
+
   return (
     <div className="chat">
       <div className="top">
@@ -285,14 +283,14 @@ function Chatbot({ chatId, chatTitle }) {
       <Popover
         open={Templates}
         onClose={chiudiTemplates}
-        anchorEl={anchorEl} // Passiamo l'elemento ancorato
+        anchorEl={anchorEl} 
         anchorOrigin={{
-          vertical: 'top', // Posiziona il popover sotto il bottone
-          horizontal: 'left', // Centrato orizzontalmente
+          vertical: 'top', 
+          horizontal: 'left', 
         }}
         transformOrigin={{
-          vertical: 'bottom', // Il popover si apre sopra il bottone
-          horizontal: 'left', // Centrato orizzontalmente
+          vertical: 'bottom', 
+          horizontal: 'left', 
         }}
       >
         <div className="questions-container">
@@ -311,7 +309,7 @@ function Chatbot({ chatId, chatTitle }) {
                     chiudiTemplates();
 
                     try {
-                      // Salva la domanda come messaggio utente
+                      
                       const userMessage = {
                         text: template.question,
                         conversation_id: chatId,
@@ -322,7 +320,7 @@ function Chatbot({ chatId, chatTitle }) {
                       const savedUserMessage = await saveNewMessage(userMessage);
                       setMessages((prevMessages) => [...prevMessages, savedUserMessage]);
 
-                      // Salva la risposta come messaggio bot
+                      
                       const botMessage = {
                         text: template.answer,
                         conversation_id: chatId,
