@@ -1,4 +1,5 @@
 import pytest
+from datetime import datetime
 from unittest.mock import MagicMock
 from services.get_support_messages_service import GetSupportMessagesService
 from models.support_message_model import SupportMessageModel
@@ -16,8 +17,8 @@ def get_support_messages_service(get_support_messages_port_mock):
 
 def test_get_support_messages_valid(get_support_messages_service, get_support_messages_port_mock):
     support_messages = [
-        SupportMessageModel(id="1"),
-        SupportMessageModel(id="2"),
+        SupportMessageModel(id="1", created_at= datetime(2023, 10, 2)),
+        SupportMessageModel(id="2", created_at= datetime(2023, 10, 1)),
     ]
     
     # Mock the port method to return a list of support messages

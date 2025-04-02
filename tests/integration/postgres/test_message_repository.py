@@ -69,8 +69,9 @@ def test_get_messages_by_conversation(repository):
 def test_get_messages_by_conversation_empty(repository):
     """Test retrieving messages for a conversation with no messages."""
     conversation = MessageEntity(conversation_id=-1)  # Non-existing conversation ID in your database
-    with pytest.raises(ValueError):
-        repository.get_messages_by_conversation(conversation)
+    result_messages = repository.get_messages_by_conversation(conversation)
+
+    assert result_messages == [], "Expected an empty list for a conversation with no messages"
 
 def test_save_delete_message(repository):
     """Test saving and deleting a message in the database."""
