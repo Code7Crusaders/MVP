@@ -10,7 +10,7 @@
 
 ## Project Overview
 
-This project is a Flask-based web application that provides API endpoints for handling chat-related functionalities. It is designed to be lightweight, easy to set up, and extendable.
+This project is a React Flask-based web application that provides API endpoints for handling chat-related functionalities. It is designed to be lightweight, easy to set up, and extendable.
 
 ## Project Structure
 
