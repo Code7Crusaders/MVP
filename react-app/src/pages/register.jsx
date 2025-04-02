@@ -37,8 +37,9 @@ const Register = () => {
       return;
     }
 
-    if (formData.phone && formData.phone.length !== 16) {
-      setError('Il numero di telefono deve avere 16 caratteri');
+    const phoneRegex = /^\+39\s\d{3}\s\d{6,7}$/; // Formato: +39 012 3456789
+    if (formData.phone && !phoneRegex.test(formData.phone)) {
+      setError('Il numero di telefono non è valido. Usa il formato: +39 012 3456789');
       return;
     }
 
