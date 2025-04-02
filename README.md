@@ -1,5 +1,16 @@
 # Readme
+
 ---
+
+## Code Coverage
+
+![Coverage](coverage.svg)
+
+[View Full Coverage Report](htmlcov/index.html)
+
+## Project Overview
+
+This project is a Flask-based web application that provides API endpoints for handling chat-related functionalities. It is designed to be lightweight, easy to set up, and extendable.
 
 ## Project Structure
 
@@ -15,120 +26,119 @@ tests/
 
 ## Setup Instructions
 
-1. **Clone the repository**
+### 1. Clone the Repository
 
-    Clone this repository to your local machine.
+```bash
+git clone <repository_url>
+cd <repository_folder>
+```
 
-    ```bash
-    git clone <repository_url>
-    cd <repository_folder>
-    ```
+### 2. Create and Activate a Virtual Environment
 
-2. **Create and activate a virtual environment**
+#### On Windows:
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
-    If you don't have a virtual environment yet, create one:
+#### On macOS/Linux:
+```bash
+python -m venv venv
+source venv/bin/activate
+```
 
-    ```bash
-    python -m venv venv
-    ```
+### 3. Install Dependencies
 
-    Activate the virtual environment:
+```bash
+pip install -r requirements.txt
+```
 
-    On Windows:
-    ```bash
-    venv\Scripts\activate
-    ```
+### 4. Running the Flask App
 
-    On macOS/Linux:
-    ```bash
-    source venv/bin/activate
-    ```
+```bash
+python src/app/main.py
+```
 
-3. **Install dependencies**
+The app will be accessible at `http://127.0.0.1:5001`.
 
-    Install the required Python packages:
+### 5. Running Tests
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+To run the test suite:
 
-    Here, the `requirements.txt` file should include dependencies like Flask and pytest. Example:
+```bash
+pytest tests/
+```
 
-    ```ini
-    Flask==2.2.2
-    pytest==8.3.5
-    ```
+This will execute the test cases in `tests/test_routes.py`.
 
-4. **Running the Flask App**
+### 6. Checking Test Coverage
 
-    To start the Flask app, run the following command:
+To measure the test coverage, use the following command:
 
-    ```bash
-    python src/app/main.py
-    ```
+```bash
+pytest --cov=src/app
+```
 
-    The app will run at `http://127.0.0.1:5001`. You can test it by visiting this URL in your browser or using an API client like Postman or cURL.
+This will generate a report showing the coverage percentage of the application code.
 
-5. **Running Tests**
+## API Endpoints
 
-    To ensure everything is working, run the tests using pytest:
+### **1. GET /**
 
-    ```bash
-    pytest tests/
-    ```
+**Description:** Returns a simple welcome message.
 
-    This will run the tests in `tests/test_routes.py` and ensure both the `/` and `/api/get_messages` routes are functioning properly.
+**Response:**
+```json
+{
+  "message": "Welcome to the Flask API!"
+}
+```
 
-## Endpoints
+### **2. POST /api/get_messages**
 
-1. **GET /**
+**Description:** Accepts a `quantity` parameter in the request body and returns a list of dummy messages.
 
-    **Description:** Returns a simple welcome message.
+**Request (JSON body):**
+```json
+{
+  "quantity": 3
+}
+```
 
-    **Response:**
+**Response:**
+```json
+[
+  {"id": 0, "text": "Message 0"},
+  {"id": 1, "text": "Message 1"},
+  {"id": 2, "text": "Message 2"}
+]
+```
 
-    ```json
-    {
-      "message": "Welcome to the Flask API!"
-    }
-    ```
+**Error Response (if no quantity is provided):**
+```json
+{
+  "status": "error",
+  "message": "Invalid request body"
+}
+```
 
-2. **POST /api/get_messages**
+## Running with Docker
 
-    **Description:** Accepts a `quantity` parameter in the request body and returns a list of dummy messages based on the quantity.
+To run the application using Docker:
 
-    **Request (JSON body):**
+```bash
+docker-compose up --build
+```
 
-    ```json
-    {
-      "quantity": 3
-    }
-    ```
+This will build the Docker images and start the containers as defined in the `docker-compose.yml` file. The application will be accessible at `http://127.0.0.1:5001`.
 
-    **Response:**
+## Test Coverage
 
-    ```json
-    [
-      {"id": 0, "text": "Message 0"},
-      {"id": 1, "text": "Message 1"},
-      {"id": 2, "text": "Message 2"}
-    ]
-    ```
+To ensure code quality, this project includes test coverage analysis. To generate a test coverage report:
 
-    **Error Response (if no quantity is provided):**
+```bash
+pytest --cov=src/app --cov-report=html
+```
 
-    ```json
-    {
-      "status": "error",
-      "message": "Invalid request body"
-    }
-    ```
-    ## Running with Docker
+This will create an `htmlcov` directory containing a visual report of the test coverage, which can be opened in a browser.
 
-    To run the application using Docker, ensure you have Docker and Docker Compose installed on your system. Then, execute the following command:
-
-    ```bash
-    docker-compose up --build
-    ```
-
-    This will build the Docker images and start the containers as defined in the `docker-compose.yml` file. Once the containers are running, the Flask app will be accessible at `http://127.0.0.1:5001`.
