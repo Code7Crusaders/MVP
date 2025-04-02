@@ -175,19 +175,6 @@ function Chatbot({ chatId, chatTitle }) {
   };
 
   const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const questions = [
-    { id: 1, text: "Cos'è React?" },
-    { id: 2, text: "Come funziona il Virtual DOM?" },
-    { id: 3, text: "Che differenza c'è tra state e props?" },
-    { id: 4, text: "Come si crea un componente in React?" },
-    { id: 5, text: "Cos'è JSX?" },
-    { id: 6, text: "Come si gestiscono gli eventi in React?" },
-    { id: 7, text: "Che cos'è un Hook in React?" },
-    { id: 8, text: "A cosa serve useEffect?" },
-    { id: 9, text: "Come si ottimizza le prestazioni in React?" },
-    { id: 10, text: "Cos'è il Context API?" },
-  ];
-
   return (
     <div className="chat">
       <div className="top">
@@ -308,7 +295,7 @@ function Chatbot({ chatId, chatTitle }) {
         }}
       >
         <div className="questions-container">
-          <h2>Domande Templates</h2>
+          <h2>Domande Predefinite</h2>
           <div className="questions-list">
             {templateList.map((template) => (
               <div
@@ -349,7 +336,7 @@ function Chatbot({ chatId, chatTitle }) {
                     }
                   }}
                 >
-                  Invia
+                  Seleziona 
                 </button>
               </div>
             ))}
