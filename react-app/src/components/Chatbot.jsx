@@ -22,20 +22,35 @@ import { Dialog, DialogContent, DialogActions, TextField, DialogContentText, Ale
 import { Button } from '@mui/material';
 import QuizIcon from '@mui/icons-material/Quiz';
 import Popover from '@mui/material/Popover';
+import { fetchTemplateList } from '../utils/api'; // Importa fetchTemplateList
 
 function Chatbot({ chatId, chatTitle }) {
-  const [messages, setMessages] = useState([]); // State to store chat messages
-  const [inputValue, setInputValue] = useState(''); // State for the input field value
-  const [loading, setLoading] = useState(false); // State for loading indicator
-  const [Eliminazione, setEliminazioneOpen] = useState(false); // State for delete confirmation dialog
-  const [Templates, setTemplatesOpen] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null);  
+  const [messages, setMessages] = useState([]); // Stato per i messaggi
+  const [inputValue, setInputValue] = useState(''); // Stato per il valore dell'input
+  const [loading, setLoading] = useState(false); // Stato per il caricamento
+  const [Eliminazione, setEliminazioneOpen] = useState(false); // Stato per il dialog di eliminazione
+  const [Templates, setTemplatesOpen] = useState(false); // Stato per il popover dei template
+  const [anchorEl, setAnchorEl] = useState(null); // Elemento ancorato per il popover
+  const [templateList, setTemplateList] = useState([]); // Stato per la lista dei template
   const btnTemplateRef = useRef(null);
 
   const navigate = useNavigate();
+  const theme = useTheme(); // Accesso al tema corrente
+  const endRef = useRef(null); // Riferimento per scrollare in fondo alla chat
 
-  const theme = useTheme(); // Access the current theme
-  const endRef = useRef(null); // Reference to scroll to the bottom of the chat
+  // Recupera i template dal backend quando il componente viene montato
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        const templates = await fetchTemplateList();
+        setTemplateList(templates); // Salva i template nello stato
+      } catch (error) {
+        console.error('Errore nel recupero dei template:', error);
+      }
+    };
+
+    fetchTemplates();
+  }, []);
 
   // Styles for the input field
   const inputChatStyle = {
@@ -52,8 +67,6 @@ function Chatbot({ chatId, chatTitle }) {
   const timeSpan = {
     color: theme.palette.mode === 'dark' ? 'white' : 'black',
   };
-
-
 
   // Close the delete confirmation dialog
   const chiudiDialogEliminazione = () => {
@@ -72,18 +85,15 @@ function Chatbot({ chatId, chatTitle }) {
     setEliminazioneOpen(true);
   };
 
-
-
   const apriTemplates = () => {
-    setTemplatesOpen(true)
+    setTemplatesOpen(true);
     setAnchorEl(btnTemplateRef.current);
   };
 
   const chiudiTemplates = () => {
-    setTemplatesOpen(false)
+    setTemplatesOpen(false);
     setAnchorEl(null);
   };
-
 
   // Fetch messages when the component mounts or chatId changes
   useEffect(() => {
@@ -121,17 +131,27 @@ function Chatbot({ chatId, chatTitle }) {
       setMessages((prevMessages) => [...prevMessages, savedMessage]);
       setInputValue('');
 
-      // Set loading state
-      setLoading(true);
-
-      // Interact with the chatbot and save the response
-      const botMessage = await interactWithChat(inputValue, chatId);
-      setMessages((prevMessages) => [...prevMessages, botMessage]);
-
+      // Controlla se il messaggio è un template
+      const selectedTemplate = templateList.find((template) => template.question === inputValue);
+      if (selectedTemplate) {
+        // Mostra la risposta del template come messaggio bot
+        const botMessage = {
+          text: selectedTemplate.answer,
+          conversation_id: chatId,
+          rating: null,
+          is_bot: true,
+          created_at: new Date(),
+        };
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      } else {
+        // Se non è un template, chiama il modello LLM
+        setLoading(true);
+        const botMessage = await interactWithChat(inputValue, chatId);
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      }
     } catch (error) {
-      console.error('Failed to send or process message:', error);
+      console.error('Errore durante l\'invio o l\'elaborazione del messaggio:', error);
     } finally {
-      // Remove loading state
       setLoading(false);
     }
   };
@@ -154,7 +174,6 @@ function Chatbot({ chatId, chatTitle }) {
     }
   };
 
-
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const questions = [
     { id: 1, text: "Cos'è React?" },
@@ -168,8 +187,6 @@ function Chatbot({ chatId, chatTitle }) {
     { id: 9, text: "Come si ottimizza le prestazioni in React?" },
     { id: 10, text: "Cos'è il Context API?" },
   ];
-
-
 
   return (
     <div className="chat">
@@ -233,12 +250,12 @@ function Chatbot({ chatId, chatTitle }) {
         {/* Loading indicator */}
         {loading && (
           <div className="typing-indicator">
-          <span><b>Giorgione</b> sta scrivendo &nbsp;</span>
-          <div className="dot-container">
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-          </div>
+            <span><b>Giorgione</b> sta scrivendo &nbsp;</span>
+            <div className="dot-container">
+              <div className="dot"></div>
+              <div className="dot"></div>
+              <div className="dot"></div>
+            </div>
           </div>
         )}
 
@@ -277,8 +294,6 @@ function Chatbot({ chatId, chatTitle }) {
         </DialogActions>
       </Dialog>
 
-
-      
       <Popover
         open={Templates}
         onClose={chiudiTemplates}
@@ -293,28 +308,53 @@ function Chatbot({ chatId, chatTitle }) {
         }}
       >
         <div className="questions-container">
-      <h2>Domande Templates</h2>
-      <div className="questions-list">
-        {questions.map((question) => (
-          <div 
-            key={question.id}
-            className={`question-item ${selectedQuestion === question.id ? 'selected' : ''}`}
-          >
-            <span>{question.text}</span>
-            <button 
-              className="action-btn"
-              onClick={(e) => {
-                e.stopPropagation()
-                chiudiTemplates()
-                setInputValue(question.text)
-              }}
-            >
-              Invia
-            </button>
+          <h2>Domande Templates</h2>
+          <div className="questions-list">
+            {templateList.map((template) => (
+              <div
+                key={template.id}
+                className={`question-item ${selectedQuestion === template.id ? 'selected' : ''}`}
+              >
+                <span>{template.question}</span>
+                <button
+                  className="action-btn"
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    chiudiTemplates();
+
+                    try {
+                      // Salva la domanda come messaggio utente
+                      const userMessage = {
+                        text: template.question,
+                        conversation_id: chatId,
+                        rating: null,
+                        is_bot: false,
+                        created_at: new Date(),
+                      };
+                      const savedUserMessage = await saveNewMessage(userMessage);
+                      setMessages((prevMessages) => [...prevMessages, savedUserMessage]);
+
+                      // Salva la risposta come messaggio bot
+                      const botMessage = {
+                        text: template.answer,
+                        conversation_id: chatId,
+                        rating: null,
+                        is_bot: true,
+                        created_at: new Date(),
+                      };
+                      const savedBotMessage = await saveNewMessage(botMessage);
+                      setMessages((prevMessages) => [...prevMessages, savedBotMessage]);
+                    } catch (error) {
+                      console.error('Errore durante il salvataggio dei messaggi templatizzati:', error);
+                    }
+                  }}
+                >
+                  Invia
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
       </Popover>
 
     </div>
