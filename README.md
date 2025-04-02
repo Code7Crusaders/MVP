@@ -6,7 +6,7 @@
 
 ![Coverage](coverage.svg)
 
-[View Full Coverage Report](htmlcov/index.html)
+[View Full Coverage Report](https://code7crusaders.github.io/MVP/)
 
 ## Project Overview
 
