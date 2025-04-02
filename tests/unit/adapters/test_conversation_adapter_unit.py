@@ -87,7 +87,6 @@ def test_save_conversation_title_failure(conversation_postgres_adapter: Conversa
     with pytest.raises(Exception, match="Failed to save title"):
         conversation_postgres_adapter.save_conversation_title(conversation_model)
 
-# Test get_conversations with exception
 
 def test_get_conversations_exception(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
     conversation_postgres_repository_mock.get_conversations.side_effect = Exception("Database error")
@@ -96,3 +95,22 @@ def test_get_conversations_exception(conversation_postgres_adapter: Conversation
 
     with pytest.raises(Exception, match="Database error"):
         conversation_postgres_adapter.get_conversations(ConversationModel(id=None, title=None, user_id=user_id))
+
+
+def test_delete_conversation_title_valid(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
+    conversation_model = ConversationModel(id=1, title="Title to Delete", user_id=1)
+        
+    conversation_postgres_repository_mock.delete_conversation.return_value = True  
+    result = conversation_postgres_adapter.delete_conversation_title(conversation_model)
+        
+    conversation_postgres_repository_mock.delete_conversation.assert_called_once_with(ANY)
+    assert result is True  
+
+
+def test_delete_conversation_title_failure(conversation_postgres_adapter: ConversationPostgresAdapter, conversation_postgres_repository_mock: MagicMock):
+    conversation_model = ConversationModel(id=1, title="Title to Delete", user_id=1)
+            
+    conversation_postgres_repository_mock.delete_conversation.side_effect = Exception("Failed to delete conversation")
+            
+    with pytest.raises(Exception, match="Failed to delete conversation"):
+        conversation_postgres_adapter.delete_conversation_title(conversation_model)

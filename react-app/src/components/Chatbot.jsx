@@ -190,8 +190,11 @@ function Chatbot({ chatId, chatTitle }) {
       </div>
 
       <div className="center">
-        {messages.map((message, index) => (
-          <div key={message.id || `message-${index}`} className={`message ${message.is_bot ? 'bot' : 'own'}`}>
+        {messages.map((message) => (
+          <div
+            key={message.id} 
+            className={`message ${message.is_bot ? 'bot' : 'own'}`}
+          >
             <div className="texts">
               {message.is_bot ? (
                 <div className="markdown-content">
@@ -283,14 +286,14 @@ function Chatbot({ chatId, chatTitle }) {
       <Popover
         open={Templates}
         onClose={chiudiTemplates}
-        anchorEl={anchorEl} 
+        anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'top', 
-          horizontal: 'left', 
+          vertical: 'top',
+          horizontal: 'left',
         }}
         transformOrigin={{
-          vertical: 'bottom', 
-          horizontal: 'left', 
+          vertical: 'bottom',
+          horizontal: 'left',
         }}
       >
         <div className="questions-container">
@@ -309,7 +312,7 @@ function Chatbot({ chatId, chatTitle }) {
                     chiudiTemplates();
 
                     try {
-                      
+
                       const userMessage = {
                         text: template.question,
                         conversation_id: chatId,
@@ -320,7 +323,7 @@ function Chatbot({ chatId, chatTitle }) {
                       const savedUserMessage = await saveNewMessage(userMessage);
                       setMessages((prevMessages) => [...prevMessages, savedUserMessage]);
 
-                      
+
                       const botMessage = {
                         text: template.answer,
                         conversation_id: chatId,
@@ -335,7 +338,7 @@ function Chatbot({ chatId, chatTitle }) {
                     }
                   }}
                 >
-                  Seleziona 
+                  Seleziona
                 </button>
               </div>
             ))}
