@@ -22,9 +22,9 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { logout } from './utils/auth';
 import LoadChat from './components/LoadChat';
 import Assistenza from './components/Assistenza';
-import {jwtDecode} from 'jwt-decode'; // npm install jwt-decode
 import Documenti from './components/Documenti';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -42,10 +42,8 @@ const demoTheme = createTheme({
   },
 });
 
-function DashboardContent() {
-  return (
-    <LoadChat />
-  );
+function DashboardContent({ userLogged }) {
+  return <LoadChat userLogged={userLogged} />;
 }
 
 function SupportContent() {
@@ -53,36 +51,28 @@ function SupportContent() {
 }
 
 function MetricheContent() {
-  return (
-    <Metriche />
-  );
+  return <Metriche />;
 }
 
 function TemplatesContent() {
-  return (
-    <Templates />
-  );
+  return <Templates />;
 }
 
 function AssistenzaContent() {
-  return (
-    <Assistenza />
-  );
+  return <Assistenza />;
 }
 
 function DocumentiContent() {
-  return (
-    <Documenti />
-  );
+  return <Documenti />;
 }
 
-function DemoPageContent({ pathname, conversations }) {
+function DemoPageContent({ pathname, conversations, userLogged }) {
   if (pathname === '/chatbot') {
-    return <DashboardContent />;
+    return <DashboardContent userLogged={userLogged} />;
   } else if (pathname.startsWith('/recent/chat-')) {
     const chatId = pathname.split('/recent/chat-')[1];
-    console.log('Extracted chatId:', chatId); // Debugging log
-    console.log('Conversations:', conversations); // Debugging log
+    console.log('Extracted chatId:', chatId);
+    console.log('Conversations:', conversations);
 
     const conversation = conversations.find((conv) => String(conv.id) === chatId);
 
@@ -108,15 +98,7 @@ function DemoPageContent({ pathname, conversations }) {
   }
 
   return (
-    <Box
-      sx={{
-        py: 4,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-      }}
-    >
+    <Box sx={{ py: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
       <Typography>Page not found</Typography>
     </Box>
   );
@@ -125,16 +107,20 @@ function DemoPageContent({ pathname, conversations }) {
 DemoPageContent.propTypes = {
   pathname: PropTypes.string.isRequired,
   conversations: PropTypes.array.isRequired,
+  userLogged: PropTypes.string.isRequired,
 };
 
 function DashboardLayoutBranding(props) {
   const { window } = props;
 
+  const [userLogged, setUserLogged] = React.useState(""); // Gestione dello stato di userLogged
+
   const [session, setSession] = React.useState(() => {
     const storedUser = localStorage.getItem('user');
+    setUserLogged(storedUser ? JSON.parse(storedUser).username : 'User')
     return {
       user: {
-        name: storedUser ? JSON.parse(storedUser).name : 'User DiProva',
+        name: storedUser ? JSON.parse(storedUser).username : 'User DiProva',
         email: storedUser ? JSON.parse(storedUser).email : 'email@example.com',
       },
     };
@@ -142,19 +128,17 @@ function DashboardLayoutBranding(props) {
 
   const [conversations, setConversations] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  const [isAdmin, setIsAdmin] = React.useState(false); // Stato per verificare se l'utente è admin
+  const [isAdmin, setIsAdmin] = React.useState(false);
 
   React.useEffect(() => {
     const fetchConversations = async () => {
       try {
         const token = localStorage.getItem('token');
         const response = await fetch('http://127.0.0.1:5001/conversation/get_all', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const data = await response.json();
-        console.log('Fetched conversations:', data); // Debugging log
+        console.log('Fetched conversations:', data);
         setConversations(data);
       } catch (error) {
         console.error('Failed to fetch conversations:', error);
@@ -172,14 +156,11 @@ function DashboardLayoutBranding(props) {
         const token = localStorage.getItem('token');
         const response = await fetch('http://127.0.0.1:5001/is_admin', {
           method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
-
         const data = await response.json();
         if (response.ok) {
-          setIsAdmin(data.is_admin); // Aggiorna lo stato in base alla risposta
+          setIsAdmin(data.is_admin);
         } else {
           console.error('Failed to fetch admin status:', data.error);
         }
@@ -202,6 +183,7 @@ function DashboardLayoutBranding(props) {
           setSession({
             user: {
               email: userData.email,
+              name: userData.username,
             },
           });
         }
@@ -245,33 +227,30 @@ function DashboardLayoutBranding(props) {
     {
       kind: 'divider',
     },
-    ...(isAdmin // Mostra le voci admin solo se l'utente è amministratore
+    ...(isAdmin
       ? [
-        {
-          kind: 'header',
-          title: 'Admin',
-        },
-        {
-          segment: 'metrics',
-          title: 'Visualizza Metriche',
-          icon: <EqualizerIcon />,
-        },
-        {
-          segment: 'templates',
-          title: 'Gestione Templates',
-          icon: <AutoAwesomeMosaicIcon />,
-        },
-        {
-          segment: 'assistenza',
-          title: 'Assistenza clienti',
-          icon: <SupportAgentIcon />,
-        },
-        {
-          segment: 'documenti',
-          title: 'Gestione documenti',
-          icon: <InsertDriveFileIcon />,
-        },
-      ]
+          { kind: 'header', title: 'Admin' },
+          {
+            segment: 'metrics',
+            title: 'Visualizza Metriche',
+            icon: <EqualizerIcon />,
+          },
+          {
+            segment: 'templates',
+            title: 'Gestione Templates',
+            icon: <AutoAwesomeMosaicIcon />,
+          },
+          {
+            segment: 'assistenza',
+            title: 'Assistenza clienti',
+            icon: <SupportAgentIcon />,
+          },
+          {
+            segment: 'documenti',
+            title: 'Gestione documenti',
+            icon: <InsertDriveFileIcon />,
+          },
+        ]
       : []),
   ];
 
@@ -295,7 +274,8 @@ function DashboardLayoutBranding(props) {
       window={demoWindow}
     >
       <DashboardLayout>
-        <DemoPageContent pathname={router.pathname} conversations={conversations} />
+        <DemoPageContent pathname={router.pathname} conversations={conversations} userLogged={userLogged} />
+        
       </DashboardLayout>
     </AppProvider>
   );

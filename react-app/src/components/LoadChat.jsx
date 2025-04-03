@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
 
-function LoadChat() {
+function LoadChat({userLogged}) {
 
     const [inputValue, setInputValue] = useState('');
     const [alertVisible, setAlertVisible] = useState(false); 
@@ -70,8 +70,8 @@ function LoadChat() {
                 </Alert>
               </Collapse>
             )}
-
-                <p id='user'>Ciao User</p>
+                
+                <p id='user'>Ciao {userLogged}</p>
                 <div className="start">
                     <p className='scope'>Inizia una nuova conversazione</p>
                     <input
