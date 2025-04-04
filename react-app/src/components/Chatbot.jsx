@@ -276,7 +276,7 @@ function Chatbot({ chatId, chatTitle }) {
       {/* Dialog for chat deletion */}
       <Dialog open={Eliminazione} onClose={chiudiDialogEliminazione}>
         <DialogContentText style={{ ...{ fontSize: '20px', margin: '16px 24px 0 24px', fontWeight: 'bold', borderBottom: '0.8px solid', paddingBottom: '6px' }, ...timeSpan }}>{chatTitle || 'Chat'}</DialogContentText>
-        <DialogContentText style={{ ...{ fontSize: '16px', margin: '6px 24px 0 24px', }, ...timeSpan }}>Sei sucuro di voler cancellare questa Chat?</DialogContentText>
+        <DialogContentText style={{ ...{ fontSize: '16px', margin: '6px 24px 0 24px', }, ...timeSpan }}>Sei sicuro di voler cancellare questa Chat?</DialogContentText>
         <DialogActions style={{ margin: '10px 16px 20px 0' }}>
           <Button onClick={chiudiDialogEliminazione} style={buttons}>Annulla</Button>
           <Button onClick={EliminaChat} style={buttons}>Elimina Chat</Button>
