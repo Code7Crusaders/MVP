@@ -1,0 +1,400 @@
+.chat {
+    flex: 2;
+    border-left: 1px solid #dddddd35;
+    border-right: 1px solid #dddddd35;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    .top {
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #dddddd35;
+
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-direction: row;
+
+            p {
+                font-size: 20px;
+                font-weight: 600;
+            }
+        }
+
+        .icons {
+            display: flex;
+            gap: 18px;
+
+            .btnsTop {
+                padding: 7px;
+                border-radius: 5px;
+                cursor: pointer;
+                border: none;
+            }
+        }
+    }
+
+
+    .center {
+        padding: 16px;
+        flex: 1;
+        overflow: scroll;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 30px;
+
+        .message {
+            max-width: 70%;
+            display: flex;
+            gap: 10px;
+            color: white;
+            position: relative;
+            flex-direction: column;
+            margin: 10px 0;
+
+            &.own {
+                align-self: flex-end;
+
+                .texts {
+                    p {
+                        background-color: #5183fe;
+                        border: none;
+                        border-bottom-right-radius: 0;
+                    }
+                }
+
+                span {
+                    align-self: flex-end;
+                }
+            }
+
+            img {
+                width: 55px;
+                height: 55px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 2px solid slateblue;
+            }
+
+            .texts {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+
+                p {
+                    padding: 0.8em;
+                    background-color: slateblue;
+                    border-radius: 10px;
+                    margin: 0;
+                }
+
+                span {
+                    font-size: 13px;
+                    margin-top: 8px;
+                }
+            }
+
+            .feedback {
+                position: absolute;
+                bottom: 15px;
+                right: 0;
+                display: flex;
+                gap: 3px;
+
+                button {
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+
+                display: flex;
+                gap: 5px;
+                margin-top: 5px;
+            }
+
+            .feedbackButton {
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+
+        }
+    }
+
+    .bottom {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid #dddddd35;
+        gap: 15px;
+        position: sticky;
+        bottom: 0;
+
+        .icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        img {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        input {
+            flex: 1;
+            outline: none;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            border: 0.5px solid #464646;
+        }
+
+
+
+        .sendButton {
+            padding: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+    }
+
+
+}
+
+.typing-indicator {
+    width: 280px;
+    background-color: slateblue;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 15px;
+    border-bottom-left-radius: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .dot-container {
+    display: flex;
+    gap: 4px;
+    height: 24px;
+    align-items: center;
+  }
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  
+  .dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes bounce {
+    0%, 80%, 100% { 
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-8px);
+    }
+  }
+
+/* Style for Markdown content inside bot messages */
+.markdown-content {
+    padding: 0.8em;
+    background-color: slateblue;
+    /* Match the bot message background */
+    border-radius: 12px;
+    border-bottom-left-radius: 0;
+    color: white;
+    /* Ensure text color is consistent */
+    font-size: 14px;
+    /* Adjust font size if needed */
+    line-height: 1.5;
+    /* Improve readability */
+}
+
+/* Override default styles for Markdown elements */
+.markdown-content p {
+    margin: 0;
+    /* Remove default margins for <p> tags */
+}
+
+.markdown-content ul {
+    margin: 0;
+    padding-left: 20px;
+    /* Add padding for lists */
+}
+
+.markdown-content li {
+    margin-bottom: 5px;
+    /* Add spacing between list items */
+}
+
+.markdown-content a {
+    color: #add8e6;
+    /* Light blue for links */
+    text-decoration: underline;
+}
+
+.markdown-content strong {
+    font-weight: bold;
+    /* Bold text for strong elements */
+}
+
+.markdown-content em {
+    font-style: italic;
+    /* Italic text for emphasis */
+}
+
+/* Style for selected thumbs-up or thumbs-down button */
+.feedbackButton.selected {
+    background-color: #4caf50;
+    /* Green for thumbs-up */
+    color: white;
+}
+
+.feedbackButton.selected:nth-child(2) {
+    background-color: #f44336;
+    /* Red for thumbs-down */
+    color: white;
+}
+
+/* Style for selected thumbs-up button */
+.feedbackButton.selected.thumbs-up {
+    background-color: #4caf50;
+    /* Green for thumbs-up */
+    color: white;
+}
+
+/* Style for selected thumbs-down button */
+.feedbackButton.selected.thumbs-down {
+    background-color: #f44336;
+    /* Red for thumbs-down */
+    color: white;
+}
+
+/* Style for feedback buttons */
+.feedbackButton {
+    background-color: #e0e0e0;
+    /* Default background */
+    color: #333;
+    /* Default text color */
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for feedback buttons */
+.feedbackButton:hover {
+    background-color: #d6d6d6;
+    /* Slightly darker background on hover */
+}
+
+.btnTemplate{
+    height: 57px;
+    padding: 10px;
+    background-color: rgb(165, 165, 165);
+    color: white;
+    border: 3px solid grey;
+}
+
+
+.questions-container {
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: none;
+  background-color: rgb(211, 210, 210);
+}
+
+.questions-container h2 {
+  color: #333;
+  text-align: center;
+  margin: 0 auto 10px;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.questions-list {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Stile della scrollbar */
+.questions-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.questions-list::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 4px;
+}
+
+.questions-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.questions-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.question-item {
+  background-color: #333;
+  color: white;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: default;
+}
+
+.question-item:hover {
+  transform: translateX(5px);
+}
+
+.action-btn {
+    margin-left: 5px;
+  padding: 8px 15px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+  background-color: #1976D2;
+}
+
+

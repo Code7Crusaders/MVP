@@ -1,0 +1,129 @@
+.support-container {
+    width: 90%;
+    padding: 25px;
+    border-radius: 8px;
+    margin:  auto;
+}
+  
+.request-list {
+    list-style: none;
+    padding: 0;
+}
+  
+.request-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 0.2px solid #464646;
+}
+  
+.statusContainer{
+    margin: 10px;
+}
+
+.status-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+  
+.status-dot.red {
+    background-color: #ff4444;
+}
+  
+.status-dot.green {
+    background-color: #00c851;
+}
+  
+.userdate{
+    padding: 7px 0; 
+    margin-bottom: 7px;
+}
+
+.request-title {
+    font-weight: 500;
+    margin-right: 10px;
+    font-size: 18px;
+}
+  
+.request-info {
+    flex-grow: 1;
+}
+  
+.separator {
+    color: grey;
+    font-size: large;
+    margin: 0 10px;
+}
+  
+.request-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}  
+  
+.request-category{
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+.request-date {
+    font-size: 1em;
+    font-weight: 300;
+}
+  
+.request-title{
+    font-size: 1.1em;
+    font-weight: 550;
+}
+
+.request-description {
+    font-size: 1em;
+    font-weight: 200;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+    padding-left: 40px;
+    margin-right: 25px;
+  }
+  
+button{
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 7px;
+}
+
+.icons > button{
+    flex-direction: flex-end;
+    float: right;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .request-item {
+        padding: 5px;
+    }
+
+    .request-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .request-date {
+        text-align: left;
+        margin-top: 0;
+    }
+
+    .separator{
+        display: none;
+    }
+}

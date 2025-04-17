@@ -1,10 +1,10 @@
-from app.usecases.chat_useCase import ChatUseCase
+from usecases.chat_useCase import ChatUseCase
 
-from app.services.similarity_search_service import SimilaritySearchService
-from app.services.generate_answer_service import GenerateAnswerService
+from services.similarity_search_service import SimilaritySearchService
+from services.generate_answer_service import GenerateAnswerService
 
-from app.models.question_model import QuestionModel
-from app.models.answer_model import AnswerModel
+from models.question_model import QuestionModel 
+from models.answer_model import AnswerModel
 
 class ChatService(ChatUseCase):
     """
@@ -17,11 +17,23 @@ class ChatService(ChatUseCase):
 
     def get_answer(self, question_model : QuestionModel) -> AnswerModel:
         """
-        Get the answer to a user's question.
-        """
-        context_list = self.similarity_search_service.similarity_search(question_model)
-        answer = self.generate_answer_service.generate_answer(question_model, context_list)
+        Retrieves an answer based on the user's question.
 
-        return answer
-    
+        Args:
+            question_model (QuestionModel): The user's input question.
+
+        Returns:
+            AnswerModel: The generated answer based on the retrieved context.
+
+        Raises:
+            Exception: If an error occurs during the similarity search or answer generation.
+        """
+        try:
+            context_list = self.similarity_search_service.similarity_search(question_model)
+            answer = self.generate_answer_service.generate_answer(question_model, context_list)
+
+            return answer
+        except Exception as e:
+            raise Exception(f"An error occurred during the chat response generation: {e}") from e
+
     

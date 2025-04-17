@@ -6,20 +6,19 @@ from langchain_core.messages import trim_messages
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.memory import ConversationBufferMemory
 
-from app.entities.query_entity import QueryEntity
-from app.entities.document_context_entity import DocumentContextEntity
-from app.entities.answer_entity import AnswerEntity
-from app.entities.file_entity import FileEntity
-from app.entities.file_chunk_entity import FileChunkEntity
+from entities.query_entity import QueryEntity
+from entities.document_context_entity import DocumentContextEntity
+from entities.answer_entity import AnswerEntity
+from entities.file_entity import FileEntity
+from entities.file_chunk_entity import FileChunkEntity
 
 
 class LangChainRepository:
     def __init__(self, model: ChatOpenAI):
-        try:
-            self.model = model
-            self.user_memories = {}  
-        except Exception as e:
-            raise Exception("Error while initializing LangChain model: " + str(e))
+        
+        self.model = model
+        self.user_memories = {}  
+        self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=2500, chunk_overlap=0)
 
     def get_user_memory(self, user_id: int):
         """Retrieve or create memory for a specific user."""
@@ -32,9 +31,9 @@ class LangChainRepository:
         Given a Query and a list of document contexts, perform a call to the OpenAI LLM model and get a detailed answer.
 
         Args:
-            user_id (int): The unique identifier of the user.
-            query (QueryEntity): The query entity containing the question.
+            query (QueryEntity): The query entity.
             contexts (list[DocumentContextEntity]): A list of document context entities.
+            prompt_template str: the system message to llm on how should it beave
 
         Returns:
             AnswerEntity: A detailed answer entity containing the answer given by LLM.
@@ -56,7 +55,7 @@ class LangChainRepository:
             # Trim history if needed
             trimmed_history = trim_messages(
                 history,
-                max_tokens=200,
+                max_tokens=2000,
                 strategy="last",
                 include_system=True,
                 token_counter=self.model
@@ -96,18 +95,29 @@ class LangChainRepository:
 
     def split_file(self, file: FileEntity) -> list[FileChunkEntity]:
         """
-        Given a file entity it split the file in chunks of 10k characters.
-
+        Given a file entity it splits the file in chunks of 2,5k characters.
+    
         Args:
             file (FileEntity): The file entity to split.
-
+    
         Returns:
             list[FileChunkEntity]: A list of file chunk entities containing the file chunks.
         """
-
-        # try:
+    
+        try:
             
+            file_content = file.get_file_content()
+            if isinstance(file_content, bytes):
+                file_content = file_content.decode('utf-8', errors='ignore')  
+    
+            
+            all_splits = self.text_splitter.split_text(file_content)
+    
+            file_chunks = [FileChunkEntity(split, file.get_metadata()) for split in all_splits]
+    
+            return file_chunks
+    
+        except Exception as e:
+            raise Exception("Error while splitting the file: " + str(e))
 
-        # except Exception as e:
-        #     raise Exception("Error while splitting the file: " + str(e))
         

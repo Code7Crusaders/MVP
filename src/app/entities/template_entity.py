@@ -1,10 +1,15 @@
-class TemplateEntity():
-    def __init__(self, id: int, question: str, answer: str, author: str, last_modified: str):
+from datetime import datetime
+
+class TemplateEntity:
+    def __init__(self, id: int = None, question: str = None, answer: str = None, author_id: int = None, last_modified: datetime = None):
         self.id = id
         self.question = question
         self.answer = answer
-        self.author = author
+        self.author_id = author_id
         self.last_modified = last_modified
+
+    def get_id(self) -> int:
+        return self.id
 
     def get_question(self) -> str:
         return self.question
@@ -12,11 +17,8 @@ class TemplateEntity():
     def get_answer(self) -> str:
         return self.answer
 
-    def get_author(self) -> str:
-        return self.author
+    def get_author_id(self) -> int:
+        return self.author_id
 
-    def get_id(self) -> int:
-        return self.id
-
-    def get_last_modified(self) -> str:
+    def get_last_modified(self) -> datetime:
         return self.last_modified

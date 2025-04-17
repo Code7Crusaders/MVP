@@ -1,7 +1,7 @@
-from src.app.services.split_file_service import SplitFileService
-from src.app.services.add_chunks_service import AddChunksService
-from src.app.models.file_model import FileModel
-from src.app.models.file_chunk_model import FileChunkModel
+from services.split_file_service import SplitFileService
+from services.add_chunks_service import AddChunksService
+from models.file_model import FileModel
+from models.file_chunk_model import FileChunkModel
 
 class AddFileService:
     """
@@ -15,17 +15,26 @@ class AddFileService:
         """
         Load a file and process its chunks.
         """
-        chunks = self.split_file(file)
-        self.load_chunks(chunks)
+        try:
+            chunks = self.split_file(file)
+            self.load_chunks(chunks)
+        except Exception as e:
+            raise e
 
     def split_file(self, file: FileModel) -> list[FileChunkModel]:
         """
         Split the file into chunks.
         """
-        return self.split_file_service.split(file)
+        try:
+            return self.split_file_service.split_file(file)
+        except Exception as e:
+            raise e
 
     def load_chunks(self, chunks: list[FileChunkModel]):
         """
         Load the file chunks.
         """
-        self.add_chunks_service.add(chunks)
+        try:
+            self.add_chunks_service.load_chunks(chunks)
+        except Exception as e:
+            raise e

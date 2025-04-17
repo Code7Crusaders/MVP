@@ -1,15 +1,17 @@
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 
-from app.entities.document_context_entity import DocumentContextEntity
-from app.entities.query_entity import QueryEntity
-from app.entities.file_chunk_entity import FileChunkEntity
+from dependencies.init_vector_store import store_vector_store
+
+from entities.document_context_entity import DocumentContextEntity
+from entities.query_entity import QueryEntity
+from entities.file_chunk_entity import FileChunkEntity
 
 class FaissRepository: 
-    def __init__(self, vectorstore: FAISS):
+
+    def __init__(self, vectorstore: FAISS): 
         self.vectorstore = vectorstore
-        
-        
+            
     def similarity_search(self, query: QueryEntity) -> list[DocumentContextEntity]:
         """
         Performs a similarity search in the collection and returns the most relevant documents.
@@ -21,13 +23,15 @@ class FaissRepository:
             list[DocumentContextEntity]: A list of the most relevant document context entities.
         """
         
+
+
+        if not query.get_query().strip():
+            raise ValueError("Query cannot be empty")
+
         try:
             result = self.vectorstore.similarity_search(query.get_query(), k=4)
 
             context_list = []
-
-            if not query.get_query():
-                return []
 
             for context in result:
                 context_list.append(DocumentContextEntity(context.page_content))
@@ -52,7 +56,7 @@ class FaissRepository:
             Exception: If an error occurs during the load.
         """
         if not chunks:
-            return "No chunks to load."
+            raise ValueError("No chunks to load.")
 
         try:
             result = []
@@ -60,6 +64,8 @@ class FaissRepository:
             for chunk in chunks:
                 doc = Document(page_content=chunk.get_chunk_content(), metadata={"metadata": chunk.get_metadata()})
                 result.append(self.vectorstore.add_documents([doc]))
+
+            store_vector_store(self.vectorstore)
 
             return f"{len(result)} chunks loaded."
 

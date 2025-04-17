@@ -1,0 +1,108 @@
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  /*background-color: red;*/
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+div.overlay{
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #00bfff, #0000ff, slateblue, #8a2be2);
+  background-size: 400% 400%;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.landing-container {
+  font-family: 'Arial', sans-serif;
+  background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+  border-radius: 5%;
+}
+
+header > img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid slateblue;
+}
+  
+.landing-header h1 {
+  font-size: 3rem;
+  color: slateblue;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+  
+.landing-header p {
+  font-size: 1.2rem;
+  color: white;
+}
+  
+.landing-main {
+  max-width: 600px;
+  margin: 0 auto;
+}
+  
+.landing-section {
+  background-color: #333;
+  border-radius: 10px;
+}
+  
+.landing-section h2 {
+  font-size: 2rem;
+  color: slateblue;
+  margin-bottom: 20px;
+}
+  
+.landing-section p {
+  font-size: 1rem;
+  color: white;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+  
+.login-button {
+  padding: 12px 24px;
+  background-color: #3498db;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  font-size: 16px;
+}
+  
+.login-button:hover {
+  background-color: #2980b9;
+}

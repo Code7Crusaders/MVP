@@ -1,78 +1,185 @@
 import psycopg2
-from app.models.message_model import MessageModel
+from entities.message_entity import MessageEntity
+from entities.conversation_entity import ConversationEntity
 
 class MessagePostgresRepository:
-    def __init__(self, conn: psycopg2.extensions.connection):
+    def __init__(self, db_config: dict):
         '''
-        Initializes the PostgresRepository with the given database connection.
+        Initializes the repository with the given database configuration.
         Args:
-            conn (psycopg2.extensions.connection): The connection object to the PostgreSQL database.
+            db_config (dict): A dictionary containing the PostgreSQL database configuration parameters.
         '''
-        self.__conn = conn
+        self.__db_config = db_config
 
-    def get_message(self, message_id: int) -> MessageModel:
+    def __connect(self):
+        '''
+        Creates and returns a new connection to the PostgreSQL database.
+        Returns:
+            psycopg2.extensions.connection: A connection object to interact with the PostgreSQL database.
+        '''
+        return psycopg2.connect(**self.__db_config)
+
+    def get_message(self, message: MessageEntity) -> MessageEntity:
         '''
         Retrieves a message from the PostgreSQL database by its ID.
         Args:
-            message_id (int): The ID of the message to retrieve.
+            message (MessageEntity): The message entity containing the ID of the message to retrieve.
         Returns:
-            MessageModel: The retrieved message data.
+            MessageEntity: The retrieved message data.
         Raises:
             psycopg2.Error: If an error occurs while retrieving the message from the PostgreSQL database.
         '''
-        try:
-            select_message_query = """
-            SELECT id, text, created_at, user_id, conversation_id
-            FROM User_Messages
-            WHERE id = %s;
-            """
-            with self.__conn.cursor() as cursor:
-                cursor.execute(select_message_query, (message_id,))
+        
+        select_message_query = """
+        SELECT id, text, created_at, is_bot, conversation_id, rating
+        FROM Messages
+        WHERE id = %s;
+        """
+        with self.__connect() as connection:  # Call the method to get the connection object
+            with connection.cursor() as cursor:
+                cursor.execute(select_message_query, (message.get_id(),))
                 result = cursor.fetchone()
                 if result:
-                    message = MessageModel(
+                    message = MessageEntity(
                         id=result[0],
                         text=result[1],
                         created_at=result[2],
-                        user_id=result[3],
-                        conversation_id=result[4]
+                        is_bot=result[3],
+                        conversation_id=result[4],
+                        rating=result[5]
                     )
                     return message
                 else:
-                    print(f"No message found with ID {message_id}")
-                    return None
-        except psycopg2.Error as e:
-            print(f"A connection error occurred while retrieving the message from the Postgres database: {e}")
-            self.__conn.rollback()
-            return None
-        except Exception as e:
-            print(f"An error occurred while retrieving the message from the Postgres database: {e}")
-            self.__conn.rollback()
-            return None
-
-    def save_message(self, message: MessageModel):
+                    raise ValueError(f"Message with ID {message.get_id()} not found.")
+            
+    def get_messages_by_conversation(self, conversation: MessageEntity) -> list[MessageEntity]:
         '''
-        Saves a message into the PostgreSQL database.
+        Retrieves all messages associated with a specific conversation from the PostgreSQL database.
         Args:
-            message (MessageModel): The message data to be saved.
+            conversation (ConversationEntity): The conversation entity containing the ID of the conversation.
+        Returns:
+            list[MessageEntity]: A list of MessageEntity objects.
+        Raises:
+            psycopg2.Error: If an error occurs while retrieving the messages from the PostgreSQL database.
+        '''
+        
+        select_messages_query = """
+        SELECT id, text, created_at, is_bot, conversation_id, rating
+        FROM Messages
+        WHERE conversation_id = %s;
+        """
+        with self.__connect() as connection:  # Call the method to get the connection object
+            with connection.cursor() as cursor:
+                cursor.execute(select_messages_query, (conversation.get_conversation_id(),))
+                rows = cursor.fetchall()
+                if rows:
+                    return [
+                    MessageEntity(
+                        id=row[0],
+                        text=row[1],
+                        created_at=row[2],
+                        is_bot=row[3],
+                        conversation_id=row[4],
+                        rating=row[5]
+                    ) for row in rows
+                    ]
+                else:
+                    return []
+    
+    def save_message(self, message: MessageEntity) -> int:
+        '''
+        Saves a message into the PostgreSQL database and returns the ID of the created message.
+        Args:
+            message (MessageEntity): The message data to be saved.
+        Returns:
+            int: The ID of the created message.
         Raises:
             psycopg2.Error: If an error occurs while saving the message in the PostgreSQL database.
         '''
-        try:
-            insert_message_query = """
-            INSERT INTO User_Messages (text, created_at, user_id, conversation_id)
-            VALUES (%s, %s, %s, %s);
-            """
-            params = (message.text, message.created_at, message.user_id, message.conversation_id)
-            with self.__conn.cursor() as cursor:
+        
+        insert_message_query = """
+        INSERT INTO Messages (text, created_at, is_bot, conversation_id, rating)
+        VALUES (%s, %s, %s, %s, %s)
+        RETURNING id;
+        """
+        params = (message.get_text(), message.get_created_at(), message.get_is_bot(), message.get_conversation_id(), message.get_rating())
+        with self.__connect() as connection:  
+            with connection.cursor() as cursor:
                 cursor.execute(insert_message_query, params)
-            self.__conn.commit()
-            print("Message saved successfully in the Postgres database.")
-        except psycopg2.Error as e:
-            print(f"A connection error occurred while saving the message in the Postgres database: {e}")
-            self.__conn.rollback()
-        except Exception as e:
-            print(f"An error occurred while saving the message in the Postgres database: {e}")
-            self.__conn.rollback()
+                created_id = cursor.fetchone()[0]
+            connection.commit()
+        return created_id
 
-   
+    def delete_message(self, message: MessageEntity) -> bool:
+        '''
+        Deletes a message from the PostgreSQL database.
+        Args:
+            message (MessageEntity): The message to be deleted.
+        Returns:
+            bool: True if the message was deleted successfully, False otherwise.
+        Raises:
+            psycopg2.Error: If an error occurs while deleting the message from the PostgreSQL database.
+        '''
+        
+        delete_message_query = """
+        DELETE FROM Messages
+        WHERE id = %s;
+        """
+        with self.__connect() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(delete_message_query, (message.get_id(),))
+                conn.commit()
+                return cursor.rowcount > 0
+            
+
+    def update_message_rating(self, message: MessageEntity) -> bool:
+        '''
+        Updates the rating of a message in the PostgreSQL database by its ID.
+        Args:
+            message (MessageEntity): The message entity containing the ID and the new rating value.
+        Returns:
+            bool: True if the rating was successfully updated, False otherwise.
+        Raises:
+            psycopg2.Error: If an error occurs while updating the rating in the PostgreSQL database.
+        '''
+        
+        update_rating_query = """
+        UPDATE Messages
+        SET rating = %s
+        WHERE id = %s;
+        """
+        params = (message.get_rating(), message.get_id())
+        with self.__connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(update_rating_query, params)
+                connection.commit()
+                return cursor.rowcount > 0
+
+    def fetch_messages(self) -> list[MessageEntity]:
+        """
+        Fetch the dashboard metrics data.
+        Returns:
+            list[MessageEntity]: A list of MessageEntity objects containing the messages data.
+        """
+
+        select_messages_query = """
+        SELECT id, text, created_at, is_bot, conversation_id, rating
+        FROM Messages;
+        """
+        with self.__connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(select_messages_query)
+                rows = cursor.fetchall()
+                if rows:
+                    return [
+                        MessageEntity(
+                            id=row[0],
+                            text=row[1],
+                            created_at=row[2],
+                            is_bot=row[3],
+                            conversation_id=row[4],
+                            rating=row[5]
+                        ) for row in rows
+                    ]
+                else:
+                    return []

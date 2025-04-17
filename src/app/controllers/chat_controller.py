@@ -1,31 +1,39 @@
-from app.dto.AnswerDTO import AnswerDTO
-from app.dto.QuestionDTO import QuestionDTO
+from dto.answer_dto import AnswerDTO
+from dto.question_dto import QuestionDTO
 
-from app.usecases.chat_useCase import ChatUseCase
+from usecases.chat_useCase import ChatUseCase
 
-from app.models.question_model import QuestionModel
-from app.models.answer_model import AnswerModel
+from models.question_model import QuestionModel
+from models.answer_model import AnswerModel
 
-class ChatController:
+class ChatController: 
     """
     Controller class to manage chat interactions.
     """
     def __init__(self, chat_usecase: ChatUseCase):
         
-        try:
-            self.chat_usecase = chat_usecase
-        except Exception as e:
-            raise e
+        self.chat_usecase = chat_usecase
             
 
     def get_answer(self, user_input: QuestionDTO) -> AnswerDTO:
         """
-        Get the answer to a user's question.
+        Retrieves an answer based on the user's question.
+
+        Args:
+            user_input (QuestionDTO): The user's input question.
+
+        Returns:
+            AnswerDTO: The generated answer based on the retrieved context.
+                    
         """
-        # Convert DTO to model
-        question_model = QuestionModel( user_input.get_user(), user_input.get_question())
+        try:
+            question_model = QuestionModel( user_input.get_user(), user_input.get_question())
 
-        answer_dto = AnswerDTO( self.chat_usecase.get_answer(question_model) )
+            answer_model = self.chat_usecase.get_answer(question_model)
 
-        # Return DTO answer
-        return answer_dto
+            answer_dto = AnswerDTO( answer_model.get_answer() )
+
+            return answer_dto
+        
+        except Exception as e:
+            raise e
