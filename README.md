@@ -1,6 +1,9 @@
 # Readme
 
----
+
+🎥 Video preview of the MVP
+
+[![Guarda il video](https://img.youtube.com/vi/Dq2FcwWGRtU/maxresdefault.jpg)](https://youtu.be/Dq2FcwWGRtU)
 
 ## Code Coverage
 
